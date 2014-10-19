@@ -23,8 +23,11 @@ require.config({
     }
 });
 
-require(['2048/game'], function (Game) {
+require(['2048/game', 'jquery'], function (Game, $) {
     'use strict';
 
-    new Game();
+    new Game({
+        $el: $('#game'),
+        size: 3
+    });
 });

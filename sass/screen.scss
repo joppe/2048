@@ -1,0 +1,33 @@
+#game {
+    $size: 100px;
+
+    position: relative;
+
+    table {
+        margin: 0;
+        padding: 0;
+        border-collapse: collapse;
+    }
+
+    td {
+        width: $size;
+        height: $size;
+        vertical-align: middle;
+        text-align: center;
+        background: darkgray;
+        border: 10px solid lightgray;
+    }
+
+    .value {
+        position: absolute;
+        display: table-cell;
+        width: $size;
+        height: $size;
+        vertical-align: middle;
+        text-align: center;
+        font: {
+            size: 30px;
+            weight: bold;
+        }
+    }
+}
