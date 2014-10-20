@@ -28,6 +28,6 @@ require(['2048/app', 'jquery'], function (App, $) {
 
     new App({
         $el: $('#game'),
-        size: 3
+        size: 4
     });
 });

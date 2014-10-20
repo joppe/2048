@@ -22,7 +22,7 @@ define([
     App = function (options) {
         this.$el = options.$el;
 
-        this.game = new Game({
+        window.game = this.game = new Game({
             size: options.size
         });
         this.game.get('values').on('add', this.createValue, this);
@@ -32,10 +32,6 @@ define([
         this.game.cycle();
     };
     _.extend(App.prototype, {
-        move: function (direction) {
-
-        },
-
         createValue: function (model) {
             var view = new Value({
                     model: model
@@ -47,13 +43,14 @@ define([
         createViews: function () {
             var grid = new Grid({
                     model: this.game
-                }),
-                keyboard = new Keyboard({
-                    el: $('body'),
-                    model: this.game
                 });
 
             this.$el.append(grid.render().$el);
+
+            new Keyboard({
+                el: $('body'),
+                model: this.game
+            });
         }
     });
 

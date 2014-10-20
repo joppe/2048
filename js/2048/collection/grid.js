@@ -33,8 +33,23 @@ define([
             });
         },
 
-        move: function (direction) {
-            console.log(direction);
+        getRow: function (row) {
+            return this.filter(function (model) {
+                return model.get('row') === row;
+            });
+        },
+
+        getColumn: function (col) {
+            return this.filter(function (model) {
+                return model.get('col') === col;
+            });
+        },
+
+        getCell: function (props) {
+            return this.findWhere({
+                row: props.row,
+                col: props.col
+            });
         }
     });
 
