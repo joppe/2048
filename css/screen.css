@@ -7,8 +7,6 @@
   #game td {
     width: 100px;
     height: 100px;
-    vertical-align: middle;
-    text-align: center;
     background: darkgray;
     border: 10px solid lightgray; }
   #game .value {
@@ -16,9 +14,11 @@
     display: table-cell;
     width: 100px;
     height: 100px;
-    vertical-align: middle;
+    background: #ffffff;
+    border: 5px solid lightgray;
     text-align: center;
     font-size: 30px;
-    font-weight: bold; }
+    font-weight: bold;
+    line-height: 100px; }
 
 /*# sourceMappingURL=screen.css.map */

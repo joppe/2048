@@ -1,6 +1,12 @@
 /*global define*/
 
-define(['backbone', 'underscore'], function (Backbone, _) {
+define([
+    'backbone',
+    'underscore'
+], function (
+    Backbone,
+    _
+) {
     'use strict';
 
     var Keyboard,
@@ -16,8 +22,28 @@ define(['backbone', 'underscore'], function (Backbone, _) {
         },
 
         keypress: function (event) {
-            if (_.indexOf(KEYS, event.which)) {
+            var direction = {
+                    left: 0,
+                    top: 0
+                };
 
+            if (_.indexOf(KEYS, event.which) !== -1) {
+                switch (event.which) {
+                    case KEY_RIGHT:
+                        direction.left = 1;
+                        break;
+                    case KEY_LEFT:
+                        direction.left = -1;
+                        break;
+                    case KEY_TOP:
+                        direction.top = -1;
+                        break;
+                    case KEY_BOTTOM:
+                        direction.top = 1;
+                        break;
+                }
+
+                this.model.move(direction);
             }
         }
     });

@@ -1,6 +1,12 @@
 /*global define*/
 
-define(['backbone', 'underscore'], function (Backbone, _) {
+define([
+    'backbone',
+    'underscore'
+], function (
+    Backbone,
+    _
+) {
     'use strict';
 
     var Value;
@@ -10,7 +16,7 @@ define(['backbone', 'underscore'], function (Backbone, _) {
 
         initialize: function () {
             this.model.on('change:value', _.bind(this.update, this));
-            this.model.on('change:x change:y', _.bind(this.position, this));
+            this.model.on('change:left change:top', _.bind(this.position, this));
         },
 
         render: function () {
@@ -21,8 +27,8 @@ define(['backbone', 'underscore'], function (Backbone, _) {
 
         position: function () {
             this.$el.css({
-                left: this.model.get('x'),
-                top: this.model.get('y')
+                left: this.model.get('left'),
+                top: this.model.get('top')
             });
         },
 

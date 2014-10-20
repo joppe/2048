@@ -1,12 +1,10 @@
 /*global define*/
 
 define([
-        'backbone',
-        '2048/view/value'
-    ], function (
-        Backbone,
-        Value
-    ) {
+    'backbone'
+], function (
+    Backbone
+) {
     'use strict';
 
     var Cell;
@@ -19,26 +17,21 @@ define([
         },
 
         update: function () {
-            /*
-            var value;
-
-            if (null !== this.model.get('value')) {
-                value = new Value();
-                value.set({
-                    x: this.model.get('x'),
-                    y: this.model.get('y')
-                });
-            }
-            */
+            this.model.get('value').set(this.getPosition());
         },
 
-        setPosition: function () {
-            var position = this.$el.offset();
+        getPosition: function () {
+            var position = {
+                    left: this.model.get('left'),
+                    top: this.model.get('top')
+                };
 
-            this.model.set({
-                x: position.left,
-                y: position.top
-            });
+            if (undefined === position.left || undefined === position.top) {
+                position = this.$el.position();
+                this.model.set(position);
+            }
+
+            return position;
         }
     });
 

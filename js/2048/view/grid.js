@@ -1,6 +1,14 @@
 /*global define*/
 
-define(['backbone', 'jquery', '2048/view/cell'], function (Backbone, $, CellView) {
+define([
+    'backbone',
+    'jquery',
+    '2048/view/cell'
+], function (
+    Backbone,
+    $,
+    CellView
+) {
     'use strict';
 
     var Grid;
@@ -12,7 +20,7 @@ define(['backbone', 'jquery', '2048/view/cell'], function (Backbone, $, CellView
             var row,
                 $el;
 
-            this.model.each(function (model) {
+            this.model.get('grid').each(function (model) {
                 var view = new CellView({
                         model: model
                     });
@@ -23,7 +31,6 @@ define(['backbone', 'jquery', '2048/view/cell'], function (Backbone, $, CellView
                 }
 
                 $el.append(view.render().$el);
-                view.setPosition();
             }, this);
 
             return this;

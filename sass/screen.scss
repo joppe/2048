@@ -1,5 +1,6 @@
 #game {
     $size: 100px;
+    $border: 10px;
 
     position: relative;
 
@@ -12,10 +13,8 @@
     td {
         width: $size;
         height: $size;
-        vertical-align: middle;
-        text-align: center;
         background: darkgray;
-        border: 10px solid lightgray;
+        border: $border solid lightgray;
     }
 
     .value {
@@ -23,11 +22,13 @@
         display: table-cell;
         width: $size;
         height: $size;
-        vertical-align: middle;
+        background: #ffffff;
+        border: $border / 2 solid lightgray;
         text-align: center;
         font: {
             size: 30px;
             weight: bold;
         }
+        line-height: $size;
     }
 }

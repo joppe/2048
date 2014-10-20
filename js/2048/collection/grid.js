@@ -1,6 +1,14 @@
 /*global define*/
 
-define(['backbone', 'underscore', '2048/model/cell'], function (Backbone, _, Cell) {
+define([
+    'backbone',
+    'underscore',
+    '2048/model/cell'
+], function (
+    Backbone,
+    _,
+    Cell
+) {
     'use strict';
 
     var Grid;
@@ -23,6 +31,10 @@ define(['backbone', 'underscore', '2048/model/cell'], function (Backbone, _, Cel
             return this.filter(function (model) {
                 return model.get('value') === null;
             });
+        },
+
+        move: function (direction) {
+            console.log(direction);
         }
     });
 
