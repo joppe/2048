@@ -35,7 +35,8 @@ define([
         },
 
         /**
-         * {left: 1, top: 0}
+         * Move to the right
+         * direction = {left: 1, top: 0}
          * outerLoop = [0, 1, 2, 3]
          * outerProp = 'row'
          * innerLoop = [2, 1, 0]
@@ -58,7 +59,7 @@ define([
             }
 
             innerLoop.shift();
-
+            /*/
             console.log(direction);
             console.log(outerLoop);
             console.log(outerProp);
@@ -66,16 +67,36 @@ define([
             console.log(innerProp);
             console.log(endIndex);
             console.log(increment);
+            /**/
             _.each(outerLoop, function (outer) {
                 _.each(innerLoop, function (inner) {
                     var props = {},
-                        cell;
+                        cell,
+                        target;
 
                     props[innerProp] = inner;
                     props[outerProp] = outer;
 
                     cell = this.get('grid').getCell(props);
-                    //console.log(cell.cid);
+
+                    if (cell.get('value')) {
+                        // get next cell
+                        props[innerProp] = inner + increment;
+                        props[outerProp] = outer;
+                        target = this.get('grid').getCell(props);
+
+                        if (null === target.get('value')) {
+                            // move
+                            // try next cell
+                        } else if (target.get('value') === cell.get('value')) {
+                            // merge
+                            // double value of target
+                            // delete value
+                        } else {
+                            // stop
+                        }
+                        console.log(cell.cid);
+                    }
                 }, this);
             }, this);
         }
