@@ -51,28 +51,21 @@ define([
                 outerProp = direction.top !== 0 ? 'col' : 'row',
                 innerLoop = _.range(0, this.get('size')),
                 innerProp = direction.top !== 0 ? 'row' : 'col',
-                endIndex = direction.top === -1 || direction.left === -1 ? 0 : this.get('size'),
                 increment = direction.top === -1 || direction.left === -1 ? -1 : 1;
 
-            if (1 === direction.left || -1 === direction.top) {
+            if (1 === direction.left || 1 === direction.top) {
                 innerLoop.reverse();
             }
 
             innerLoop.shift();
-            /*/
-            console.log(direction);
-            console.log(outerLoop);
-            console.log(outerProp);
-            console.log(innerLoop);
-            console.log(innerProp);
-            console.log(endIndex);
-            console.log(increment);
-            /**/
+
             _.each(outerLoop, function (outer) {
                 _.each(innerLoop, function (inner) {
                     var props = {},
                         cell,
-                        target;
+                        target = null,
+                        index,
+                        next;
 
                     props[innerProp] = inner;
                     props[outerProp] = outer;
@@ -80,27 +73,20 @@ define([
                     cell = this.get('grid').getCell(props);
 
                     if (cell.get('value')) {
-                        target = cell;
+                        next = cell;
+                        index = inner;
 
-                        _.every(_.range(inner + increment, endIndex), function (index) {
-                            var ret = true,
-                                next;
+                        while (undefined !== next && (null === next.get('value') || cell.get('value').same(next.get('value')))) {
+                            target = next;
+                            index += increment;
 
                             props[innerProp] = index;
                             props[outerProp] = outer;
 
                             next = this.get('grid').getCell(props);
+                        }
 
-                            if (null !== next.get('value') && !cell.get('value').same(next)) {
-                                ret = false;
-                            } else {
-                                target = next;
-                            }
-
-                            return ret;
-                        }, this);
-
-                        if (cell !== target) {
+                        if (null !== target && cell !== target) {
                             cell.move(target);
                         }
                     }
