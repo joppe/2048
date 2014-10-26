@@ -41,7 +41,7 @@ define([
          * outerProp = 'row'
          * innerLoop = [2, 1, 0]
          * innerProp = 'col'
-         * endIndex = 3
+         * endIndex = 4
          * increment = 1
          *
          * @param direction
@@ -51,7 +51,7 @@ define([
                 outerProp = direction.top !== 0 ? 'col' : 'row',
                 innerLoop = _.range(0, this.get('size')),
                 innerProp = direction.top !== 0 ? 'row' : 'col',
-                endIndex = direction.top === -1 || direction.left === -1 ? 0 : this.get('size') - 1,
+                endIndex = direction.top === -1 || direction.left === -1 ? 0 : this.get('size'),
                 increment = direction.top === -1 || direction.left === -1 ? -1 : 1;
 
             if (1 === direction.left || -1 === direction.top) {
@@ -80,22 +80,29 @@ define([
                     cell = this.get('grid').getCell(props);
 
                     if (cell.get('value')) {
-                        // get next cell
-                        props[innerProp] = inner + increment;
-                        props[outerProp] = outer;
-                        target = this.get('grid').getCell(props);
+                        target = cell;
 
-                        if (null === target.get('value')) {
-                            // move
-                            // try next cell
-                        } else if (target.get('value') === cell.get('value')) {
-                            // merge
-                            // double value of target
-                            // delete value
-                        } else {
-                            // stop
+                        _.every(_.range(inner + increment, endIndex), function (index) {
+                            var ret = true,
+                                next;
+
+                            props[innerProp] = index;
+                            props[outerProp] = outer;
+
+                            next = this.get('grid').getCell(props);
+
+                            if (null !== next.get('value') && !cell.get('value').same(next)) {
+                                ret = false;
+                            } else {
+                                target = next;
+                            }
+
+                            return ret;
+                        }, this);
+
+                        if (cell !== target) {
+                            cell.move(target);
                         }
-                        console.log(cell.cid);
                     }
                 }, this);
             }, this);

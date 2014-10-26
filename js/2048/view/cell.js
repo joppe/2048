@@ -17,7 +17,9 @@ define([
         },
 
         update: function () {
-            this.model.get('value').set(this.getPosition());
+            if (null !== this.model.get('value')) {
+                this.model.get('value').set(this.getPosition());
+            }
         },
 
         getPosition: function () {

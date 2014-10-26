@@ -13,6 +13,6 @@ outerLoop = [0, 1, 2, 3]
 outerProp = 'row'
 innerLoop = [2, 1, 0]
 innerProp = 'col'
-endIndex = 3
+endIndex = 4
 increment = 1
 ```
