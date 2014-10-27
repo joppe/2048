@@ -15,7 +15,7 @@ define([
         },
 
         move: function (target) {
-            if (this.get('value').same(target)) {
+            if (target.get('value') && this.get('value').same(target.get('value'))) {
                 // merge value
                 target.get('value').double();
                 this.get('value').destroy();

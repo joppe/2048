@@ -17,6 +17,7 @@ define([
         initialize: function () {
             this.model.on('change:value', _.bind(this.update, this));
             this.model.on('change:left change:top', _.bind(this.position, this));
+            this.model.on('destroy', this.destroy, this);
         },
 
         render: function () {
@@ -34,6 +35,12 @@ define([
 
         update: function () {
             this.$el.text(this.model.get('value'));
+        },
+
+        destroy: function () {
+            this.stopListening();
+            this.$el.remove();
+            this.model = null;
         }
     });
 

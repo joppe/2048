@@ -9,7 +9,7 @@ define([
     Backbone,
     _,
     GridCollection,
-    Value
+    ValueCollection
 ) {
     'use strict';
 
@@ -17,12 +17,14 @@ define([
 
     Game = Backbone.Model.extend({
         initialize: function () {
+            var values = new ValueCollection();
+
             this.set('grid', new GridCollection(undefined, {
                 size: this.get('size')
             }));
 
-            this.set('values', new Value());
-            this.on('move', this.move, this);
+            this.set('values', values);
+            this.listenTo(values, 'change:value', this.score);
         },
 
         cycle: function () {
@@ -32,6 +34,10 @@ define([
                 model = this.get('values').add({});
 
             cell.set('value', model);
+        },
+
+        score: function () {
+            console.log('score', arguments);
         },
 
         /**
@@ -47,7 +53,8 @@ define([
          * @param direction
          */
         move: function (direction) {
-            var outerLoop = _.range(0, this.get('size')),
+            var moved = false,
+                outerLoop = _.range(0, this.get('size')),
                 outerProp = direction.top !== 0 ? 'col' : 'row',
                 innerLoop = _.range(0, this.get('size')),
                 innerProp = direction.top !== 0 ? 'row' : 'col',
@@ -87,11 +94,16 @@ define([
                         }
 
                         if (null !== target && cell !== target) {
+                            moved = true;
                             cell.move(target);
                         }
                     }
                 }, this);
             }, this);
+
+            if (true === moved) {
+                this.cycle();
+            }
         }
     });
 
