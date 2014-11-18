@@ -50,6 +50,17 @@ define([
                 row: props.row,
                 col: props.col
             });
+        },
+
+        getNextCell: function (cell, axis, index) {
+            var props = {
+                    row: cell.get('row'),
+                    col: cell.get('col')
+                };
+
+            props[axis] = index;
+
+            return this.getCell(props);
         }
     });
 

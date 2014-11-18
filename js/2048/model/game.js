@@ -45,7 +45,7 @@ define([
          * direction = {left: 1, top: 0}
          * outerLoop = [0, 1, 2, 3]
          * outerProp = 'row'
-         * innerLoop = [2, 1, 0]
+         * innerLoop = [3, 2, 1]
          * innerProp = 'col'
          * endIndex = 4
          * increment = 1
@@ -58,45 +58,38 @@ define([
                 outerProp = direction.top !== 0 ? 'col' : 'row',
                 innerLoop = _.range(0, this.get('size')),
                 innerProp = direction.top !== 0 ? 'row' : 'col',
-                increment = direction.top === -1 || direction.left === -1 ? -1 : 1;
+                increment = direction.top === 1 || direction.left === 1 ? -1 : 1;
 
             if (1 === direction.left || 1 === direction.top) {
                 innerLoop.reverse();
             }
 
-            innerLoop.shift();
+            // remove last cell
+            innerLoop.pop();
 
             _.each(outerLoop, function (outer) {
                 _.each(innerLoop, function (inner) {
                     var props = {},
                         cell,
-                        target = null,
-                        index,
-                        next;
+                        next,
+                        stop = false,
+                        index = inner + increment;
 
                     props[innerProp] = inner;
                     props[outerProp] = outer;
 
                     cell = this.get('grid').getCell(props);
 
-                    if (cell.get('value')) {
-                        next = cell;
-                        index = inner;
-
-                        while (undefined !== next && (null === next.get('value') || cell.get('value').same(next.get('value')))) {
-                            target = next;
-                            index += increment;
-
-                            props[innerProp] = index;
-                            props[outerProp] = outer;
-
-                            next = this.get('grid').getCell(props);
+                    while (false === stop && (next = this.get('grid').getNextCell(cell, innerProp, index))) {
+                        if (null !== next.get('value')) {
+                            if (null === cell.get('value') || cell.get('value').same(next.get('value'))) {
+                                next.move(cell);
+                                stop = true;
+                                moved = true;
+                            }
                         }
 
-                        if (null !== target && cell !== target) {
-                            moved = true;
-                            cell.move(target);
-                        }
+                        index += increment;
                     }
                 }, this);
             }, this);
