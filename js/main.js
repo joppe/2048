@@ -1,33 +1,20 @@
-/*global require*/
-
-require.config({
-    baseUrl: 'js',
-    urlArgs: 'bust=' +  (new Date()).getTime(),
-    paths: {
-        jquery: '../bower_components/jquery/dist/jquery',
-        backbone: '../bower_components/backbone/backbone',
-        underscore: '../bower_components/underscore/underscore'
-    },
-    shim: {
-        'backbone': {
-            //These script dependencies should be loaded before loading
-            //backbone.js
-            deps: ['underscore', 'jquery'],
-            //Once loaded, use the global 'Backbone' as the
-            //module value.
-            exports: 'Backbone'
-        },
-        'underscore': {
-            exports: '_'
+System.register(['jquery', './2048/App'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
+    var jquery_1, App_1;
+    return {
+        setters:[
+            function (jquery_1_1) {
+                jquery_1 = jquery_1_1;
+            },
+            function (App_1_1) {
+                App_1 = App_1_1;
+            }],
+        execute: function() {
+            jquery_1.default(() => {
+                new App_1.App(jquery_1.default('#game'), 4);
+            });
         }
     }
 });
-
-require(['2048/app', 'jquery'], function (App, $) {
-    'use strict';
-
-    new App({
-        $el: $('#game'),
-        size: 4
-    });
-});
+//# sourceMappingURL=main.js.map
