@@ -16,7 +16,11 @@ npm:
 
 typescript:
 	@echo "Compile typescript"
-	@$(PWD)/node_modules/typescript/bin/tsc --project src/Aap/Bundle/AapSiteBundle/Resources/ts
+	@$(PWD)/node_modules/typescript/bin/tsc --project ts
+
+typescript-watch:
+	@echo "Compile typescript --watched"
+	@$(PWD)/node_modules/typescript/bin/tsc --project ts --watch
 
 typings:
 	@echo "Install typings files"
