@@ -1,4 +1,6 @@
 .idea/
-vendor/
+js/
+!js/system.conf.js
+!js/system.no-cache.js
 node_modules/
 .sass_cache/
