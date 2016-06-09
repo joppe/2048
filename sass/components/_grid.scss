@@ -1,0 +1,15 @@
+@import './../variables/colors';
+@import './../variables/dimensions';
+
+.c-grid {
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+}
+
+.c-grid__cell {
+    width: $size;
+    height: $size;
+    background: $dark-gray;
+    border: $border solid $light-gray;
+}

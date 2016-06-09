@@ -1,44 +1,6 @@
-@mixin add-vendor-prefixes($property, $value) {
-    $vendor-prefixes: ('-webkit-' '-moz-' '-o-' '-ms-' '');
+@import './variables/colors';
+@import './variables/dimensions';
 
-    @each $vendor-prefix in $vendor-prefixes {
-        #{$vendor-prefix}#{$property}: $value;
-    }
-}
-
-#game {
-    $size: 100px;
-    $border: 10px;
-
-    position: relative;
-
-    table {
-        margin: 0;
-        padding: 0;
-        border-collapse: collapse;
-    }
-
-    td {
-        width: $size;
-        height: $size;
-        background: darkgray;
-        border: $border solid lightgray;
-    }
-
-    .value {
-        @include add-vendor-prefixes(transition, all 0.5s ease);
-
-        position: absolute;
-        display: table-cell;
-        width: $size;
-        height: $size;
-        background: #ffffff;
-        border: $border / 2 solid lightgray;
-        text-align: center;
-        font: {
-            size: 30px;
-            weight: bold;
-        }
-        line-height: $size;
-    }
-}
+@import './components/game';
+@import './components/grid';
+@import './components/value';

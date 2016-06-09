@@ -4,5 +4,5 @@ import $ from 'jquery';
 import {App} from './2048/App';
 
 $(() => {
-    new App(<JQuery>$('#game'), 4);
+    new App(<JQuery>$('.js-game'), 4);
 });

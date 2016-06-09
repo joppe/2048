@@ -12,7 +12,7 @@ System.register(['jquery', './2048/App'], function(exports_1, context_1) {
             }],
         execute: function() {
             jquery_1.default(() => {
-                new App_1.App(jquery_1.default('#game'), 4);
+                new App_1.App(jquery_1.default('.js-game'), 4);
             });
         }
     }

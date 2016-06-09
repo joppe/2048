@@ -1,0 +1,26 @@
+@import './../variables/colors';
+@import './../variables/dimensions';
+
+.c-value {
+    transition: transform 0.3s ease-out;
+    position: absolute;
+    display: table-cell;
+    width: $size;
+    height: $size;
+    overflow: hidden;
+    background: $white;
+    border: $border / 2 solid $light-gray;
+    text-align: center;
+    font: {
+        size: 30px;
+        weight: bold;
+    }
+    line-height: $size;
+    color: $black;
+    transform-origin: center center;
+    transform: scale(0);
+
+    &.is-ready {
+        transform: scale(1);
+    }
+}

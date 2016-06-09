@@ -4,3 +4,4 @@ js/
 !js/system.no-cache.js
 node_modules/
 .sass_cache/
+typings/
