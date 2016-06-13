@@ -3,7 +3,7 @@
 /// <reference path="../model/DirectionInterface.ts" />
 /// <reference path="BackboneEventsInterface.ts" />
 
-import Backbone from 'backbone';
+import * as Backbone from 'backbone';
 import {Game} from "../model/Game";
 
 const KEY_RIGHT:number = 39,

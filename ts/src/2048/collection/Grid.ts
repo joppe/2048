@@ -2,8 +2,8 @@
 /// <reference path="../../../../typings/globals/underscore/index.d.ts" />
 /// <reference path="GridOptionsInterface.ts" />
 
-import Backbone from 'backbone';
-import _ from 'underscore';
+import * as Backbone from 'backbone';
+import * as _ from 'underscore';
 import {Position} from './../model/Position';
 
 /**
@@ -48,7 +48,7 @@ export class Grid extends Backbone.Collection<Position> {
     getRandomPosition(excludePositions:Position[] = []):Position {
         let position:Position,
             availablePositions = this.getPositions(excludePositions);
-        
+
         if (0 < availablePositions.length) {
             let index = _.random(availablePositions.length - 1);
 

@@ -1,7 +1,7 @@
 /// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
 /// <reference path="PositionInterface.ts" />
 
-import Backbone  from 'backbone';
+import * as Backbone  from 'backbone';
 
 /**
  * @class Position

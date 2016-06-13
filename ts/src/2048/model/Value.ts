@@ -1,5 +1,7 @@
 /// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
 
+import * as Backbone from 'backbone';
+
 /**
  * @class Value
  */

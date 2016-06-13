@@ -3,8 +3,7 @@
 /// <reference path="GameOptionsInterface.ts" />
 /// <reference path="DirectionInterface.ts" />
 
-import _ from 'underscore';
-import Backbone from 'backbone';
+import * as Backbone from 'backbone';
 import {Grid} from './../collection/Grid';
 import {Values} from './../collection/Values';
 import {Position} from './Position';
