@@ -35,7 +35,7 @@ typings:
 	@echo "Install typings files"
 	@$(PWD)/node_modules/typings/dist/bin.js install
 
-setup: npm bower sass typescript typings
+setup: npm bower sass typings typescript
 	@echo "Setup done"
 
 clean:
