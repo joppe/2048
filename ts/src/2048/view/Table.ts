@@ -1,7 +1,7 @@
 /// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
 /// <reference path="../../../../typings/globals/jquery/index.d.ts" />
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import * as Backbone from 'backbone';
 import {Game} from './../model/Game';
 import {Cell} from './Cell';
