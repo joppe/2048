@@ -42,8 +42,17 @@ export class Game extends Backbone.Model {
      * @returns {Game}
      */
     move(direction:DirectionInterface):Game {
-        let values:Values = this.get('values');
-        window.console.log(direction.left, direction.top);
+        let values:Values = this.get('values'),
+            isHorizontalMovement:boolean = (0 !== direction.left),
+            isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top);
+
+        window.console.log(isHorizontalMovement, isIncrementalMovement, direction.left, direction.top);
+
+        /**
+         * When horizontal get the values per row, otherwise per column.
+         * When incremental begin try to move the value with the highest index.
+         */
+
         values.each((value:Value):void => {
             window.console.log(value.attributes);
         });
