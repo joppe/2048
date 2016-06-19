@@ -32,10 +32,10 @@ export class Grid extends Backbone.Collection<Position> {
      */
     private createPositions(size:number):void {
         _.each(_.range(0, size), (row) => {
-            _.each(_.range(0, size), (col) => {
+            _.each(_.range(0, size), (column) => {
                 this.add({
                     row,
-                    col
+                    column
                 });
             });
         });
@@ -83,24 +83,24 @@ export class Grid extends Backbone.Collection<Position> {
     }
 
     /**
-     * @param {number} col
+     * @param {number} column
      * @returns {Position[]}
      */
-    getColumn(col:number):Position[] {
+    getColumn(column:number):Position[] {
         return this.filter((position) => {
-            return position.get('col') === col;
+            return position.get('column') === column;
         });
     }
 
     /**
      * @param {number} row
-     * @param {number} col
+     * @param {number} column
      * @returns {Position}
      */
-    getPosition(row:number, col:number):Position {
+    getPosition(row:number, column:number):Position {
         return this.findWhere({
             row,
-            col
+            column
         });
     }
 
