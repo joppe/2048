@@ -1,8 +1,8 @@
 import {Value} from './../model/Value';
 
 /**
- * @interface GroupedValuesInterface
+ * @interface GridValuesInterface
  */
-export interface GroupedValuesInterface {
+export interface GridValuesInterface {
     [index:string]:Value[];
 }

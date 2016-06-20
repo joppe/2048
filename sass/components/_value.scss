@@ -2,7 +2,7 @@
 @import './../variables/dimensions';
 
 .c-value {
-    transition: transform 0.3s ease-out;
+    transition: all 0.3s ease-out;
     position: absolute;
     display: table-cell;
     width: $size;

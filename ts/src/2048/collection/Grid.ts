@@ -5,6 +5,7 @@ import * as Backbone from 'backbone';
 import * as _ from 'underscore';
 import {Position} from './../model/Position';
 import {GridOptionsInterface} from './../interface/GridOptionsInterface';
+import {GridPositionInterface} from './../interface/GridPositionInterface';
 
 /**
  * @class Grid
@@ -93,14 +94,13 @@ export class Grid extends Backbone.Collection<Position> {
     }
 
     /**
-     * @param {number} row
-     * @param {number} column
+     * @param {object} position
      * @returns {Position}
      */
-    getPosition(row:number, column:number):Position {
+    getPosition(position:GridPositionInterface):Position {
         return this.findWhere({
-            row,
-            column
+            row: position.row,
+            column: position.column
         });
     }
 

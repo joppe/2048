@@ -1,7 +1,7 @@
 /**
- * @interface ValuePositionInterface
+ * @interface GridPositionInterface
  */
-export interface ValuePositionInterface {
+export interface GridPositionInterface {
     /**
      * The row index
      *

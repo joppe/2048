@@ -3,8 +3,8 @@
 import * as Backbone from 'backbone';
 import {Value} from './../model/Value';
 import {Position} from './../model/Position';
-import {GroupedValuesInterface} from './../interface/GroupedValuesInterface';
-import {ValuePositionInterface} from './../interface/ValuePositionInterface';
+import {GridValuesInterface} from './../interface/GridValuesInterface';
+import {GridPositionInterface} from './../interface/GridPositionInterface';
 
 /**
  * @class Values
@@ -36,7 +36,7 @@ export class Values extends Backbone.Collection<Value> {
      * @param {object} valuePosition
      * @returns {Value}
      */
-    getValueByPosition(valuePosition:ValuePositionInterface):Value {
+    getValueByPosition(valuePosition:GridPositionInterface):Value {
         let value:Value;
 
         value = this.find((value:Value):boolean => {
@@ -48,8 +48,14 @@ export class Values extends Backbone.Collection<Value> {
         return value;
     }
 
-    getAsGrid(indexProperty) {
-        let grid:GroupedValuesInterface = {};
+    /**
+     * @param {string} indexProperty
+     * @param {string} compareProperty
+     * @param {boolean} reverse
+     * @returns {GridValuesInterface}
+     */
+    getAsGrid(indexProperty:string, compareProperty:string, reverse:boolean):GridValuesInterface {
+        let grid:GridValuesInterface = {};
 
         this.each((value:Value) => {
             let index:string = String(value.get('position').get(indexProperty));
@@ -60,6 +66,18 @@ export class Values extends Backbone.Collection<Value> {
 
             grid[index].push(value);
         });
+
+        for (let index in grid) {
+            if (grid.hasOwnProperty(index)) {
+                grid[index].sort((a:Value, b:Value) => {
+                    if (reverse) {
+                        return b.get('position').get(compareProperty) - a.get('position').get(compareProperty);
+                    } else {
+                        return a.get('position').get(compareProperty) - b.get('position').get(compareProperty);
+                    }
+                });
+            }
+        }
 
         return grid;
     }

@@ -8,6 +8,7 @@ import {Position} from './Position';
 import {Value} from './Value';
 import {DirectionInterface} from './../interface/DirectionInterface';
 import {GameOptionsInterface} from './../interface/GameOptionsInterface';
+import {GridValuesInterface} from './../interface/GridValuesInterface';
 
 /**
  * @class Game
@@ -42,20 +43,50 @@ export class Game extends Backbone.Model {
      * @returns {Game}
      */
     move(direction:DirectionInterface):Game {
-        let values:Values = this.get('values'),
+        let values:GridValuesInterface,
             isHorizontalMovement:boolean = (0 !== direction.left),
             isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top);
 
-        window.console.log(isHorizontalMovement, isIncrementalMovement, direction.left, direction.top);
+        window.console.log(`isHorizontalMovement: ${isHorizontalMovement}`, `isIncrementalMovement: ${isIncrementalMovement}`, `direction.left: ${direction.left}`, `direction.top: ${direction.top}`);
 
         /**
          * When horizontal get the values per row, otherwise per column.
-         * When incremental begin try to move the value with the highest index.
+         * When incremental order the values by position in reverse order.
          */
 
-        values.each((value:Value):void => {
-            window.console.log(value.attributes);
-        });
+        values = this.get('values').getAsGrid(isHorizontalMovement ? 'row' : 'column', isIncrementalMovement);
+
+        for (let index in values) {
+            if (values.hasOwnProperty(index)) {
+                let group:Value[] = values[<string>index],
+                    increment = isIncrementalMovement ? -1 : 1,
+                    targetIndex = isIncrementalMovement ? this.get('size') - 1 : 0,
+                    mergeValue:Value;
+
+                window.console.log(`increment: ${increment}`, `targetIndex: ${targetIndex}`);
+
+                group.forEach((value:Value) => {
+                    let oldPosition:Position = value.get('position'),
+                        newPosition:Position;
+
+                    if (undefined === mergeValue) {
+                        newPosition = this.get('grid').getPosition({
+                            column: isHorizontalMovement ? targetIndex : oldPosition.get('column'),
+                            row: isHorizontalMovement ? oldPosition.get('row') : targetIndex
+                        });
+                    } else if (true === value.isSame(mergeValue)) {
+                        newPosition = mergeValue.get('value');
+                    } else {
+                        newPosition = this.get('grid').getPosition({
+                            column: isHorizontalMovement ? targetIndex + increment: oldPosition.get('column'),
+                            row: isHorizontalMovement ? oldPosition.get('row') : targetIndex + increment
+                        });
+                    }
+
+                    value.set('position', newPosition);
+                })
+            }
+        }
 
                 /**
          * Move to the right
