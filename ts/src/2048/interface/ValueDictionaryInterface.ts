@@ -1,4 +1,5 @@
-import {Value} from "./Value";
+import {Value} from './../model/Value';
+
 /**
  * @interface ValueDictionaryInterface
  */
