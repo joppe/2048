@@ -1,10 +1,10 @@
 /// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
 /// <reference path="../../../../typings/globals/underscore/index.d.ts" />
-/// <reference path="GridOptionsInterface.ts" />
 
 import * as Backbone from 'backbone';
 import * as _ from 'underscore';
 import {Position} from './../model/Position';
+import {GridOptionsInterface} from './../interface/GridOptionsInterface';
 
 /**
  * @class Grid

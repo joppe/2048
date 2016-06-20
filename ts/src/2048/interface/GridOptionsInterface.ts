@@ -1,7 +1,7 @@
 /**
  * @interface GridOptionsInterface 
  */
-interface GridOptionsInterface {
+export interface GridOptionsInterface {
     /**
      * The size of the grid
      * 

@@ -1,9 +1,10 @@
 /// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
-/// <reference path="ValuePositionInterface.ts" />
 
 import * as Backbone from 'backbone';
 import {Value} from './../model/Value';
 import {Position} from './../model/Position';
+import {GroupedValuesInterface} from './../interface/GroupedValuesInterface';
+import {ValuePositionInterface} from './../interface/ValuePositionInterface';
 
 /**
  * @class Values
@@ -47,18 +48,17 @@ export class Values extends Backbone.Collection<Value> {
         return value;
     }
 
-    getAsGrid(innerProp, outerProp) {
-        let grid:{[prop:string]:any} = {};
+    getAsGrid(indexProperty) {
+        let grid:GroupedValuesInterface = {};
 
         this.each((value:Value) => {
-            let innerValue:string = String(value.get('position').get(innerProp)),
-                outerValue:string = String(value.get('position').get(outerProp));
+            let index:string = String(value.get('position').get(indexProperty));
 
-            if (undefined === grid[innerValue]) {
-                // grid[innerValue]:[id:string]:string = {};
+            if (undefined === grid[index]) {
+                grid[index] = <Value[]>[];
             }
 
-            // grid[innerValue][outerValue] = value;
+            grid[index].push(value);
         });
 
         return grid;

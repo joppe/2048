@@ -1,9 +1,9 @@
 /// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
-/// <reference path="./../model/PositionInterface.ts" />
 
 import * as Backbone from 'backbone';
 import {Value} from './../model/Value';
 import {Position} from './../model/Position';
+import {PositionInterface} from './../interface/PositionInterface';
 
 const CLASS_IS_READY:string = 'is-ready';
 

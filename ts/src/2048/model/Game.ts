@@ -1,13 +1,13 @@
 /// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
 /// <reference path="../../../../typings/globals/underscore/index.d.ts" />
-/// <reference path="GameOptionsInterface.ts" />
-/// <reference path="DirectionInterface.ts" />
 
 import * as Backbone from 'backbone';
 import {Grid} from './../collection/Grid';
 import {Values} from './../collection/Values';
 import {Position} from './Position';
 import {Value} from './Value';
+import {DirectionInterface} from './../interface/DirectionInterface';
+import {GameOptionsInterface} from './../interface/GameOptionsInterface';
 
 /**
  * @class Game

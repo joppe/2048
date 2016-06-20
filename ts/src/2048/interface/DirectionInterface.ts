@@ -1,7 +1,7 @@
 /**
  * @interface DirectionInterface
  */
-interface DirectionInterface {
+export interface DirectionInterface {
     /**
      * @type {number}
      */

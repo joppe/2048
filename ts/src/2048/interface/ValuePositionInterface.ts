@@ -1,7 +1,7 @@
 /**
  * @interface ValuePositionInterface
  */
-interface ValuePositionInterface {
+export interface ValuePositionInterface {
     /**
      * The row index
      *

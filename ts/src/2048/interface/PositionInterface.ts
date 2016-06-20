@@ -1,8 +1,7 @@
-
 /**
  * @interface PositionInterface
  */
-interface PositionInterface {
+export interface PositionInterface {
     /**
      * @type {number}
      */

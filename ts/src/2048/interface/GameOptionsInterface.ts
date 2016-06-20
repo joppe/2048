@@ -1,8 +1,7 @@
-
 /**
  * @interface GameOptionsInterface
  */
-interface GameOptionsInterface{
+export interface GameOptionsInterface{
     /**
      * @type {string}
      */

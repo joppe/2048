@@ -2,7 +2,7 @@ import {Value} from "./Value";
 /**
  * @interface ValueDictionaryInterface
  */
-interface ValueDictionaryInterface {
+export interface ValueDictionaryInterface {
     /**
      * The value
      *

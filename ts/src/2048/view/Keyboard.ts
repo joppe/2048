@@ -1,10 +1,9 @@
 /// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
-/// <reference path="../model/Game.ts" />
-/// <reference path="../model/DirectionInterface.ts" />
-/// <reference path="BackboneEventsInterface.ts" />
 
 import * as Backbone from 'backbone';
-import {Game} from "../model/Game";
+import {Game} from './../model/Game';
+import {DirectionInterface} from './../interface/DirectionInterface';
+import {BackboneEventsInterface} from './../interface/BackboneEventsInterface';
 
 const KEY_RIGHT:number = 39,
     KEY_TOP:number = 38,
