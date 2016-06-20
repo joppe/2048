@@ -1,7 +1,7 @@
 /// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
 /// <reference path="../../../../typings/globals/jquery/index.d.ts" />
 
-import $ from 'jquery';
+import jQuery from 'jquery';
 import * as Backbone from 'backbone';
 import {Game} from './../model/Game';
 import {Cell} from './Cell';
@@ -45,7 +45,7 @@ export class Table extends Backbone.View<Game> {
 
             if (position.get('row') !== row) {
                 row = position.get('row');
-                $el = $('<tr>').appendTo(this.$el);
+                $el = jQuery('<tr>').appendTo(this.$el);
             }
 
             $el.append(cell.render().$el);
