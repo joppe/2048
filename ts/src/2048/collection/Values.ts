@@ -49,16 +49,16 @@ export class Values extends Backbone.Collection<Value> {
     }
 
     /**
-     * @param {string} indexProperty
-     * @param {string} compareProperty
+     * @param {string} groupProperty
+     * @param {string} orderProperty
      * @param {boolean} reverse
      * @returns {GridValuesInterface}
      */
-    getAsGrid(indexProperty:string, compareProperty:string, reverse:boolean):GridValuesInterface {
+    getAsGrid(groupProperty:string, orderProperty:string, reverse:boolean):GridValuesInterface {
         let grid:GridValuesInterface = {};
 
         this.each((value:Value) => {
-            let index:string = String(value.get('position').get(indexProperty));
+            let index:string = String(value.get('position').get(groupProperty));
 
             if (undefined === grid[index]) {
                 grid[index] = <Value[]>[];
@@ -71,9 +71,9 @@ export class Values extends Backbone.Collection<Value> {
             if (grid.hasOwnProperty(index)) {
                 grid[index].sort((a:Value, b:Value) => {
                     if (reverse) {
-                        return b.get('position').get(compareProperty) - a.get('position').get(compareProperty);
+                        return b.get('position').get(orderProperty) - a.get('position').get(orderProperty);
                     } else {
-                        return a.get('position').get(compareProperty) - b.get('position').get(compareProperty);
+                        return a.get('position').get(orderProperty) - b.get('position').get(orderProperty);
                     }
                 });
             }
