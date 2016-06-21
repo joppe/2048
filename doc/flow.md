@@ -88,3 +88,6 @@ position next to the old `mergeCandidate` (column - 1).
 Check if the value is already updated, if so return false.
 Check if the values are the same, if so return true.
 Return false
+
+Use a `stage` mechanism to set the values of an object (Value) but do not set them with `set` so the `change` events wont't be triggered.
+Use `commit` to set the staged values.
