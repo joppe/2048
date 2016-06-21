@@ -5,7 +5,8 @@
 The size of the matrix/grid is configurable.
 A table is rendered with cells. The number of cells in a row and in a column are equal the size.
 
-A value has a cell property. There is a collection of values. To determine the cells without a value the values collection is used.
+A value has a position property. There is a collection of values. To determine the cells without a value the values 
+collection is used.
 
 ## Flow
 
@@ -17,17 +18,53 @@ A value has a cell property. There is a collection of values. To determine the c
 
 ### Move to the right
 
-First iterate over the rows and then the cells of the row.
-Start with the second last cell from the right.
-Try for each cell to move it as far to the right. A cell can move to the right if the target cell is empty or 
-has the same value.
+This is a horizontal movement, where the column value of the position will increment.
+ 
+For this example let's focus on just one row.
 
-```
-direction = {left: 1, top: 0}
-outerLoop = [0, 1, 2, 3]
-outerProp = 'row'
-innerLoop = [2, 1, 0]
-innerProp = 'col'
-endIndex = 4
-increment = 1
-```
+Start
++-+-+-+-+
+|2|2|2|0|
++-+-+-+-+
+
+I. 
++-+-+-+-+
+|2|2|.|2|
++-+-+-+-+
+
+II.
++-+-+-+-+
+|2|.|.|4|
++-+-+-+-+
+
+III.
++-+-+-+-+
+|.|.|2|4|
++-+-+-+-+
+
+The available values must be grouped by row. When moving to the right, the first value that must be moved is the one at 
+the right. Because of this all the values in a row must be ordered by column descending.
+The idea is that we want to merge two values, so there is variable `mergeCandidate`, this will be the most right value 
+that is already moved.
+Iterate over the values in the columns.
+
+I.
+The first value must be moved.
+The `mergeCandidate` is `undefined`. Because of this the new position must be the most right position. The moved value 
+becomes the `mergeCandidate`.
+
+II.
+The second value must be moved.
+Check if the value is mergable (*) with the `mergeCandidate`. The value get's a new position (the position of the 
+`mergeCandidate`) and a property that it will `disolve`. The `mergeCandidate` get's a new value (the square of the value
+) and a property that it is `updated`.
+ 
+III.
+The third value must be moved.
+Check if the value is mergable (*) with the `mergeCandidate`. The value becomes the new `mergeCandidate` and get's the 
+position next to the old `mergeCandidate` (column - 1).
+
+* mergable
+Check if the value is already updated, if so return false.
+Check if the values are the same, if so return true.
+Return false
