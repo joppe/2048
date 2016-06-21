@@ -23,24 +23,44 @@ This is a horizontal movement, where the column value of the position will incre
 For this example let's focus on just one row.
 
 Start
+```
 +-+-+-+-+
-|2|2|2|0|
+|2|2|2|.|
 +-+-+-+-+
++-+-+-+-+
+|A|B|C|.|
++-+-+-+-+
+```
 
 I. 
+```
 +-+-+-+-+
 |2|2|.|2|
 +-+-+-+-+
++-+-+-+-+
+|A|B|.|C|
++-+-+-+-+
+```
 
 II.
+```
 +-+-+-+-+
 |2|.|.|4|
 +-+-+-+-+
++-+-+-+-+
+|A|.|.|C|
++-+-+-+-+
+```
 
 III.
+```
 +-+-+-+-+
 |.|.|2|4|
 +-+-+-+-+
++-+-+-+-+
+|.|.|A|C|
++-+-+-+-+
+```
 
 The available values must be grouped by row. When moving to the right, the first value that must be moved is the one at 
 the right. Because of this all the values in a row must be ordered by column descending.
@@ -56,7 +76,7 @@ becomes the `mergeCandidate`.
 II.
 The second value must be moved.
 Check if the value is mergable (*) with the `mergeCandidate`. The value get's a new position (the position of the 
-`mergeCandidate`) and a property that it will `disolve`. The `mergeCandidate` get's a new value (the square of the value
+`mergeCandidate`) and a property that it will `dissolve`. The `mergeCandidate` get's a new value (the square of the value
 ) and a property that it is `updated`.
  
 III.

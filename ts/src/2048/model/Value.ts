@@ -1,6 +1,8 @@
 /// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
 
 import * as Backbone from 'backbone';
+import {Position} from './Position';
+import {ValueUpdateInterface} from './../interface/ValueUpdateInterface';
 
 /**
  * @class Value
@@ -14,38 +16,28 @@ export class Value extends Backbone.Model {
     }
 
     /**
-     * Check if the value of another Value instance is the same as this one
-     * 
      * @param {Value} value
      * @returns {boolean}
      */
-    isSame(value:Value):boolean {
-        return this.get('value') === value.get('value');
+    mergable(value:Value):boolean {
+        if (true === this.get('isUpdated')) {
+            return false;
+        }
+
+        if (this.get('value') === value.get('value')) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Double the value
-     * 
-     * @returns Value
+     * @param {object} options
+     * @returns {Value}
      */
-    double():Value {
-        this.set('value', this.get('value') * 2);
+    update(options:ValueUpdateInterface):Value {
+        this.set('position', options.position);
 
         return this;
     }
-
-/*
-    move(target) {
-        if (target.get('value') && this.get('value').same(target.get('value'))) {
-            // merge value
-            target.get('value').double();
-            this.get('value').destroy();
-        } else {
-            // move value
-            target.set('value', this.get('value'));
-        }
-
-        this.set('value', null);
-    }
-    /**/
 }

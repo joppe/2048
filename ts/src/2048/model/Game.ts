@@ -43,110 +43,38 @@ export class Game extends Backbone.Model {
      * @returns {Game}
      */
     move(direction:DirectionInterface):Game {
-        let values:GridValuesInterface,
-            isHorizontalMovement:boolean = (0 !== direction.left),
-            isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top);
+        let isHorizontalMovement:boolean = (0 !== direction.left),
+            isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top),
+            groupedValues:GridValuesInterface = this.get('values').getAsGrid(isHorizontalMovement ? 'row' : 'column', isHorizontalMovement ? 'column' : 'row', isIncrementalMovement),
+            grid:Grid = this.get('grid'),
+            startColumn:number = isIncrementalMovement ? this.get('size') - 1 : 0,
+            startRow:number = isIncrementalMovement ? this.get('size') - 1 : 0;
 
         window.console.log(`isHorizontalMovement: ${isHorizontalMovement}`, `isIncrementalMovement: ${isIncrementalMovement}`, `direction.left: ${direction.left}`, `direction.top: ${direction.top}`);
 
-        /**
-         * When horizontal get the values per row, otherwise per column.
-         * When incremental order the values by position in reverse order.
-         */
+        for (let index of Object.keys(groupedValues)) {
+            let values:Value[] = groupedValues[index],
+                mergeCandidate:Value;
 
-        values = this.get('values').getAsGrid(isHorizontalMovement ? 'row' : 'column', isIncrementalMovement);
+            values.forEach((value:Value) => {
+                if (undefined === mergeCandidate) {
+                    value.update({
+                        position: grid.getPosition({
+                            column: isHorizontalMovement ? startColumn : Number(index),
+                            row: isHorizontalMovement ? Number(index) : startRow
+                        })
+                    });
 
-        for (let index in values) {
-            if (values.hasOwnProperty(index)) {
-                let group:Value[] = values[<string>index],
-                    increment = isIncrementalMovement ? -1 : 1,
-                    targetIndex = isIncrementalMovement ? this.get('size') - 1 : 0,
-                    mergeValue:Value;
-
-                window.console.log(`increment: ${increment}`, `targetIndex: ${targetIndex}`);
-
-                group.forEach((value:Value) => {
-                    let oldPosition:Position = value.get('position'),
-                        newPosition:Position;
-
-                    if (undefined === mergeValue) {
-                        newPosition = this.get('grid').getPosition({
-                            column: isHorizontalMovement ? targetIndex : oldPosition.get('column'),
-                            row: isHorizontalMovement ? oldPosition.get('row') : targetIndex
-                        });
-                    } else if (true === value.isSame(mergeValue)) {
-                        newPosition = mergeValue.get('value');
-                    } else {
-                        newPosition = this.get('grid').getPosition({
-                            column: isHorizontalMovement ? targetIndex + increment: oldPosition.get('column'),
-                            row: isHorizontalMovement ? oldPosition.get('row') : targetIndex + increment
-                        });
-                    }
-
-                    value.set('position', newPosition);
-                })
-            }
+                    mergeCandidate = value;
+                } else if (mergeCandidate.mergable(value)) {
+                    value.update({
+                        position: mergeCandidate.get('position'),
+                        dissolve: true
+                    });
+                }
+            });
         }
 
-                /**
-         * Move to the right
-         * direction = {left: 1, top: 0}
-         * outerLoop = [0, 1, 2, 3]
-         * outerProp = 'row'
-         * innerLoop = [3, 2, 1]
-         * innerProp = 'col'
-         * endIndex = 4
-         * increment = 1
-         *
-         * @param direction
-         *
-
-        /*
-                    var moved = false,
-                outerLoop = _.range(0, this.get('size')),
-                outerProp = direction.top !== 0 ? 'col' : 'row',
-                innerLoop = _.range(0, this.get('size')),
-                innerProp = direction.top !== 0 ? 'row' : 'col',
-                increment = direction.top === 1 || direction.left === 1 ? -1 : 1;
-
-            if (1 === direction.left || 1 === direction.top) {
-                innerLoop.reverse();
-            }
-
-            // remove last cell
-            innerLoop.pop();
-
-            _.each(outerLoop, function (outer) {
-                _.each(innerLoop, function (inner) {
-                    var props = {},
-                        cell,
-                        next,
-                        stop = false,
-                        index = inner + increment;
-
-                    props[innerProp] = inner;
-                    props[outerProp] = outer;
-
-                    cell = this.get('grid').getCell(props);
-
-                    while (false === stop && (next = this.get('grid').getNextCell(cell, innerProp, index))) {
-                        if (null !== next.get('value')) {
-                            if (null === cell.get('value') || cell.get('value').same(next.get('value'))) {
-                                next.move(cell);
-                                stop = true;
-                                moved = true;
-                            }
-                        }
-
-                        index += increment;
-                    }
-                }, this);
-            }, this);
-
-            if (true === moved) {
-                this.cycle();
-            }
-/**/
         return this;
     }
 

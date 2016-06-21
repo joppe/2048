@@ -57,6 +57,7 @@ export class Values extends Backbone.Collection<Value> {
     getAsGrid(groupProperty:string, orderProperty:string, reverse:boolean):GridValuesInterface {
         let grid:GridValuesInterface = {};
 
+        // Group the values
         this.each((value:Value) => {
             let index:string = String(value.get('position').get(groupProperty));
 
@@ -67,16 +68,15 @@ export class Values extends Backbone.Collection<Value> {
             grid[index].push(value);
         });
 
-        for (let index in grid) {
-            if (grid.hasOwnProperty(index)) {
-                grid[index].sort((a:Value, b:Value) => {
-                    if (reverse) {
-                        return b.get('position').get(orderProperty) - a.get('position').get(orderProperty);
-                    } else {
-                        return a.get('position').get(orderProperty) - b.get('position').get(orderProperty);
-                    }
-                });
-            }
+        // Sort the values
+        for (let index of Object.keys(grid)) {
+            grid[index].sort((a:Value, b:Value) => {
+                if (reverse) {
+                    return b.get('position').get(orderProperty) - a.get('position').get(orderProperty);
+                } else {
+                    return a.get('position').get(orderProperty) - b.get('position').get(orderProperty);
+                }
+            });
         }
 
         return grid;
