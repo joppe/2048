@@ -76,8 +76,8 @@ becomes the `mergeCandidate`.
 II.
 The second value must be moved.
 Check if the value is mergable (*) with the `mergeCandidate`. The value get's a new position (the position of the 
-`mergeCandidate`) and a property that it will `dissolve`. The `mergeCandidate` get's a new value (the square of the value
-) and a property that it is `updated`.
+`mergeCandidate`) and a property that it will `dissolve`. The `mergeCandidate` get's a new value (the square of the
+value) and a property that it is `updated`.
  
 III.
 The third value must be moved.
@@ -89,5 +89,8 @@ Check if the value is already updated, if so return false.
 Check if the values are the same, if so return true.
 Return false
 
-Use a `stage` mechanism to set the values of an object (Value) but do not set them with `set` so the `change` events wont't be triggered.
+Use a `stage` mechanism to set the values of an object (Value) but do not set them with `set` so the `change` events
+wont't be triggered.
 Use `commit` to set the staged values.
+
+First apply the positions, then apply the new values. After that trigger the cycle.

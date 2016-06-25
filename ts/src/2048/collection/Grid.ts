@@ -74,44 +74,11 @@ export class Grid extends Backbone.Collection<Position> {
     }
 
     /**
-     * @param {number} row
-     * @returns {Position[]}
-     */
-    getRow(row:number):Position[] {
-        return this.filter((position) => {
-            return position.get('row') === row;
-        });
-    }
-
-    /**
-     * @param {number} column
-     * @returns {Position[]}
-     */
-    getColumn(column:number):Position[] {
-        return this.filter((position) => {
-            return position.get('column') === column;
-        });
-    }
-
-    /**
      * @param {object} position
      * @returns {Position}
      */
     getPosition(position:GridPositionInterface):Position {
-        window.console.log(position);
+        window.console.log('getPosition', position);
         return this.findWhere(position);
     }
-
-    /*/
-    getNextPosition(position:Position, axis:string, index:number) {
-        var props = {
-                row: position.get('row'),
-                col: position.get('col')
-            };
-
-        props[axis] = index;
-
-        return this.getPosition(props.row, props.col);
-    }
-    /**/
 }

@@ -1,13 +1,14 @@
 /// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
 
 import * as Backbone from 'backbone';
-import {Position} from './Position';
-import {ValueUpdateInterface} from './../interface/ValueUpdateInterface';
+import {AttributesInterface} from './../interface/AttributesInterface';
 
 /**
  * @class Value
  */
 export class Value extends Backbone.Model {
+    private stagedAttributes:AttributesInterface = {};
+
     /**
      * Set the attribute value to 4 or 2 randomly
      */
@@ -20,7 +21,7 @@ export class Value extends Backbone.Model {
      * @returns {boolean}
      */
     mergable(value:Value):boolean {
-        if (true === this.get('isUpdated')) {
+        if (undefined !== this.stagedAttributes['value']) {
             return false;
         }
 
@@ -32,12 +33,55 @@ export class Value extends Backbone.Model {
     }
 
     /**
-     * @param {object} options
+     * @param {object} attributes
      * @returns {Value}
      */
-    update(options:ValueUpdateInterface):Value {
-        this.set('position', options.position);
+    stage(attributes:AttributesInterface):Value {
+        for (let name of Object.keys(attributes)) {
+            this.stagedAttributes[name] = attributes[name];
+        }
 
         return this;
+    }
+
+    /**
+     * Apply the staged attributes.
+     *
+     * @param {string} [attribute]
+     * @returns {Value}
+     */
+    commit(attribute?:string):Value {
+        if (undefined === attribute) {
+            // Apply the staged attributes
+            this.set(this.stagedAttributes);
+
+            // Reset the staged attributes
+            this.stagedAttributes = {};
+        } else if (undefined !== this.stagedAttributes[attribute]) {
+            this.set(attribute, this.stagedAttributes[attribute]);
+
+            delete this.stagedAttributes[attribute];
+        }
+
+        return this;
+    }
+
+    /**
+     * @param {string} attribute
+     * @returns {any}
+     */
+    getStaged(attribute:string):any {
+        return this.stagedAttributes[attribute];
+    }
+    
+    /**
+     * Check if the staged attributes contain values that are different from the current attributes.
+     *
+     * @returns {boolean}
+     */
+    willChange():boolean {
+        return Object.keys(this.stagedAttributes).some((name) => {
+            return this.stagedAttributes[name] !== this.get(name);
+        });
     }
 }
