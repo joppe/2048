@@ -69,16 +69,10 @@ export class Game extends Backbone.Model {
 
                     mergeCandidate = value;
                 } else if (mergeCandidate.mergable(value)) {
-                    value.stage({
-                        position: mergeCandidate.getStaged('position'),
-                        dissolve: true
-                    });
-
                     mergeCandidate.stage({
-                        value: value.get('value') * 2
+                        merge: value
                     });
                 } else {
-                    window.console.log('?');
                     value.stage({
                         position: grid.getPosition({
                             column: isHorizontalMovement ? mergeCandidate.getStaged('position').get('column') - increment : mergeCandidate.getStaged('position').get('column'),

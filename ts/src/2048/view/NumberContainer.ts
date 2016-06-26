@@ -24,6 +24,7 @@ export class NumberContainer extends Backbone.View<Value> {
     initialize() {
         this.listenTo(this.model, 'change:value', this.update.bind(this));
         this.listenTo(this.model, 'change:position', this.position.bind(this));
+        this.listenTo(this.model, 'change:merge', this.merge.bind(this));
         this.listenTo(this.model, 'destroy', this.remove.bind(this));
     }
 
@@ -35,6 +36,12 @@ export class NumberContainer extends Backbone.View<Value> {
 
         return this;
     }
+    
+    merge() {
+        // position the value that must be merged
+        // listen to (once) when that animation is finished
+        // update the value of the model
+    }
 
     /**
      * Position the element
@@ -45,12 +52,10 @@ export class NumberContainer extends Backbone.View<Value> {
             pos:PositionInterface = position.getPosition(),
             deltaIndex;
 
+        this.model.set('isAnimating', true);
+
         if (undefined !== previous) {
             deltaIndex = Math.abs((position.get('row') - previous.get('row')) + (position.get('column') - previous.get('column')));
-
-            if (this.model.get('dissolve')) {
-                this.$el.addClass('dissolve');
-            }
 
             this.$el.animate({
                 left: pos.x,
@@ -59,10 +64,7 @@ export class NumberContainer extends Backbone.View<Value> {
                 easing: 'linear',
                 duration: 50 * deltaIndex,
                 complete: () => {
-                    if (this.model.get('dissolve')) {
-                        window.console.log('dissolve', this.model);
-                        this.model.destroy();
-                    }
+                    this.model.set('isAnimating', false);
                 }
             });
         } else {
@@ -70,6 +72,8 @@ export class NumberContainer extends Backbone.View<Value> {
                 left: pos.x,
                 top: pos.y
             });
+
+            this.model.set('isAnimating', false);
         }
     }
 

@@ -7,6 +7,11 @@ import {AttributesInterface} from './../interface/AttributesInterface';
  * @class Value
  */
 export class Value extends Backbone.Model {
+    /**
+     * Attributes that must not be set directly
+     *
+     * @type {object}
+     */
     private stagedAttributes:AttributesInterface = {};
 
     /**
