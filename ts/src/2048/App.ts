@@ -1,5 +1,3 @@
-/// <reference path="../../../typings/globals/jquery/index.d.ts" />
-
 import $ from 'jquery';
 import {Keyboard} from './view/Keyboard';
 import {Table} from './view/Table';

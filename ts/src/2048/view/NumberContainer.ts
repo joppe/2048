@@ -1,5 +1,3 @@
-/// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
-
 import * as Backbone from 'backbone';
 import {Value} from './../model/Value';
 import {Position} from './../model/Position';

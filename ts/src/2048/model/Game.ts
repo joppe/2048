@@ -1,6 +1,3 @@
-/// <reference path="../../../../typings/globals/backbone-global/index.d.ts" />
-/// <reference path="../../../../typings/globals/underscore/index.d.ts" />
-
 import * as Backbone from 'backbone';
 import {Grid} from './../collection/Grid';
 import {Values} from './../collection/Values';
