@@ -35,6 +35,10 @@ typings:
 	@echo "Install typings files"
 	@$(PWD)/node_modules/typings/dist/bin.js install
 
+lint:
+	@echo "Lint typescript"
+	@cd $(PWD) && node ./node_modules/tslint/bin/tslint --config tslint.json --project ts/tsconfig.json
+
 setup: npm bower sass typings typescript
 	@echo "Setup done"
 
