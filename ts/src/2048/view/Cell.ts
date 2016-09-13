@@ -20,7 +20,6 @@ export class Cell extends Backbone.View<Position> {
     get className():string {
         return 'c-grid__cell';
     }
-    
 
     /**
      * Save the element position
