@@ -11,7 +11,7 @@ export class Values extends Backbone.Collection<Value> {
     /**
      * @type {Value}
      */
-    get model():{new():Value;} {
+    get model():{new():Value} {
         return Value;
     }
 

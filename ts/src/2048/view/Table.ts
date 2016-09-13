@@ -14,19 +14,19 @@ export class Table extends Backbone.View<Game> {
     get tagName():string {
         return 'table';
     }
-    
+
     /**
      * @returns {string}
      */
     get className():string {
         return 'c-grid';
     }
-    
+
     /**
      * @type {Game}
      */
     model:Game;
-    
+
     /**
      * Render the table and the cells
      * 

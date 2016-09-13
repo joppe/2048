@@ -22,7 +22,7 @@ export class App {
      * @type {number}
      */
     private size:number;
-    
+
     /**
      * The Game model
      * 
@@ -37,44 +37,43 @@ export class App {
     constructor($container:JQuery, size:number = 4) {
         this.$container = $container;
         this.size = size;
-        
+
         this.game = new Game({
             size
         });
-        
+
         this.createViews();
 
         this.game.get('values').on('add', this.createValue.bind(this));
         // this.game.on('change:changedValues', this.);
         this.game.cycle();
     }
-    
+
     /**
      * Create a view for the new value
      * 
      * @param {Value} value
      */
     private createValue(value:Value):void {
-        var view = new NumberContainer({
+        let view = new NumberContainer({
                 model: value
             });
 
         this.$container.append(view.render().$el);
     }
-    
+
     /**
      * Create the views
      */
     private createViews():void {
         let table = new Table({
                 model: this.game
+            }),
+            keyboard = new Keyboard({
+                el: $('body'),
+                model: this.game
             });
 
         this.$container.append(table.render().$el);
-        
-        new Keyboard({
-            el: $('body'),
-            model: this.game
-        });
     }
 }

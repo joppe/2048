@@ -11,7 +11,7 @@ export class Grid extends Backbone.Collection<Position> {
     /**
      * @type {Position}
      */
-    get model():{new():Position;} {
+    get model():{new():Position} {
         return Position;
     }
 
