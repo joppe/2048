@@ -47,6 +47,7 @@ export class App {
         this.createViews();
 
         this.game.get('values').on('add', this.createValue.bind(this));
+        // this.game.on('change:changedValues', this.);
         this.game.cycle();
     }
     

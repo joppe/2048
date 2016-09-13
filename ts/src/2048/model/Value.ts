@@ -78,15 +78,4 @@ export class Value extends Backbone.Model {
     getStaged(attribute:string):any {
         return this.stagedAttributes[attribute];
     }
-    
-    /**
-     * Check if the staged attributes contain values that are different from the current attributes.
-     *
-     * @returns {boolean}
-     */
-    willChange():boolean {
-        return Object.keys(this.stagedAttributes).some((name) => {
-            return this.stagedAttributes[name] !== this.get(name);
-        });
-    }
 }

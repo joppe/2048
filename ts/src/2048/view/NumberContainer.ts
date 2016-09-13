@@ -38,6 +38,7 @@ export class NumberContainer extends Backbone.View<Value> {
     }
     
     merge() {
+        window.console.log('merge');
         // position the value that must be merged
         // listen to (once) when that animation is finished
         // update the value of the model

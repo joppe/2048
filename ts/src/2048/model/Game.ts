@@ -50,7 +50,7 @@ export class Game extends Backbone.Model {
             grid:Grid = this.get('grid'),
             startColumn:number = isIncrementalMovement ? this.get('size') - 1 : 0,
             startRow:number = isIncrementalMovement ? this.get('size') - 1 : 0,
-            hasUpdated:boolean = false;
+            changedValues:Value[] = [];
 
         window.console.log(`isHorizontalMovement: ${isHorizontalMovement}`, `isIncrementalMovement: ${isIncrementalMovement}`, `direction.left: ${direction.left}`, `direction.top: ${direction.top}`);
 
@@ -59,12 +59,12 @@ export class Game extends Backbone.Model {
                 mergeCandidate:Value;
 
             values.forEach((value:Value) => {
+                let position:Position;
+
                 if (undefined === mergeCandidate) {
-                    value.stage({
-                        position: grid.getPosition({
-                            column: isHorizontalMovement ? startColumn : Number(index),
-                            row: isHorizontalMovement ? Number(index) : startRow
-                        })
+                    position = grid.getPosition({
+                        column: isHorizontalMovement ? startColumn : Number(index),
+                        row: isHorizontalMovement ? Number(index) : startRow
                     });
 
                     mergeCandidate = value;
@@ -72,31 +72,34 @@ export class Game extends Backbone.Model {
                     mergeCandidate.stage({
                         merge: value
                     });
+
+                    this.set('changedValues', this.get('changedValues') + 1);
                 } else {
-                    value.stage({
-                        position: grid.getPosition({
-                            column: isHorizontalMovement ? mergeCandidate.getStaged('position').get('column') - increment : mergeCandidate.getStaged('position').get('column'),
-                            row: isHorizontalMovement ? mergeCandidate.getStaged('position').get('row') : mergeCandidate.getStaged('position').get('row') - increment
-                        })
+                    position = grid.getPosition({
+                        column: isHorizontalMovement ? mergeCandidate.getStaged('position').get('column') - increment : mergeCandidate.getStaged('position').get('column'),
+                        row: isHorizontalMovement ? mergeCandidate.getStaged('position').get('row') : mergeCandidate.getStaged('position').get('row') - increment
                     });
 
                     mergeCandidate = value;
                 }
 
-                if (value.willChange()) {
-                    hasUpdated = true;
+                if (undefined !== position && value.get('position') !== position) {
+                    changedValues.push(value);
+
+                    value.stage({
+                        position
+                    });
                 }
             });
         }
 
-        this.get('values').each((value:Value) => {
-            value.commit();
-        });
 
-        if (true === hasUpdated) {
-            this.cycle();
-        } else {
-            this.trigger('finish');
+        if (0 < changedValues.length) {
+            this.set('changedValues', changedValues);
+
+            this.get('values').each((value:Value) => {
+                value.commit();
+            });
         }
 
         return this;
