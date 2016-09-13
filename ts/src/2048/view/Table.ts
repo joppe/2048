@@ -5,6 +5,7 @@ import $ from 'jquery';
 import * as Backbone from 'backbone';
 import {Game} from './../model/Game';
 import {Cell} from './Cell';
+import {Position} from './../model/Position';
 
 /**
  * @class Table
@@ -38,7 +39,7 @@ export class Table extends Backbone.View<Game> {
         let row,
             $el:JQuery;
 
-        this.model.get('grid').each((position) => {
+        this.model.get('grid').each((position:Position) => {
             let cell = new Cell({
                     model: position
                 });
