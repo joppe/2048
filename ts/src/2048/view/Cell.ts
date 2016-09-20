@@ -60,7 +60,7 @@ export class Cell extends Backbone.View<Position> {
      * @returns {object}
      */
     private getPosition():PositionInterface {
-        let offset = this.$el.offset();
+        let offset = this.$el.position();
 
         return {
             x: offset.left,
