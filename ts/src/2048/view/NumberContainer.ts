@@ -2,13 +2,29 @@ import * as Backbone from 'backbone';
 import {Value} from './../model/Value';
 import {Position} from './../model/Position';
 import {PositionInterface} from './../interface/PositionInterface';
+import {Game} from '../model/Game';
 
 const CLASS_IS_READY:string = 'is-ready';
+
+/**
+ * @interface NumberContainerOptionsInterface
+ */
+interface NumberContainerOptionsInterface extends Backbone.ViewOptions<Value> {
+    /**
+     * @type {Game}
+     */
+    game:Game;
+}
 
 /**
  * @class NumberContainer
  */
 export class NumberContainer extends Backbone.View<Value> {
+    /**
+     * @type {Game}
+     */
+    private game:Game;
+
     /**
      * @type {string}
      */
@@ -18,8 +34,14 @@ export class NumberContainer extends Backbone.View<Value> {
 
     /**
      * Initialize the view
+     *
+     * @param {object} options
      */
-    initialize() {
+    constructor(options:NumberContainerOptionsInterface) {
+        super(options);
+
+        this.game = options.game;
+
         this.listenTo(this.model, 'change:value', this.update.bind(this));
         this.listenTo(this.model, 'change:position', this.position.bind(this));
         this.listenTo(this.model, 'change:merge', this.merge.bind(this));
@@ -51,8 +73,6 @@ export class NumberContainer extends Backbone.View<Value> {
             pos:PositionInterface = position.position,
             deltaIndex;
 
-        this.model.set('isAnimating', true);
-
         if (undefined !== previous) {
             deltaIndex = Math.abs((position.get('row') - previous.get('row')) + (position.get('column') - previous.get('column')));
 
@@ -63,7 +83,7 @@ export class NumberContainer extends Backbone.View<Value> {
                 easing: 'linear',
                 duration: 50 * deltaIndex,
                 complete: () => {
-                    this.model.set('isAnimating', false);
+                    this.game.set('changedValues', this.game.get('changedValues'));
                 }
             });
         } else {
@@ -72,7 +92,7 @@ export class NumberContainer extends Backbone.View<Value> {
                 top: pos.y
             });
 
-            this.model.set('isAnimating', false);
+            this.game.set('changedValues', this.game.get('changedValues'));
         }
     }
 
