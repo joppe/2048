@@ -11,6 +11,12 @@ export class Position extends Backbone.Model {
      * @returns {object}
      */
     get position():PositionInterface {
-        return this.get('position');
+        let position:PositionInterface = this.get('position');
+
+        if (undefined === position) {
+            throw new Error('Position attribute is not set.');
+        }
+
+        return position;
     }
 }
