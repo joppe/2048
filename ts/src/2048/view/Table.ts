@@ -23,11 +23,6 @@ export class Table extends Backbone.View<Game> {
     }
 
     /**
-     * @type {Game}
-     */
-    model:Game;
-
-    /**
      * Render the table and the cells
      * 
      * @returns {Table}
@@ -38,7 +33,8 @@ export class Table extends Backbone.View<Game> {
 
         this.model.get('grid').each((position:Position) => {
             let cell = new Cell({
-                    model: position
+                    model: position,
+                    game: this.model
                 });
 
             if (position.get('row') !== row) {
