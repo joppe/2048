@@ -1,9 +1,27 @@
 import {Position} from './../model/Position';
+import {Game} from '../model/Game';
+import {DirectionInterface} from '../interface/DirectionInterface';
+import {PositionInterface} from '../interface/PositionInterface';
+
+/**
+ * @interface CellOptionsInterface
+ */
+interface CellOptionsInterface extends Backbone.ViewOptions<Position> {
+    /**
+     * @type {Game}
+     */
+    game:Game;
+}
 
 /**
  * @class Cell
  */
 export class Cell extends Backbone.View<Position> {
+    /**
+     * @type {Game}
+     */
+    private game:Game;
+
     /**
      * @returns {string}
      */
@@ -19,9 +37,34 @@ export class Cell extends Backbone.View<Position> {
     }
 
     /**
-     * Save the element position
+     * @param {object} options
      */
-    initialize() {
-        this.model.set('$el', this.$el);
+    constructor(options:CellOptionsInterface) {
+        super(options);
+
+        this.game = options.game;
+
+        this.listenTo(this.game, 'change:is-rendered', this.storePosition.bind(this));
+    }
+
+    /**
+     * Store the position of the element in the model
+     */
+    private storePosition():void {
+        if (true === this.game.get('is-rendered')) {
+            this.model.set('position', this.getPosition());
+        }
+    }
+
+    /**
+     * @returns {object}
+     */
+    private getPosition():PositionInterface {
+        let offset = this.$el.offset();
+
+        return {
+            x: offset.left,
+            y: offset.top
+        };
     }
 }
