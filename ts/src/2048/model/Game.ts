@@ -20,6 +20,7 @@ export class Game extends Backbone.Model {
         let values = new Values();
 
         this.set({
+            changedValues: 0,
             grid: new Grid(undefined, {
                 size: options.size
             }),
