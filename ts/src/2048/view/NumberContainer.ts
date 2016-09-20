@@ -48,7 +48,7 @@ export class NumberContainer extends Backbone.View<Value> {
     position():void {
         let position:Position = this.model.get('position'),
             previous:Position = this.model.previous('position'),
-            pos:PositionInterface = position.getPosition(),
+            pos:PositionInterface = position.position,
             deltaIndex;
 
         this.model.set('isAnimating', true);
