@@ -6,23 +6,11 @@ import {PositionInterface} from './../interface/PositionInterface';
  */
 export class Position extends Backbone.Model {
     /**
-     * @type {object}
-     */
-    private position:PositionInterface;
-
-    /**
+     * Get the position of the element that represents this model.
+     *
      * @returns {object}
      */
-    getPosition():PositionInterface {
-        if (undefined === this.position) {
-            let leftTop = this.get('$el').position();
-
-            this.position = <PositionInterface>{
-                x: leftTop.left,
-                y: leftTop.top
-            };
-        }
-
-        return this.position;
+    get position():PositionInterface {
+        return this.get('position');
     }
 }
