@@ -1,16 +1,23 @@
 import * as Backbone from 'backbone';
-import {AttributesInterface} from './../interface/AttributesInterface';
+import {Position} from './Position';
 
 /**
  * @class Value
  */
 export class Value extends Backbone.Model {
     /**
-     * Attributes that must not be set directly
-     *
-     * @type {object}
+     * @param {Position} position
      */
-    private stagedAttributes:AttributesInterface = {};
+    set position(position:Position) {
+        this.set('position', position);
+    }
+
+    /**
+     * @param {Value} value
+     */
+    set merge(value:Value) {
+        this.set('merge', value);
+    }
 
     /**
      * Set the attribute value to 4 or 2 randomly
@@ -23,57 +30,13 @@ export class Value extends Backbone.Model {
      * @param {Value} value
      * @returns {boolean}
      */
-    mergable(value:Value):boolean {
-        if (undefined !== this.stagedAttributes['value']) {
+    isMergeable(value:Value):boolean {
+        if (undefined !== this.get('merge')) {
             return false;
-        }
-
-        if (this.get('value') === value.get('value')) {
+        } else if (this.get('value') === value.get('value')) {
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * @param {object} attributes
-     * @returns {Value}
-     */
-    stage(attributes:AttributesInterface):Value {
-        for (let name of Object.keys(attributes)) {
-            this.stagedAttributes[name] = attributes[name];
-        }
-
-        return this;
-    }
-
-    /**
-     * Apply the staged attributes.
-     *
-     * @param {string} [attribute]
-     * @returns {Value}
-     */
-    commit(attribute?:string):Value {
-        if (undefined === attribute) {
-            // Apply the staged attributes
-            this.set(this.stagedAttributes);
-
-            // Reset the staged attributes
-            this.stagedAttributes = {};
-        } else if (undefined !== this.stagedAttributes[attribute]) {
-            this.set(attribute, this.stagedAttributes[attribute]);
-
-            delete this.stagedAttributes[attribute];
-        }
-
-        return this;
-    }
-
-    /**
-     * @param {string} attribute
-     * @returns {any}
-     */
-    getStaged(attribute:string):any {
-        return this.stagedAttributes[attribute];
     }
 }
