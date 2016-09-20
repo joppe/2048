@@ -42,7 +42,7 @@ export class App {
             size
         });
 
-        this.createViews();
+        this.render();
 
         this.game.get('values').on('add', this.createValue.bind(this));
         // this.game.on('change:changedValues', this.);
@@ -65,7 +65,7 @@ export class App {
     /**
      * Create the views
      */
-    private createViews():void {
+    private render():void {
         let table = new Table({
                 model: this.game
             }),
@@ -75,5 +75,7 @@ export class App {
             });
 
         this.$container.append(table.render().$el);
+
+        this.game.set('is-rendered', true);
     }
 }
