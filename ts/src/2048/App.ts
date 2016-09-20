@@ -41,6 +41,11 @@ export class App {
         this.game = new Game({
             size
         });
+        this.game.on('change:move', () => {
+            if (0 === this.game.get('changedValues')) {
+                this.game.move(this.game.get('move'));
+            }
+        });
 
         this.render();
 

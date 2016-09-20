@@ -57,9 +57,10 @@ export class Keyboard extends Backbone.View<Game> {
                     break;
             }
 
-            if (0 === this.model.get('changedValues')) {
-                this.model.move(direction);
-            }
+            this.model.unset('move', {
+                silent: true
+            });
+            this.model.set('move', direction);
         }
     }
 }
