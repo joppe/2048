@@ -75,7 +75,6 @@ export class Grid extends Backbone.Collection<Position> {
      * @returns {Position}
      */
     getPosition(position:GridPositionInterface):Position {
-        window.console.log('getPosition', position);
         return this.findWhere(position);
     }
 }
