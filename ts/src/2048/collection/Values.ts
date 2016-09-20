@@ -16,7 +16,7 @@ export class Values extends Backbone.Collection<Value> {
     }
 
     /**
-     * Return an array of all positions that have a value.
+     * Return an array of all used positions.
      * 
      * @return Position[]
      */
@@ -47,6 +47,8 @@ export class Values extends Backbone.Collection<Value> {
     }
 
     /**
+     * Group the values by row or column.
+     *
      * @param {string} groupProperty
      * @param {string} orderProperty
      * @param {boolean} reverse
