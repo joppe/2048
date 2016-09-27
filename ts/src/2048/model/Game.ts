@@ -47,8 +47,7 @@ export class Game extends Backbone.Model {
             groupedValues:GridValuesInterface = this.get('values').getAsGrid(isHorizontalMovement ? 'row' : 'column', isHorizontalMovement ? 'column' : 'row', isIncrementalMovement),
             grid:Grid = this.get('grid'),
             startColumn:number = isIncrementalMovement ? this.get('size') - 1 : 0,
-            startRow:number = isIncrementalMovement ? this.get('size') - 1 : 0,
-            changedValues:number = 0;
+            startRow:number = isIncrementalMovement ? this.get('size') - 1 : 0;
 
         // window.console.log(`isHorizontalMovement: ${isHorizontalMovement}`, `isIncrementalMovement: ${isIncrementalMovement}`, `direction.left: ${direction.left}`, `direction.top: ${direction.top}`);
 
@@ -61,7 +60,7 @@ export class Game extends Backbone.Model {
 
                 // The first value must go to the start position of the row/column.
                 if (0 === index) {
-                    position = grid.getPosition({
+                    value.position = grid.getPosition({
                         column: isHorizontalMovement ? startColumn : Number(gridLine),
                         row: isHorizontalMovement ? Number(gridLine) : startRow
                     });
@@ -72,28 +71,17 @@ export class Game extends Backbone.Model {
                 // If there is a merge candidate and the value can be merged with it, do it.
                 else if (mergeCandidate.isMergeable(value)) {
                     mergeCandidate.merge = value;
-
-                    changedValues += 1;
-
                 // The position will be next to the mergeCandidate.
                 } else {
-                    position = grid.getPosition({
+                    value.position = grid.getPosition({
                         column: isHorizontalMovement ? mergeCandidate.get('position').get('column') - increment : mergeCandidate.get('position').get('column'),
                         row: isHorizontalMovement ? mergeCandidate.get('position').get('row') : mergeCandidate.get('position').get('row') - increment
                     });
 
                     mergeCandidate = value;
                 }
-
-                if (undefined !== position && value.get('position') !== position) {
-                    changedValues += 1;
-
-                    value.position = position;
-                }
             });
         }
-
-        this.set('changedValues', changedValues);
 
         return this;
     }
