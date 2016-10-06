@@ -7,7 +7,7 @@
         "outDir": "js"
     },
     "files": [
-        "../typings/index",
-        "scr/main"
+        "typings/index",
+        "src/main"
     ]
 }
