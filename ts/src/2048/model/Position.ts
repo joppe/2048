@@ -26,6 +26,9 @@ export class Position extends Backbone.Model {
      * @returns {number}
      */
     static distance(a:Position, b:Position):number {
-        return Math.abs((a.get('row') - b.get('row')) + (a.get('column') - b.get('column')));
+        return Math.sqrt(
+            Math.pow(a.get('row') - b.get('row'), 2) +
+            Math.pow(a.get('column') - b.get('column'), 2)
+        );
     }
 }
