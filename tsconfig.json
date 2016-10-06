@@ -4,10 +4,10 @@
         "module": "system",
         "removeComments": true,
         "sourceMap": true,
-        "outDir": "../js"
+        "outDir": "js"
     },
     "files": [
         "../typings/index",
-        "src/main"
+        "scr/main"
     ]
 }
