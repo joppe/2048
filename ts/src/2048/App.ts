@@ -43,7 +43,6 @@ export class App {
         });
 
         this.game.on('change:move', () => {
-            window.console.log(this.game.isAnimating());
             if (true === this.game.isAnimating()) {
                 return;
             }
