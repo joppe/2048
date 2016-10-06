@@ -6,9 +6,9 @@ System.config({
     defaultJSExtensions: true,
 
     map: {
-        jquery: 'js/vendor/jquery/dist/jquery',
-        underscore: 'js/vendor/underscore/underscore',
-        backbone: 'js/vendor/backbone/backbone'
+        jquery: 'vendor/jquery/dist/jquery',
+        underscore: 'vendor/underscore/underscore',
+        backbone: 'vendor/backbone/backbone'
     },
 
     meta: {
