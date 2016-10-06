@@ -24,11 +24,11 @@ npm:
 .PHONY: typescript
 typescript:
 	@echo "Compile typescript"
-	@$(PWD)/node_modules/typescript/bin/tsc --project ts
+	@$(PWD)/node_modules/typescript/bin/tsc --project src
 
 typescript-watch:
 	@echo "Compile typescript --watched"
-	@$(PWD)/node_modules/typescript/bin/tsc --project ts --watch
+	@$(PWD)/node_modules/typescript/bin/tsc --project src --watch
 
 .PHONY: typings
 typings:
@@ -37,7 +37,7 @@ typings:
 
 lint:
 	@echo "Lint typescript"
-	@cd $(PWD) && node ./node_modules/tslint/bin/tslint --config tslint.json --project ts/tsconfig.json
+	@cd $(PWD) && node ./node_modules/tslint/bin/tslint --config tslint.json --project src/tsconfig.json
 
 setup: npm bower sass typings typescript
 	@echo "Setup done"
