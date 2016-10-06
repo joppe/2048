@@ -1,7 +1,9 @@
 .idea/
-js/
-!js/system.conf.js
-!js/system.no-cache.js
-node_modules/
 .sass_cache/
+css/
+!css/.gitkeep
+js/
+!js/.gitkeep
+node_modules/
 typings/
+vendor/
