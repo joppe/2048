@@ -92,7 +92,6 @@ export class Game extends Backbone.Model {
      * @returns {boolean}
      */
     isAnimating():boolean {
-        window.console.log('isAnimating', this.get('animations'));
         return 0 < this.get('animations');
     }
 
@@ -101,7 +100,6 @@ export class Game extends Backbone.Model {
      */
     handleAnimationStart():void {
         this.set('animations', this.get('animations') + 1);
-        window.console.log('handleAnimationStart', this.get('animations'));
     }
 
     /**
@@ -109,7 +107,6 @@ export class Game extends Backbone.Model {
      */
     handleAnimationEnd():void {
         this.set('animations', this.get('animations') - 1);
-        window.console.log('handleAnimationEnd', this.get('animations'));
     }
 
     /**
