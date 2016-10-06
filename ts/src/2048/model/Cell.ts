@@ -2,9 +2,9 @@ import * as Backbone from 'backbone';
 import {PositionInterface} from './../interface/PositionInterface';
 
 /**
- * @class Position
+ * @class Cell
  */
-export class Position extends Backbone.Model {
+export class Cell extends Backbone.Model {
     /**
      * Get the position of the element that represents this model.
      *
@@ -21,11 +21,11 @@ export class Position extends Backbone.Model {
     }
 
     /**
-     * @param {Position} a
-     * @param {Position} b
+     * @param {Cell} a
+     * @param {Cell} b
      * @returns {number}
      */
-    static distance(a:Position, b:Position):number {
+    static distance(a:Cell, b:Cell):number {
         return Math.sqrt(
             Math.pow(a.get('row') - b.get('row'), 2) +
             Math.pow(a.get('column') - b.get('column'), 2)

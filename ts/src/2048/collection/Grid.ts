@@ -1,25 +1,25 @@
 import * as Backbone from 'backbone';
 import * as _ from 'underscore';
-import {Position} from './../model/Position';
+import {Cell} from './../model/Cell';
 import {GridOptionsInterface} from './../interface/GridOptionsInterface';
 import {GridPositionInterface} from './../interface/GridPositionInterface';
 
 /**
  * @class Grid
  */
-export class Grid extends Backbone.Collection<Position> {
+export class Grid extends Backbone.Collection<Cell> {
     /**
-     * @type {Position}
+     * @type {Cell}
      */
-    get model():{new():Position} {
-        return Position;
+    get model():{new():Cell} {
+        return Cell;
     }
 
     /**
-     * @param {Position[]} models
+     * @param {Array} models
      * @param {object} options
      */
-    constructor(models:Object[], options:GridOptionsInterface) {
+    constructor(models:any, options:GridOptionsInterface) {
         super(models, options);
 
         this.createPositions(options.size);
@@ -40,41 +40,41 @@ export class Grid extends Backbone.Collection<Position> {
     }
 
     /**
-     * @param {Position[]} excludePositions
-     * @returns {Position}
+     * @param {Cell[]} excludeCells
+     * @returns {Cell}
      */
-    getRandomPosition(excludePositions:Position[] = []):Position {
-        let position:Position,
-            availablePositions = this.getPositions(excludePositions);
+    getRandomPosition(excludeCells:Cell[] = []):Cell {
+        let cell:Cell,
+            availableCells = this.getPositions(excludeCells);
 
-        if (0 < availablePositions.length) {
-            let index = _.random(availablePositions.length - 1);
+        if (0 < availableCells.length) {
+            let index = _.random(availableCells.length - 1);
 
-            position = availablePositions[index];
+            cell = availableCells[index];
         }
 
-        return position;
+        return cell;
     }
 
     /**
-     * @param {Position[]} excludePositions
-     * @returns {Position[]}
+     * @param {Cell[]} excludeCells
+     * @returns {Cell[]}
      */
-    getPositions(excludePositions:Position[] = []):Position[] {
-        let positions:Position[];
+    getPositions(excludeCells:Cell[] = []):Cell[] {
+        let cells:Cell[];
 
-        positions = this.filter((position) => {
-            return false === _.contains(excludePositions, position);
+        cells = this.filter((cell:Cell) => {
+            return false === _.contains(excludeCells, cell);
         });
 
-        return positions;
+        return cells;
     }
 
     /**
      * @param {object} position
-     * @returns {Position}
+     * @returns {Cell}
      */
-    getPosition(position:GridPositionInterface):Position {
+    getPosition(position:GridPositionInterface):Cell {
         return this.findWhere(position);
     }
 }
