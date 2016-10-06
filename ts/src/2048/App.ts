@@ -43,15 +43,17 @@ export class App {
         });
 
         this.game.on('change:move', () => {
-            if (0 === this.game.get('changedValues')) {
-                this.game.move(this.game.get('move'));
+            window.console.log(this.game.isAnimating());
+            if (true === this.game.isAnimating()) {
+                return;
             }
+
+            this.game.move(this.game.get('move'));
         });
 
         this.render();
 
         this.game.get('values').on('add', this.createValue.bind(this));
-        // this.game.on('change:changedValues', this.);
         this.game.cycle();
     }
 

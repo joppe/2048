@@ -4,7 +4,9 @@ import {Position} from './../model/Position';
 import {PositionInterface} from './../interface/PositionInterface';
 import {Game} from '../model/Game';
 
-const CLASS_IS_READY:string = 'is-ready';
+const CLASS_IS_READY:string = 'is-ready',
+    ANIMATION_EASING = 'linear',
+    ANIMATION_DURATION_FACTOR = 50;
 
 /**
  * @interface NumberContainerOptionsInterface
@@ -57,13 +59,6 @@ export class NumberContainer extends Backbone.View<Value> {
         return this;
     }
 
-    merge():void {
-        window.console.log('merge');
-        // position the value that must be merged
-        // listen to (once) when that animation is finished
-        // update the value of the model
-    }
-
     /**
      * Position the element
      */
@@ -73,17 +68,19 @@ export class NumberContainer extends Backbone.View<Value> {
             pos:PositionInterface = position.position,
             deltaIndex;
 
+        this.game.handleAnimationStart();
+
         if (undefined !== previous) {
-            deltaIndex = Math.abs((position.get('row') - previous.get('row')) + (position.get('column') - previous.get('column')));
+            deltaIndex = Position.distance(position, previous);
 
             this.$el.animate({
                 left: pos.x,
                 top: pos.y
             }, {
-                easing: 'linear',
-                duration: 50 * deltaIndex,
+                easing: ANIMATION_EASING,
+                duration: ANIMATION_DURATION_FACTOR * deltaIndex,
                 complete: () => {
-                    this.game.set('changedValues', this.game.get('changedValues'));
+                    this.game.handleAnimationEnd();
                 }
             });
         } else {
@@ -92,7 +89,7 @@ export class NumberContainer extends Backbone.View<Value> {
                 top: pos.y
             });
 
-            this.game.set('changedValues', this.game.get('changedValues'));
+            this.game.handleAnimationEnd();
         }
     }
 
@@ -109,5 +106,12 @@ export class NumberContainer extends Backbone.View<Value> {
         }
 
         return this;
+    }
+
+    merge():void {
+        window.console.log('merge');
+        // position the value that must be merged
+        // listen to (once) when that animation is finished
+        // update the value of the model
     }
 }

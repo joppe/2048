@@ -24,6 +24,7 @@ export class Game extends Backbone.Model {
             grid: new Grid(undefined, {
                 size: options.size
             }),
+            animations: 0,
             values
         });
 
@@ -71,6 +72,7 @@ export class Game extends Backbone.Model {
                 // If there is a merge candidate and the value can be merged with it, do it.
                 else if (mergeCandidate.isMergeable(value)) {
                     mergeCandidate.merge = value;
+
                 // The position will be next to the mergeCandidate.
                 } else {
                     value.position = grid.getPosition({
@@ -84,6 +86,30 @@ export class Game extends Backbone.Model {
         }
 
         return this;
+    }
+
+    /**
+     * @returns {boolean}
+     */
+    isAnimating():boolean {
+        window.console.log('isAnimating', this.get('animations'));
+        return 0 < this.get('animations');
+    }
+
+    /**
+     * Increment the animations property
+     */
+    handleAnimationStart():void {
+        this.set('animations', this.get('animations') + 1);
+        window.console.log('handleAnimationStart', this.get('animations'));
+    }
+
+    /**
+     * Increment the animations property
+     */
+    handleAnimationEnd():void {
+        this.set('animations', this.get('animations') - 1);
+        window.console.log('handleAnimationEnd', this.get('animations'));
     }
 
     /**
