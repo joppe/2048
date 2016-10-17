@@ -1,6 +1,7 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 import {Cells} from '../collection/Cells';
+import {Cell} from './Cell';
 
 /**
  * @class Grid
@@ -33,6 +34,20 @@ class Grid extends Backbone.Model {
                     column
                 });
             });
+        });
+    }
+
+    /**
+     * @param {number} row
+     * @param {number} column
+     * @returns {Cell}
+     */
+    getCell(row:number, column:number):Cell {
+        let cells:Cells = this.get('cells');
+
+        return cells.findWhere({
+            row,
+            column
         });
     }
 }
