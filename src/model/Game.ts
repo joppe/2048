@@ -1,5 +1,6 @@
 import Backbone from 'backbone';
 import {Grid} from './Grid';
+import {GameAttributesInterface} from './GameAttributesInterface';
 
 /**
  * @class Game
@@ -17,9 +18,8 @@ class Game extends Backbone.Model {
 
     /**
      * @param {object} [attributes]
-     * @param {object} [options]
      */
-    initialize(attributes?:any, options?:any):void {
+    initialize(attributes?:GameAttributesInterface):void {
         this.set('grid', new Grid({
             size: this.get('size')
         }));
