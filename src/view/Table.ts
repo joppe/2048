@@ -38,7 +38,10 @@ class Table extends Backbone.View<Game> {
             let $tr:JQuery = jQuery('<tr />');
 
             _.each(_.range(0, size), (column:number) => {
-                let cell:Cell = grid.getCell(row, column),
+                let cell:Cell = grid.getCell({
+                        row,
+                        column
+                    }),
                     td:TableCell = new TableCell({
                         model: cell
                     });
@@ -60,7 +63,7 @@ class Table extends Backbone.View<Game> {
     storeElementPositions():void {
         this.tds.forEach((td:TableCell) => {
             td.storeElementPosition();
-        })
+        });
     }
 }
 

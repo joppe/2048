@@ -2,6 +2,7 @@ import _ from 'underscore';
 import Backbone from 'backbone';
 import {Cells} from '../collection/Cells';
 import {Cell} from './Cell';
+import {CellIndexInterface} from './CellIndexInterface';
 
 /**
  * @class Grid
@@ -38,16 +39,15 @@ class Grid extends Backbone.Model {
     }
 
     /**
-     * @param {number} row
-     * @param {number} column
+     * @param {object} index
      * @returns {Cell}
      */
-    getCell(row:number, column:number):Cell {
+    getCell(index:CellIndexInterface):Cell {
         let cells:Cells = this.get('cells');
 
         return cells.findWhere({
-            row,
-            column
+            row: index.row,
+            column: index.column
         });
     }
 }
