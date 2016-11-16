@@ -58,7 +58,7 @@ class Table extends Backbone.View<Game> {
     }
 
     /**
-     * Store the positions of the elements in their own model
+     * Store the positions of the elements in their own model.
      */
     storeElementPositions():void {
         this.tds.forEach((td:TableCell) => {

@@ -11,6 +11,20 @@ jQuery(($:JQueryStatic) => {
                         row: 1,
                         column: 1
                     },
+                    value: 16
+                },
+                {
+                    index: {
+                        row: 3,
+                        column: 1
+                    },
+                    value: 4
+                },
+                {
+                    index: {
+                        row: 3,
+                        column: 2
+                    },
                     value: 4
                 }
             ]

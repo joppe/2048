@@ -81,8 +81,15 @@ class Game extends Backbone.Model {
             gameAttributes.vals = new Values();
 
             gameLiteral.vals.forEach((valueLiteral:ValueLiteralInterface) => {
-                let valueAttributes:ValueAttributesInterface = {
-                    cell: gameAttributes.grid.getCell(valueLiteral.index)
+                let cell = gameAttributes.grid.getCell(valueLiteral.index),
+                    valueAttributes:ValueAttributesInterface;
+
+                if (undefined === cell) {
+                    throw new Error(`Invalid cell index row: ${valueLiteral.index.row} column: ${valueLiteral.index.column}`);
+                }
+
+                valueAttributes = {
+                    cell
                 };
 
                 if (undefined !== valueLiteral.value) {
