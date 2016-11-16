@@ -25,6 +25,20 @@ class Game extends Backbone.Model {
     /**
      * @returns {number}
      */
+    get size():number {
+        return this.get('size');
+    }
+
+    /**
+     * @returns {Grid}
+     */
+    get grid():Grid {
+        return this.get('grid');
+    }
+
+    /**
+     * @returns {number}
+     */
     get vals():Values {
         return this.get('vals');
     }
@@ -51,15 +65,16 @@ class Game extends Backbone.Model {
      * @returns {object}
      */
     parse(gameLiteral:GameLiteralInterface):any {
-        let gameAttributes:any = {},
-            size:number = DEFAULT_SIZE;
+        let gameAttributes:any = {
+                size: DEFAULT_SIZE
+            };
 
         if (undefined !== gameLiteral.size) {
-            size = gameLiteral.size;
+            gameAttributes.size = gameLiteral.size;
         }
 
         gameAttributes.grid = new Grid({
-            size
+            size: gameAttributes.size
         });
 
         if (undefined !== gameLiteral.vals) {
@@ -77,8 +92,6 @@ class Game extends Backbone.Model {
                 gameAttributes.vals.add(new Value(valueAttributes));
             });
         }
-
-        window.console.log(gameAttributes);
 
         return gameAttributes;
     }

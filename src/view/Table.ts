@@ -31,8 +31,8 @@ class Table extends Backbone.View<Game> {
      * @returns {Table}
      */
     render():Table {
-        let grid:Grid = this.model.get('grid'),
-            size = this.model.get('size');
+        let grid:Grid = this.model.grid,
+            size:number = this.model.size;
 
         _.each(_.range(0, size), (row:number) => {
             let $tr:JQuery = jQuery('<tr />');

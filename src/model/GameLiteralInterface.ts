@@ -1,4 +1,5 @@
 import {ValueLiteralInterface} from './ValueLiteralInterface';
+
 /**
  * @interface GameLiteralInterface
  */

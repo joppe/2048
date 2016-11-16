@@ -13,6 +13,13 @@ interface GameAttributesInterface {
     grid:Grid;
 
     /**
+     * The number of row and columns to use.
+     *
+     * @type {number}
+     */
+    size:number;
+
+    /**
      * The values to start with
      *
      * @type {Values}
