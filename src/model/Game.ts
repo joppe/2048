@@ -2,6 +2,7 @@ import Backbone from 'backbone';
 import {Grid} from './Grid';
 import {GameLiteralInterface} from './GameLiteralInterface';
 import {Values} from './../collection/Values';
+import {GameAttributesInterface} from './GameAttributesInterface';
 
 /**
  * @class Game
@@ -44,12 +45,43 @@ class Game extends Backbone.Model {
     /**
      * @param {object} [attributes]
      */
-    constructor(attributes?:GameLiteralInterface) {
+    constructor(attributes?:GameAttributesInterface) {
         super(attributes);
 
         this.set('grid', new Grid({
             size: this.size
         }));
+    }
+
+    /**
+     * @param {object} raw
+     * @returns {object}
+     */
+    parse(raw:GameLiteralInterface):any {
+        let attributes:any = {};
+
+        if (undefined !== raw.size) {
+            attributes.size = raw.size;
+        }
+
+        if (undefined !== raw.vals) {
+            attributes.vals = new Values();
+            attributes.vals.set(attributes.vals.parse(raw.vals));
+        }
+
+        return attributes;
+    }
+
+    /**
+     * @param {object} raw
+     * @returns {Game}
+     */
+    static create(raw:GameLiteralInterface):Game {
+        let game = new Game();
+
+        game.set(game.parse(raw));
+
+        return game;
     }
 }
 
