@@ -58,6 +58,17 @@ class Grid extends Backbone.Model {
             column: index.column
         });
     }
+
+    /**
+     * @param {object} index
+     * @returns {boolean}
+     */
+    isValidIndex(index:CellIndexInterface):boolean {
+        return (
+            index.row >= 0 && index.row < this.size &&
+            index.column >= 0 && index.column < this.size
+        );
+    }
 }
 
 export {Grid};
