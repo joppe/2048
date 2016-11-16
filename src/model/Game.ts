@@ -5,8 +5,31 @@ import {Values} from './../collection/Values';
 
 /**
  * @class Game
+ *
+ * Use "vals" instead of "values", "values" is taken by Backbone.Model
  */
 class Game extends Backbone.Model {
+    /**
+     * @returns {number}
+     */
+    get score():number {
+        return this.get('score');
+    }
+
+    /**
+     * @returns {number}
+     */
+    get size():number {
+        return this.get('size');
+    }
+
+    /**
+     * @returns {number}
+     */
+    get vals():Values {
+        return this.get('vals');
+    }
+
     /**
      * @returns {object}
      */
@@ -14,7 +37,7 @@ class Game extends Backbone.Model {
         return {
             score: 0,
             size: 4,
-            values: new Values()
+            vals: new Values()
         };
     }
 
@@ -25,7 +48,7 @@ class Game extends Backbone.Model {
         super(attributes);
 
         this.set('grid', new Grid({
-            size: this.get('size')
+            size: this.size
         }));
     }
 }
