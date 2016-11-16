@@ -1,33 +1,33 @@
 {
-  "name": "2048",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.html",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/joppe/2048.git"
-  },
-  "author": "Joppe Aarts",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/joppe/2048/issues"
-  },
-  "devDependencies": {
-    "es6-module-loader": "^0.17.11",
-    "jasmine-core": "^2.3.4",
-    "karma": "^0.13.3",
-    "karma-chrome-launcher": "^0.2",
-    "karma-jasmine": "^0.3.5",
-    "karma-systemjs": "^0.7.2",
-    "systemjs": "^0.19.27",
-    "tslint": "^3.15.1",
-    "typings": "^1.0.4"
-  },
-  "dependencies": {
-    "bower": "^1.7.9",
-    "typescript": "^1.8.10"
-  }
+    "name": "2048",
+    "version": "0.0.0",
+    "description": "",
+    "main": "index.html",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/joppe/2048.git"
+    },
+    "author": "Joppe Aarts",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/joppe/2048/issues"
+    },
+    "devDependencies": {
+        "es6-module-loader": "^0.17.11",
+        "jasmine-core": "^2.3.4",
+        "karma": "^0.13.3",
+        "karma-chrome-launcher": "^0.2",
+        "karma-jasmine": "^0.3.5",
+        "karma-systemjs": "^0.7.2",
+        "systemjs": "^0.19.27",
+        "tslint": "^3.15.1",
+        "typescript": "^1.8.10",
+        "typings": "^1.0.4"
+    },
+    "dependencies": {
+        "bower": "^1.7.9"
+    }
 }
