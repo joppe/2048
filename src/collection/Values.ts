@@ -1,6 +1,6 @@
 import * as Backbone from 'backbone';
 import {Value} from './../model/Value';
-import {ValueLiteralInterface} from './../model/ValueLiteralInterface';
+import {ValueAttributesInterface} from './../model/ValueAttributesInterface';
 
 /**
  * @class Values
@@ -9,7 +9,7 @@ class Values extends Backbone.Collection<Value> {
     /**
      * @type {Value}
      */
-    get model():{new(attributes:ValueLiteralInterface):Value} {
+    get model():{new(attributes:ValueAttributesInterface):Value} {
         return Value;
     }
 }

@@ -3,8 +3,17 @@ import {Game} from './model/Game';
 import {Table} from './view/Table';
 
 jQuery(($:JQueryStatic) => {
-    let game = new Game({
-            size: 4
+    let game = Game.create({
+            size: 4,
+            vals: [
+                {
+                    index: {
+                        row: 1,
+                        column: 1
+                    },
+                    value: 4
+                }
+            ]
         }),
         table = new Table({
             model: game

@@ -1,13 +1,13 @@
-import {Cell} from './Cell';
+import {CellIndexInterface} from './CellIndexInterface';
 
 /**
  * @interface ValueLiteralInterface
  */
 interface ValueLiteralInterface {
     /**
-     * @type {Cell}
+     * @type {object}
      */
-    cell:Cell;
+    index:CellIndexInterface;
 
     /**
      * @type {number}

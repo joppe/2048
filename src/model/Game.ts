@@ -3,6 +3,11 @@ import {Grid} from './Grid';
 import {GameLiteralInterface} from './GameLiteralInterface';
 import {Values} from './../collection/Values';
 import {GameAttributesInterface} from './GameAttributesInterface';
+import {ValueLiteralInterface} from './ValueLiteralInterface';
+import {Value} from './Value';
+import {ValueAttributesInterface} from './ValueAttributesInterface';
+
+const DEFAULT_SIZE:number = 4;
 
 /**
  * @class Game
@@ -20,13 +25,6 @@ class Game extends Backbone.Model {
     /**
      * @returns {number}
      */
-    get size():number {
-        return this.get('size');
-    }
-
-    /**
-     * @returns {number}
-     */
     get vals():Values {
         return this.get('vals');
     }
@@ -37,7 +35,6 @@ class Game extends Backbone.Model {
     defaults():Backbone.ObjectHash {
         return {
             score: 0,
-            size: 4,
             vals: new Values()
         };
     }
@@ -47,29 +44,43 @@ class Game extends Backbone.Model {
      */
     constructor(attributes?:GameAttributesInterface) {
         super(attributes);
-
-        this.set('grid', new Grid({
-            size: this.size
-        }));
     }
 
     /**
-     * @param {object} raw
+     * @param {object} gameLiteral
      * @returns {object}
      */
-    parse(raw:GameLiteralInterface):any {
-        let attributes:any = {};
+    parse(gameLiteral:GameLiteralInterface):any {
+        let gameAttributes:any = {},
+            size:number = DEFAULT_SIZE;
 
-        if (undefined !== raw.size) {
-            attributes.size = raw.size;
+        if (undefined !== gameLiteral.size) {
+            size = gameLiteral.size;
         }
 
-        if (undefined !== raw.vals) {
-            attributes.vals = new Values();
-            attributes.vals.set(attributes.vals.parse(raw.vals));
+        gameAttributes.grid = new Grid({
+            size
+        });
+
+        if (undefined !== gameLiteral.vals) {
+            gameAttributes.vals = new Values();
+
+            gameLiteral.vals.forEach((valueLiteral:ValueLiteralInterface) => {
+                let valueAttributes:ValueAttributesInterface = {
+                    cell: gameAttributes.grid.getCell(valueLiteral.index)
+                };
+
+                if (undefined !== valueLiteral.value) {
+                    valueAttributes.value = valueLiteral.value;
+                }
+
+                gameAttributes.vals.add(new Value(valueAttributes));
+            });
         }
 
-        return attributes;
+        window.console.log(gameAttributes);
+
+        return gameAttributes;
     }
 
     /**

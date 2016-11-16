@@ -1,15 +1,16 @@
 import {Values} from './../collection/Values';
+import {Grid} from './Grid';
 
 /**
  * @interface GameAttributesInterface
  */
 interface GameAttributesInterface {
     /**
-     * The number of row and columns to use.
+     * The grid that contains the cells.
      *
-     * @type {number}
+     * @type {Grid}
      */
-    size?:number;
+    grid:Grid;
 
     /**
      * The values to start with

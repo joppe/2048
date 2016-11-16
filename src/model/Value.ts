@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
-import {ValueLiteralInterface} from './ValueLiteralInterface';
 import {Cell} from './Cell';
+import {ValueAttributesInterface} from './ValueAttributesInterface';
 
 const INITIAL_VALUE_DEVIATION:number = 0.8,
     MAX_INITIAL_VALUE:number = 4,
@@ -29,7 +29,7 @@ class Value extends Backbone.Model {
      *
      * @param {object} attributes
      */
-    constructor(attributes:ValueLiteralInterface) {
+    constructor(attributes:ValueAttributesInterface) {
         super(attributes);
 
         if (undefined === attributes.value) {
