@@ -19,7 +19,9 @@ class Game extends Backbone.Model {
     /**
      * @param {object} [attributes]
      */
-    initialize(attributes?:GameAttributesInterface):void {
+    constructor(attributes?:GameAttributesInterface) {
+        super(attributes);
+
         this.set('grid', new Grid({
             size: this.get('size')
         }));
