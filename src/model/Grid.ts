@@ -29,10 +29,10 @@ class Grid extends Backbone.Model {
 
         _.each(_.range(size), (row:number) => {
             _.each(_.range(size), (column:number) => {
-                cells.add({
+                cells.add(new Cell({
                     row,
                     column
-                });
+                }));
             });
         });
     }
