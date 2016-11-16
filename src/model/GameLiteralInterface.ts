@@ -1,7 +1,7 @@
 /**
- * @interface GameAttributesInterface
+ * @interface GameLiteralInterface
  */
-interface GameAttributesInterface {
+interface GameLiteralInterface {
     /**
      * The number of row and columns to use
      *
@@ -10,4 +10,4 @@ interface GameAttributesInterface {
     size?:number;
 }
 
-export {GameAttributesInterface};
+export {GameLiteralInterface};

@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 import {Grid} from './Grid';
-import {GameAttributesInterface} from './GameAttributesInterface';
+import {GameLiteralInterface} from './GameLiteralInterface';
 
 /**
  * @class Game
@@ -19,7 +19,7 @@ class Game extends Backbone.Model {
     /**
      * @param {object} [attributes]
      */
-    constructor(attributes?:GameAttributesInterface) {
+    constructor(attributes?:GameLiteralInterface) {
         super(attributes);
 
         this.set('grid', new Grid({
