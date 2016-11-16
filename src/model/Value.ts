@@ -1,5 +1,6 @@
 import Backbone from 'backbone';
-import {ValueAttributesInterface} from './ValueAttributesInterface';
+import {ValueLiteralInterface} from './ValueLiteralInterface';
+import {Cell} from './Cell';
 
 const INITIAL_VALUE_DEVIATION:number = 0.8,
     MAX_INITIAL_VALUE:number = 4,
@@ -10,12 +11,30 @@ const INITIAL_VALUE_DEVIATION:number = 0.8,
  */
 class Value extends Backbone.Model {
     /**
-     * Set the attribute "value" randomly.
+     * @returns {number}
      */
-    constructor(attributes:ValueAttributesInterface) {
+    get value():number {
+        return this.get('value');
+    }
+
+    /**
+     * @returns {Cell}
+     */
+    get cell():Cell {
+        return this.get('cell');
+    }
+
+    /**
+     * Set the attribute "value" randomly.
+     *
+     * @param {object} attributes
+     */
+    constructor(attributes:ValueLiteralInterface) {
         super(attributes);
 
-        this.set('value', Math.random() > INITIAL_VALUE_DEVIATION ? MAX_INITIAL_VALUE : MIN_INITIAL_VALUE);
+        if (undefined === attributes.value) {
+            this.set('value', Math.random() > INITIAL_VALUE_DEVIATION ? MAX_INITIAL_VALUE : MIN_INITIAL_VALUE);
+        }
     }
 }
 
