@@ -10,6 +10,20 @@ import {GridLiteralInterface} from './GridLiteralInterface';
  */
 class Grid extends Backbone.Model {
     /**
+     * @returns {number}
+     */
+    get size():number {
+        return this.get('size');
+    }
+
+    /**
+     * @returns {Cells}
+     */
+    get cells():Cells {
+        return this.get('cells');
+    }
+
+    /**
      * @returns {object}
      */
     defaults():Backbone.ObjectHash {
@@ -24,12 +38,9 @@ class Grid extends Backbone.Model {
     constructor(attributes:GridLiteralInterface) {
         super(attributes);
 
-        let size:number = this.get('size'),
-            cells:Cells = this.get('cells');
-
-        _.each(_.range(size), (row:number) => {
-            _.each(_.range(size), (column:number) => {
-                cells.add(new Cell({
+        _.each(_.range(this.size), (row:number) => {
+            _.each(_.range(this.size), (column:number) => {
+                this.cells.add(new Cell({
                     row,
                     column
                 }));
@@ -42,9 +53,7 @@ class Grid extends Backbone.Model {
      * @returns {Cell}
      */
     getCell(index:CellIndexInterface):Cell {
-        let cells:Cells = this.get('cells');
-
-        return cells.findWhere({
+        return this.cells.findWhere({
             row: index.row,
             column: index.column
         });
