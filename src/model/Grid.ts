@@ -3,6 +3,7 @@ import Backbone from 'backbone';
 import {Cells} from '../collection/Cells';
 import {Cell} from './Cell';
 import {CellIndexInterface} from './CellIndexInterface';
+import {GridLiteralInterface} from './GridLiteralInterface';
 
 /**
  * @class Grid
@@ -20,13 +21,11 @@ class Grid extends Backbone.Model {
     /**
      * Initialize the grid by creating the necessary cells.
      */
-    initialize():void {
+    constructor(attributes:GridLiteralInterface) {
+        super(attributes);
+
         let size:number = this.get('size'),
             cells:Cells = this.get('cells');
-
-        if (undefined === size) {
-            throw new Error('Could not create grid, size not defined.');
-        }
 
         _.each(_.range(size), (row:number) => {
             _.each(_.range(size), (column:number) => {
