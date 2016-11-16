@@ -1,6 +1,7 @@
 import Backbone from 'backbone';
 import {Grid} from './Grid';
 import {GameLiteralInterface} from './GameLiteralInterface';
+import {Values} from './../collection/Values';
 
 /**
  * @class Game
@@ -12,7 +13,8 @@ class Game extends Backbone.Model {
     defaults():Backbone.ObjectHash {
         return {
             score: 0,
-            size: 4
+            size: 4,
+            values: new Values()
         };
     }
 
