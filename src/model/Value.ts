@@ -33,8 +33,17 @@ class Value extends Backbone.Model {
         super(attributes);
 
         if (undefined === attributes.value) {
-            this.set('value', Math.random() > INITIAL_VALUE_DEVIATION ? MAX_INITIAL_VALUE : MIN_INITIAL_VALUE);
+            this.set('value', Value.generateValue());
         }
+    }
+
+    /**
+     * Create a random value.
+     *
+     * @returns {number}
+     */
+    static generateValue():number {
+        return Math.random() > INITIAL_VALUE_DEVIATION ? MAX_INITIAL_VALUE : MIN_INITIAL_VALUE;
     }
 }
 
