@@ -1,0 +1,2 @@
+- make it possible to provide initial values when game is created.
+- value validator added
