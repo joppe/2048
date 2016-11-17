@@ -33,7 +33,7 @@ jQuery(($:JQueryStatic) => {
             model: game
         });
 
-    $('.js-game').append(app.render().el);
+    $('.js-app').append(app.render().el);
 
     app.start();
 
