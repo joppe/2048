@@ -6,6 +6,8 @@ import {ValueLiteralInterface} from './ValueLiteralInterface';
 import {ValueAttributesInterface} from './ValueAttributesInterface';
 import {Value} from './Value';
 import {DirectionInterface} from './DirectionInterface';
+import {CellIndexInterface} from './CellIndexInterface';
+import {DirectionIterator} from '../iterator/DirectionIterator';
 
 /**
  * @class Game
@@ -91,10 +93,41 @@ class Game extends Backbone.Model {
     }
 
     /**
+     * Try to move a value to another cell
+     * Start with the cell that is the closest in the direction e.g. when moving to the left start with the most
+     * left value
+     *
+     * Vertical movement
+     * First loop over column index, then over row index
+     *
+     * Horizontal movement
+     * First loop over row index, then over column index
+     *
      * @param {object} direction
      * @returns {Game}
      */
     move(direction:DirectionInterface):Game {
+        let isVerticalMovement:boolean = (0 !== direction.top),
+            isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top),
+            outer:DirectionIterator = new DirectionIterator(
+                0,
+                this.size - 1,
+                1,
+                isVerticalMovement ? 'column' : 'row'
+            ),
+            inner:DirectionIterator = new DirectionIterator(
+                isIncrementalMovement ? 0 : this.size - 1,
+                isIncrementalMovement ? this.size - 1 : 0,
+                isIncrementalMovement ? 1 : -1,
+                isVerticalMovement ? 'row' : 'column'
+            );
+
+        for (let o of outer) {
+            for (let i of inner) {
+                window.console.log(`outer ${o} inner ${i}`);
+            }
+        }
+
         return this;
     }
 }
