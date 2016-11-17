@@ -60,6 +60,30 @@ class Grid extends Backbone.Model {
     }
 
     /**
+     * @param {Cell[]} exclude
+     * @returns {Cell}
+     */
+    getRandomCell(exclude?:Cell[]):Cell {
+        let cells:Cell[] = this.getCells(exclude);
+
+        if (0 === cells.length) {
+            throw new Error('There are no cells available');
+        }
+
+        return cells[_.random(cells.length - 1)]
+    }
+
+    /**
+     * @param {Cell[]} [exclude]
+     * @returns {Cell[]}
+     */
+    getCells(exclude:Cell[] = []):Cell[] {
+        return this.cells.filter((cell:Cell) => {
+            return false === _.contains(exclude, cell);
+        });
+    }
+
+    /**
      * @param {object} index
      * @returns {boolean}
      */

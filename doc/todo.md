@@ -1,4 +1,8 @@
 - ~~make it possible to provide initial values when game is created.~~
-- display a value
-- get random cell, excluding given cells
-- value validator added
+- ~~display a value~~
+- ~~get random cell, excluding given cells~~
+- keyboard
+- can move
+- move
+- grid size validator
+- value validator
