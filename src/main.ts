@@ -1,6 +1,6 @@
 import jQuery from 'jquery';
 import {Game} from './model/Game';
-import {Table} from './view/Table';
+import {App} from './view/App';
 
 jQuery(($:JQueryStatic) => {
     let game = Game.create({
@@ -29,13 +29,13 @@ jQuery(($:JQueryStatic) => {
                 }
             ]
         }),
-        table = new Table({
+        app = new App({
             model: game
         });
 
-    $('.js-game').append(table.render().el);
+    $('.js-game').append(app.render().el);
 
-    table.storeElementPositions();
+    app.start();
 
     window['game'] = game;
 });
