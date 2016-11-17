@@ -1,6 +1,9 @@
 import Backbone from 'backbone';
 import {Game} from './../model/Game';
 import {Table} from './Table';
+import {Value} from './../model/Value';
+import {Container} from './Container';
+import {ValueLiteralInterface} from '../model/ValueLiteralInterface';
 
 /**
  * @class App
@@ -19,6 +22,13 @@ class App extends Backbone.View<Game> {
     }
 
     /**
+     * Listen to changes.
+     */
+    initialize():void {
+        this.listenTo(this.model.vals, 'add', this.addValue.bind(this));
+    }
+
+    /**
      * @returns {App}
      */
     render():App {
@@ -32,10 +42,24 @@ class App extends Backbone.View<Game> {
     }
 
     /**
+     * @param {Value} value
+     */
+    addValue(value:Value):void {
+        let container:Container = new Container({
+            model: value
+        });
+
+        this.$el.append(container.render().el);
+    }
+
+    /**
+     * @params {object[]} [values]
      * @returns {App}
      */
-    start():App {
+    start(values?:ValueLiteralInterface[]):App {
         this.table.storeElementPositions();
+
+        this.model.addValues(values);
 
         return this;
     }

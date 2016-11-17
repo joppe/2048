@@ -1,5 +1,6 @@
 import Backbone from 'backbone';
 import {CellLiteralInterface} from './CellLiteralInterface';
+import {PositionInterface} from './PositionInterface';
 
 /**
  * @class Cell
@@ -17,6 +18,13 @@ class Cell extends Backbone.Model {
      */
     get column():number {
         return this.get('column');
+    }
+
+    /**
+     * @returns {{left:number, top:number}}
+     */
+    get position():PositionInterface {
+        return this.get('position');
     }
 
     /**

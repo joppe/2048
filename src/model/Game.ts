@@ -1,13 +1,10 @@
 import Backbone from 'backbone';
 import {Grid} from './Grid';
-import {GameLiteralInterface} from './GameLiteralInterface';
 import {Values} from './../collection/Values';
 import {GameAttributesInterface} from './GameAttributesInterface';
 import {ValueLiteralInterface} from './ValueLiteralInterface';
-import {Value} from './Value';
 import {ValueAttributesInterface} from './ValueAttributesInterface';
-
-const DEFAULT_SIZE:number = 4;
+import {Value} from './Value';
 
 /**
  * @class Game
@@ -49,6 +46,7 @@ class Game extends Backbone.Model {
     defaults():Backbone.ObjectHash {
         return {
             score: 0,
+            size: 4,
             vals: new Values()
         };
     }
@@ -58,61 +56,37 @@ class Game extends Backbone.Model {
      */
     constructor(attributes?:GameAttributesInterface) {
         super(attributes);
+
+        this.set('grid', new Grid({
+            size: this.size
+        }));
     }
 
     /**
-     * @param {object} gameLiteral
-     * @returns {object}
-     */
-    parse(gameLiteral:GameLiteralInterface):any {
-        let gameAttributes:any = {
-                size: DEFAULT_SIZE
-            };
-
-        if (undefined !== gameLiteral.size) {
-            gameAttributes.size = gameLiteral.size;
-        }
-
-        gameAttributes.grid = new Grid({
-            size: gameAttributes.size
-        });
-
-        if (undefined !== gameLiteral.vals) {
-            gameAttributes.vals = new Values();
-
-            gameLiteral.vals.forEach((valueLiteral:ValueLiteralInterface) => {
-                let cell = gameAttributes.grid.getCell(valueLiteral.index),
-                    valueAttributes:ValueAttributesInterface;
-
-                if (undefined === cell) {
-                    throw new Error(`Invalid cell index row: ${valueLiteral.index.row} column: ${valueLiteral.index.column}`);
-                }
-
-                valueAttributes = {
-                    cell
-                };
-
-                if (undefined !== valueLiteral.value) {
-                    valueAttributes.value = valueLiteral.value;
-                }
-
-                gameAttributes.vals.add(new Value(valueAttributes));
-            });
-        }
-
-        return gameAttributes;
-    }
-
-    /**
-     * @param {object} raw
+     * @param {object[]} values
      * @returns {Game}
      */
-    static create(raw:GameLiteralInterface):Game {
-        let game = new Game();
+    addValues(values:ValueLiteralInterface[]):Game {
+        values.forEach((valueLiteral:ValueLiteralInterface) => {
+            let cell = this.grid.getCell(valueLiteral.index),
+                valueAttributes:ValueAttributesInterface;
 
-        game.set(game.parse(raw));
+            if (undefined === cell) {
+                throw new Error(`Invalid cell index row: ${valueLiteral.index.row} column: ${valueLiteral.index.column}`);
+            }
 
-        return game;
+            valueAttributes = {
+                cell
+            };
+
+            if (undefined !== valueLiteral.value) {
+                valueAttributes.value = valueLiteral.value;
+            }
+
+            this.vals.add(new Value(valueAttributes));
+        });
+
+        return this;
     }
 }
 
