@@ -36,16 +36,16 @@ class Keyboard extends Backbone.View<Game> {
         if (KEYS.indexOf(pressedKey) !== -1) {
             switch (pressedKey) {
                 case KEY_RIGHT:
-                    direction.left = 1;
-                    break;
-                case KEY_LEFT:
                     direction.left = -1;
                     break;
+                case KEY_LEFT:
+                    direction.left = 1;
+                    break;
                 case KEY_TOP:
-                    direction.top = -1;
+                    direction.top = 1;
                     break;
                 case KEY_BOTTOM:
-                    direction.top = 1;
+                    direction.top = -1;
                     break;
             }
 
