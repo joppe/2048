@@ -70,7 +70,7 @@ class Grid extends Backbone.Model {
             throw new Error('There are no cells available');
         }
 
-        return cells[_.random(cells.length - 1)]
+        return cells[_.random(cells.length - 1)];
     }
 
     /**
