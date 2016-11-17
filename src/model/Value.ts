@@ -38,6 +38,14 @@ class Value extends Backbone.Model {
     }
 
     /**
+     * @param {Value} value
+     * @returns {boolean}
+     */
+    isConsumable(value:Value):boolean {
+        return value.value === this.value;
+    }
+
+    /**
      * Create a random value.
      *
      * @returns {number}
