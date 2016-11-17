@@ -1,6 +1,3 @@
-import {Values} from './../collection/Values';
-import {Grid} from './Grid';
-
 /**
  * @interface GameAttributesInterface
  */
