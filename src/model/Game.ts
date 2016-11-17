@@ -5,6 +5,7 @@ import {GameAttributesInterface} from './GameAttributesInterface';
 import {ValueLiteralInterface} from './ValueLiteralInterface';
 import {ValueAttributesInterface} from './ValueAttributesInterface';
 import {Value} from './Value';
+import {DirectionInterface} from './DirectionInterface';
 
 /**
  * @class Game
@@ -86,6 +87,14 @@ class Game extends Backbone.Model {
             this.vals.add(new Value(valueAttributes));
         });
 
+        return this;
+    }
+
+    /**
+     * @param {object} direction
+     * @returns {Game}
+     */
+    move(direction:DirectionInterface):Game {
         return this;
     }
 }
