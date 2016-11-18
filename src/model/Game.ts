@@ -124,24 +124,37 @@ class Game extends Backbone.Model {
     canMove():boolean {
         let isVerticalMovement:boolean = true,
             isIncrementalMovement:boolean = true,
-            cellIndexes:CellIndexIterator = new CellIndexIterator(this.size, isVerticalMovement, isIncrementalMovement),
-            merge:Value;
+            cellIndexes:CellIndexIterator = new CellIndexIterator(this.size, isVerticalMovement, isIncrementalMovement);
 
         for (let cellIndex of cellIndexes) {
-            let value:Value = this.vals.findByCellIndex(cellIndex);
+            let value:Value = this.vals.findByCellIndex(cellIndex),
+                right:Value,
+                bottom:Value;
 
             if (undefined === value) {
                 return true;
             }
 
-            if (
-                (undefined !== merge) &&
-                (merge.cell.column === value.cell.column) &&
-                (merge.isConsumable(value))
-            ) {
-                return true;
-            } else {
-                merge = value;
+            if (cellIndex.column < this.size - 1) {
+                right = this.vals.findByCellIndex({
+                    column: cellIndex.column + 1,
+                    row: cellIndex.row
+                });
+
+                if (undefined === right || value.isConsumable(right)) {
+                    return true;
+                }
+            }
+
+            if (cellIndex.row < this.size - 1) {
+                bottom = this.vals.findByCellIndex({
+                    column: cellIndex.column,
+                    row: cellIndex.row + 1
+                });
+
+                if (undefined === bottom || value.isConsumable(bottom)) {
+                    return true;
+                }
             }
         }
 
