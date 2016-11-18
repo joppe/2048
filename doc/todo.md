@@ -2,8 +2,8 @@
 - ~~display a value~~
 - ~~get random cell, excluding given cells~~
 - ~~keyboard~~
-- DirectionIterator consist of AxisIterator
-- can move
+- ~~CellIndexIterator consist of RangeIterator~~
+- ~~can move~~
 - move
 - grid size validator
 - value validator

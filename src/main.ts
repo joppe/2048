@@ -15,24 +15,115 @@ jQuery(($:JQueryStatic) => {
     app.start([
         {
             index: {
+                row: 0,
+                column: 0
+            },
+            value: 2
+        },
+        {
+            index: {
+                row: 0,
+                column: 1
+            },
+            value: 4
+        },
+        {
+            index: {
+                row: 0,
+                column: 2
+            },
+            value: 8
+        },
+        {
+            index: {
+                row: 0,
+                column: 3
+            },
+            value: 2
+        },
+        {
+            index: {
+                row: 1,
+                column: 0
+            },
+            value: 16
+        },
+        {
+            index: {
                 row: 1,
                 column: 1
             },
-            value: 16
+            value: 32
+        },
+        {
+            index: {
+                row: 1,
+                column: 2
+            },
+            value: 64
+        },
+        {
+            index: {
+                row: 1,
+                column: 3
+            },
+            value: 128
+        },
+        {
+            index: {
+                row: 2,
+                column: 0
+            },
+            value: 256
+        },
+        {
+            index: {
+                row: 2,
+                column: 1
+            },
+            value: 512
+        },
+        {
+            index: {
+                row: 2,
+                column: 2
+            },
+            value: 1024
+        },
+        {
+            index: {
+                row: 2,
+                column: 3
+            },
+            value: 2048
+        },
+        {
+            index: {
+                row: 3,
+                column: 0
+            },
+            value: 4
         },
         {
             index: {
                 row: 3,
                 column: 1
             },
-            value: 4
+            value: 8
         },
         {
             index: {
                 row: 3,
                 column: 2
             },
-            value: 4
+            value: 16
+        },
+        {
+            index: {
+                row: 3,
+                column: 3
+            },
+            value: 32
         }
     ]);
 
