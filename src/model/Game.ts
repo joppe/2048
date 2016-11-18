@@ -7,7 +7,7 @@ import {ValueAttributesInterface} from './ValueAttributesInterface';
 import {Value} from './Value';
 import {DirectionInterface} from './DirectionInterface';
 import {CellIndexInterface} from './CellIndexInterface';
-import {DirectionIterator} from '../iterator/DirectionIterator';
+import {CellIndexIterator} from '../iterator/CellIndexIterator';
 
 /**
  * @class Game
@@ -109,26 +109,43 @@ class Game extends Backbone.Model {
     move(direction:DirectionInterface):Game {
         let isVerticalMovement:boolean = (0 !== direction.top),
             isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top),
-            outer:DirectionIterator = new DirectionIterator(
-                0,
-                this.size - 1,
-                1,
-                isVerticalMovement ? 'column' : 'row'
-            ),
-            inner:DirectionIterator = new DirectionIterator(
-                isIncrementalMovement ? 0 : this.size - 1,
-                isIncrementalMovement ? this.size - 1 : 0,
-                isIncrementalMovement ? 1 : -1,
-                isVerticalMovement ? 'row' : 'column'
-            );
+            cellIndexes:CellIndexIterator = new CellIndexIterator(this.size, isVerticalMovement, isIncrementalMovement);
 
-        for (let o of outer) {
-            for (let i of inner) {
-                window.console.log(`outer ${o} inner ${i}`);
-            }
+        for (let cellIndex of cellIndexes) {
+            window.console.log(cellIndex);
         }
 
         return this;
+    }
+
+    /**
+     * @returns {boolean}
+     */
+    canMove():boolean {
+        let isVerticalMovement:boolean = true,
+            isIncrementalMovement:boolean = true,
+            cellIndexes:CellIndexIterator = new CellIndexIterator(this.size, isVerticalMovement, isIncrementalMovement),
+            merge:Value;
+
+        for (let cellIndex of cellIndexes) {
+            let value:Value = this.vals.findByCellIndex(cellIndex);
+
+            if (undefined === value) {
+                return true;
+            }
+
+            if (
+                (undefined !== merge) &&
+                (merge.cell.column !== value.cell.column) &&
+                (merge.isConsumable(value))
+            ) {
+                return true;
+            } else {
+                merge = value;
+            }
+        }
+
+        return false;
     }
 }
 
