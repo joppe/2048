@@ -42,7 +42,7 @@ class Value extends Backbone.Model {
      * @returns {boolean}
      */
     isConsumable(value:Value):boolean {
-        return value.value === this.value;
+        return undefined !== value && value.value === this.value;
     }
 
     /**
