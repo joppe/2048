@@ -136,7 +136,7 @@ class Game extends Backbone.Model {
 
             if (
                 (undefined !== merge) &&
-                (merge.cell.column !== value.cell.column) &&
+                (merge.cell.column === value.cell.column) &&
                 (merge.isConsumable(value))
             ) {
                 return true;
