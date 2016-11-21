@@ -8,6 +8,8 @@ import {Value} from './Value';
 import {DirectionInterface} from './DirectionInterface';
 import {CellIndexInterface} from './CellIndexInterface';
 import {CellIndexIterator} from '../iterator/CellIndexIterator';
+import {RangeIterator} from '../iterator/RangeIterator';
+import {AxisIterator} from '../iterator/AxisIterator';
 
 /**
  * @class Game
@@ -109,10 +111,13 @@ class Game extends Backbone.Model {
     move(direction:DirectionInterface):Game {
         let isVerticalMovement:boolean = (0 !== direction.top),
             isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top),
-            cellIndexes:CellIndexIterator = new CellIndexIterator(this.size, isVerticalMovement, isIncrementalMovement);
+            outer:AxisIterator = new AxisIterator(isVerticalMovement ? 'column' : 'row', this.size - 1, false),
+            inner:AxisIterator = new AxisIterator(isVerticalMovement ? 'row' : 'column', this.size -1, !isIncrementalMovement);
 
-        for (let cellIndex of cellIndexes) {
-            window.console.log(cellIndex);
+        for (let o of outer) {
+            for (let i of inner) {
+                window.console.log(`outer ${o} inner ${i}`);
+            }
         }
 
         return this;
