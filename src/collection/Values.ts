@@ -19,7 +19,7 @@ class Values extends Backbone.Collection<Value> {
      * @param {object} index
      * @returns {Value}
      */
-    findByCellIndex(index:CellIndexInterface):Value {
+    getByCellIndex(index:CellIndexInterface):Value {
         return this.find((value:Value) => {
             return value.cell.column === index.column && value.cell.row === index.row;
         });
@@ -32,7 +32,7 @@ class Values extends Backbone.Collection<Value> {
      * @param {number} size
      * @returns {Value}
      */
-    findNext(index:CellIndexInterface, axis:string, increment:number, size:number) {
+    findNextOnAxis(index:CellIndexInterface, axis:string, increment:number, size:number) {
         let range:RangeIterator = new RangeIterator(
                 increment > 0 ? index[axis] : size,
                 increment > 0 ? size : index[axis],
@@ -47,7 +47,7 @@ class Values extends Backbone.Collection<Value> {
 
             newIndex[axis] = i;
 
-            value = this.findByCellIndex(newIndex as CellIndexInterface);
+            value = this.getByCellIndex(newIndex as CellIndexInterface);
 
             if (undefined !== value) {
                 return value;

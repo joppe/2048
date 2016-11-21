@@ -127,7 +127,7 @@ class Game extends Backbone.Model {
             cellIndexes:CellIndexIterator = new CellIndexIterator(this.size, isVerticalMovement, isIncrementalMovement);
 
         for (let cellIndex of cellIndexes) {
-            let value:Value = this.vals.findByCellIndex(cellIndex),
+            let value:Value = this.vals.getByCellIndex(cellIndex),
                 right:Value,
                 bottom:Value;
 
@@ -136,7 +136,7 @@ class Game extends Backbone.Model {
             }
 
             if (cellIndex.column < this.size - 1) {
-                right = this.vals.findByCellIndex({
+                right = this.vals.getByCellIndex({
                     column: cellIndex.column + 1,
                     row: cellIndex.row
                 });
@@ -147,7 +147,7 @@ class Game extends Backbone.Model {
             }
 
             if (cellIndex.row < this.size - 1) {
-                bottom = this.vals.findByCellIndex({
+                bottom = this.vals.getByCellIndex({
                     column: cellIndex.column,
                     row: cellIndex.row + 1
                 });
