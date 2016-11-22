@@ -115,7 +115,25 @@ class Game extends Backbone.Model {
             inner:AxisIterator = new AxisIterator(isVerticalMovement ? 'row' : 'column', this.size -1, !isIncrementalMovement);
 
         for (let o of outer) {
+            let mergeCandidate:Value;
+
             for (let i of inner) {
+                let index:CellIndexInterface = {
+                        [outer.axis]: o,
+                        [inner.axis]: i
+                    } as CellIndexInterface,
+                    value:Value = this.vals.getByCellIndex(index);
+
+                if (undefined === value) {
+                    continue;
+                }
+
+                if (undefined !== mergeCandidate && mergeCandidate.isMergeable(value)) {
+                    mergeCandidate.merge = value;
+                } else {
+                    mergeCandidate = value;
+
+                }
                 window.console.log(`outer ${o} inner ${i}`);
             }
         }
@@ -146,7 +164,7 @@ class Game extends Backbone.Model {
                     row: cellIndex.row
                 });
 
-                if (undefined === right || value.isConsumable(right)) {
+                if (undefined === right || value.isMergeable(right)) {
                     return true;
                 }
             }
@@ -157,7 +175,7 @@ class Game extends Backbone.Model {
                     row: cellIndex.row + 1
                 });
 
-                if (undefined === bottom || value.isConsumable(bottom)) {
+                if (undefined === bottom || value.isMergeable(bottom)) {
                     return true;
                 }
             }

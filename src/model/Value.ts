@@ -25,6 +25,13 @@ class Value extends Backbone.Model {
     }
 
     /**
+     * @param {Value} value
+     */
+    set merge(value:Value) {
+        this.set('merge', value);
+    }
+
+    /**
      * Set the attribute "value" randomly.
      *
      * @param {object} attributes
@@ -41,7 +48,7 @@ class Value extends Backbone.Model {
      * @param {Value} value
      * @returns {boolean}
      */
-    isConsumable(value:Value):boolean {
+    isMergeable(value:Value):boolean {
         return undefined !== value && value.value === this.value;
     }
 
