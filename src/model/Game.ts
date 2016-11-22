@@ -112,7 +112,11 @@ class Game extends Backbone.Model {
     move(direction:DirectionInterface):Game {
         let isVerticalMovement:boolean = (0 !== direction.top),
             isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top),
-            values:ValueIterator = new ValueIterator(this.vals, isVerticalMovement ? 'column' : 'row', this.size, !isIncrementalMovement);
+            values:ValueIterator = new ValueIterator(this.vals, isVerticalMovement ? 'column' : 'row', !isIncrementalMovement);
+
+        for (let value of values) {
+            window.console.log(`column: ${value.cell.column}; row: ${value.cell.row}`);
+        }
 
         return this;
     }
