@@ -10,6 +10,7 @@ import {CellIndexInterface} from './CellIndexInterface';
 import {CellIndexIterator} from '../iterator/CellIndexIterator';
 import {RangeIterator} from '../iterator/RangeIterator';
 import {AxisIterator} from '../iterator/AxisIterator';
+import {ValueIterator} from '../iterator/ValueIterator';
 
 /**
  * @class Game
@@ -111,32 +112,7 @@ class Game extends Backbone.Model {
     move(direction:DirectionInterface):Game {
         let isVerticalMovement:boolean = (0 !== direction.top),
             isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top),
-            outer:AxisIterator = new AxisIterator(isVerticalMovement ? 'column' : 'row', this.size - 1, false),
-            inner:AxisIterator = new AxisIterator(isVerticalMovement ? 'row' : 'column', this.size -1, !isIncrementalMovement);
-
-        for (let o of outer) {
-            let mergeCandidate:Value;
-
-            for (let i of inner) {
-                let index:CellIndexInterface = {
-                        [outer.axis]: o,
-                        [inner.axis]: i
-                    } as CellIndexInterface,
-                    value:Value = this.vals.getByCellIndex(index);
-
-                if (undefined === value) {
-                    continue;
-                }
-
-                if (undefined !== mergeCandidate && mergeCandidate.isMergeable(value)) {
-                    mergeCandidate.merge = value;
-                } else {
-                    mergeCandidate = value;
-
-                }
-                window.console.log(`outer ${o} inner ${i}`);
-            }
-        }
+            values:ValueIterator = new ValueIterator(this.vals, isVerticalMovement ? 'column' : 'row', this.size, !isIncrementalMovement);
 
         return this;
     }
