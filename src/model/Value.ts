@@ -32,6 +32,13 @@ class Value extends Backbone.Model {
     }
 
     /**
+     * @param {Cell} cell
+     */
+    set cell(cell:Cell) {
+        this.set('cell', cell);
+    }
+
+    /**
      * Set the attribute "value" randomly.
      *
      * @param {object} attributes

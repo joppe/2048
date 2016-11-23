@@ -112,10 +112,39 @@ class Game extends Backbone.Model {
     move(direction:DirectionInterface):Game {
         let isVerticalMovement:boolean = (0 !== direction.top),
             isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top),
-            values:ValueIterator = new ValueIterator(this.vals, isVerticalMovement ? 'column' : 'row', !isIncrementalMovement);
+            groupBy:string = isVerticalMovement ? 'column' : 'row',
+            increment:number = isIncrementalMovement ? 1 : -1,
+            start:number = isIncrementalMovement ? this.size - 1 : 0,
+            values:ValueIterator = new ValueIterator(this.vals, groupBy, !isIncrementalMovement),
+            mergeCandidate:Value;
 
         for (let value of values) {
-            window.console.log(`column: ${value.cell.column}; row: ${value.cell.row}`);
+            if (undefined === mergeCandidate || mergeCandidate.cell.get(groupBy) !== value.cell.get(groupBy)) {
+                window.console.log('1');
+                window.console.log('row', isVerticalMovement ? start : value.cell.row);
+                window.console.log('column', isVerticalMovement ? value.cell.column : start);
+                value.cell = this.grid.getCell({
+                    row: isVerticalMovement ? start : value.cell.row,
+                    column: isVerticalMovement ? value.cell.column : start
+                } as CellIndexInterface);
+                window.console.log(value.cell);
+
+                mergeCandidate = value;
+                window.console.log(mergeCandidate.cell);
+            } else if (mergeCandidate.isMergeable(value)) {
+                window.console.log('2');
+                mergeCandidate.merge = value;
+            } else {
+                window.console.log('3');
+                value.cell = this.grid.getCell({
+                    row: isVerticalMovement ? mergeCandidate.cell.row + increment : mergeCandidate.cell.row,
+                    column: isVerticalMovement ? mergeCandidate.cell.column : mergeCandidate.cell.column + increment
+                } as CellIndexInterface);
+                window.console.log('row', isVerticalMovement ? mergeCandidate.cell.row + increment : mergeCandidate.cell.row);
+                window.console.log('column', isVerticalMovement ? mergeCandidate.cell.column : mergeCandidate.cell.column + increment);
+
+                mergeCandidate = value;
+            }
         }
 
         return this;
