@@ -8,9 +8,8 @@ import {Value} from './Value';
 import {DirectionInterface} from './DirectionInterface';
 import {CellIndexInterface} from './CellIndexInterface';
 import {CellIndexIterator} from '../iterator/CellIndexIterator';
-import {RangeIterator} from '../iterator/RangeIterator';
-import {AxisIterator} from '../iterator/AxisIterator';
 import {ValueIterator} from '../iterator/ValueIterator';
+import {Cell} from './Cell';
 
 /**
  * @class Game
@@ -116,11 +115,14 @@ class Game extends Backbone.Model {
             increment:number = isIncrementalMovement ? 1 : -1,
             start:number = isIncrementalMovement ? 0 : this.size - 1,
             values:ValueIterator = new ValueIterator(this.vals, groupBy, !isIncrementalMovement),
-            mergeCandidate:Value;
+            mergeCandidate:Value,
+            updateCount:number = 0;
 
         for (let value of values) {
+            let cell:Cell;
+
             if (undefined === mergeCandidate || mergeCandidate.cell.get(groupBy) !== value.cell.get(groupBy)) {
-                value.cell = this.grid.getCell({
+                cell = this.grid.getCell({
                     row: isVerticalMovement ? start : value.cell.row,
                     column: isVerticalMovement ? value.cell.column : start
                 } as CellIndexInterface);
@@ -130,9 +132,11 @@ class Game extends Backbone.Model {
             } else if (mergeCandidate.isMergeable(value)) {
                 mergeCandidate.merge = value;
 
+                updateCount += 1;
+
                 window.console.log(`merge: ${value}`);
             } else {
-                value.cell = this.grid.getCell({
+                cell = this.grid.getCell({
                     row: isVerticalMovement ? mergeCandidate.cell.row + increment : mergeCandidate.cell.row,
                     column: isVerticalMovement ? mergeCandidate.cell.column : mergeCandidate.cell.column + increment
                 } as CellIndexInterface);
@@ -141,7 +145,17 @@ class Game extends Backbone.Model {
 
                 window.console.log(`next: ${value}`);
             }
+
+            if (undefined !== cell && value.cell !== cell) {
+                value.cell = cell;
+
+                updateCount += 1;
+            }
         }
+
+        this.set('updateCount', updateCount, {
+            trigger: true
+        });
 
         return this;
     }
