@@ -12,6 +12,7 @@ jQuery(($:JQueryStatic) => {
 
     $('.js-app').append(app.render().el);
 
+    /*/
     app.start([
         {
             index: {
@@ -124,6 +125,24 @@ jQuery(($:JQueryStatic) => {
                 column: 3
             },
             value: 32
+        }
+    ]);
+    /**/
+
+    app.start([
+        {
+            index: {
+                row: 0,
+                column: 0
+            },
+            value: 2
+        },
+        {
+            index: {
+                row: 1,
+                column: 0
+            },
+            value: 2
         }
     ]);
 
