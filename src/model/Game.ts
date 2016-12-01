@@ -114,36 +114,32 @@ class Game extends Backbone.Model {
             isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top),
             groupBy:string = isVerticalMovement ? 'column' : 'row',
             increment:number = isIncrementalMovement ? 1 : -1,
-            start:number = isIncrementalMovement ? this.size - 1 : 0,
+            start:number = isIncrementalMovement ? 0 : this.size - 1,
             values:ValueIterator = new ValueIterator(this.vals, groupBy, !isIncrementalMovement),
             mergeCandidate:Value;
 
         for (let value of values) {
             if (undefined === mergeCandidate || mergeCandidate.cell.get(groupBy) !== value.cell.get(groupBy)) {
-                window.console.log('1');
-                window.console.log('row', isVerticalMovement ? start : value.cell.row);
-                window.console.log('column', isVerticalMovement ? value.cell.column : start);
                 value.cell = this.grid.getCell({
                     row: isVerticalMovement ? start : value.cell.row,
                     column: isVerticalMovement ? value.cell.column : start
                 } as CellIndexInterface);
-                window.console.log(value.cell);
+                window.console.log(`new axis: ${value}`);
 
                 mergeCandidate = value;
-                window.console.log(mergeCandidate.cell);
             } else if (mergeCandidate.isMergeable(value)) {
-                window.console.log('2');
                 mergeCandidate.merge = value;
+
+                window.console.log(`merge: ${value}`);
             } else {
-                window.console.log('3');
                 value.cell = this.grid.getCell({
                     row: isVerticalMovement ? mergeCandidate.cell.row + increment : mergeCandidate.cell.row,
                     column: isVerticalMovement ? mergeCandidate.cell.column : mergeCandidate.cell.column + increment
                 } as CellIndexInterface);
-                window.console.log('row', isVerticalMovement ? mergeCandidate.cell.row + increment : mergeCandidate.cell.row);
-                window.console.log('column', isVerticalMovement ? mergeCandidate.cell.column : mergeCandidate.cell.column + increment);
 
                 mergeCandidate = value;
+
+                window.console.log(`next: ${value}`);
             }
         }
 
