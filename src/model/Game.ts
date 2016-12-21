@@ -8,7 +8,7 @@ import {Value} from './Value';
 import {DirectionInterface} from './DirectionInterface';
 import {CellIndexInterface} from './CellIndexInterface';
 import {CellIndexIterator} from '../iterator/CellIndexIterator';
-import {ValueIterator} from '../iterator/ValueIterator';
+import {ValueIterator} from './../iterator/ValueIterator';
 import {Cell} from './Cell';
 
 /**
@@ -94,6 +94,19 @@ class Game extends Backbone.Model {
         return this;
     }
 
+    handleMove(direction:DirectionInterface):void {
+        /**
+         * call move
+         * are there any values moved?
+         * -> no, do nothing
+         * -> yes, trigger animate
+         * set the animateCount (equal to the values moved)
+         * there must be a listener that checks if animateCount is changed, when 0 animation is finished
+         * when the animation is finished create a new value, if that is not possible the game is finished
+         * check if a value can be moved, if not then the game is finished
+         */
+    }
+
     /**
      * Try to move a value to another cell
      * Start with the cell that is the closest in the direction e.g. when moving to the left start with the most
@@ -106,9 +119,9 @@ class Game extends Backbone.Model {
      * First loop over row index, then over column index
      *
      * @param {object} direction
-     * @returns {Game}
+     * @returns {number}
      */
-    move(direction:DirectionInterface):Game {
+    private move(direction:DirectionInterface):number {
         let isVerticalMovement:boolean = (0 !== direction.top),
             isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top),
             groupBy:string = isVerticalMovement ? 'column' : 'row',
@@ -153,17 +166,13 @@ class Game extends Backbone.Model {
             }
         }
 
-        this.set('updateCount', updateCount, {
-            trigger: true
-        });
-
-        return this;
+        return updateCount;
     }
 
     /**
      * @returns {boolean}
      */
-    canMove():boolean {
+    private canMove():boolean {
         let isVerticalMovement:boolean = true,
             isIncrementalMovement:boolean = true,
             cellIndexes:CellIndexIterator = new CellIndexIterator(this.size, isVerticalMovement, isIncrementalMovement);
