@@ -62,35 +62,25 @@ III.
 +-+-+-+-+
 ```
 
-The available values must be grouped by row. When moving to the right, the first value that must be moved is the one at 
-the right. Because of this all the values in a row must be ordered by column descending.
-The idea is that we want to merge two values, so there is variable `mergeCandidate`, this will be the most right value 
-that is already moved.
-Iterate over the values in the columns.
+Cycle
 
-I.
-The first value must be moved.
-The `mergeCandidate` is `undefined`. Because of this the new position must be the most right position. The moved value 
-becomes the `mergeCandidate`.
+- guard
+    - check if is animating (animationCount > 0), if true stop otherwise proceed
+- direction (from state model)
+    - if direction is defined, goto move
+- appear
+    - get random empty cell
+    - create new value
 
-II.
-The second value must be moved.
-Check if the value is mergable (*) with the `mergeCandidate`. The value get's a new position (the position of the 
-`mergeCandidate`) and a property that it will `dissolve`. The `mergeCandidate` get's a new value (the square of the
-value) and a property that it is `updated`.
- 
-III.
-The third value must be moved.
-Check if the value is mergable (*) with the `mergeCandidate`. The value becomes the new `mergeCandidate` and get's the 
-position next to the old `mergeCandidate` (column - 1).
+Move
 
-* mergable
-Check if the value is already updated, if so return false.
-Check if the values are the same, if so return true.
-Return false
+- check can move, if false stop
+- move
+    - set animationCount
+    - trigger animation
 
-Use a `stage` mechanism to set the values of an object (Value) but do not set them with `set` so the `change` events
-wont't be triggered.
-Use `commit` to set the staged values.
+Listen:animationFinished
 
-First apply the positions, then apply the new values. After that trigger the cycle.
+- decrement animationCount
+
+
