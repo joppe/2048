@@ -2,7 +2,8 @@ import * as Backbone from 'backbone';
 import {Value} from './../model/Value';
 import {ValueAttributesInterface} from './../model/ValueAttributesInterface';
 import {CellIndexInterface} from './../model/CellIndexInterface';
-import {RangeIterator} from '../iterator/RangeIterator';
+import {RangeIterator} from './../iterator/RangeIterator';
+import {Cell} from './../model/Cell';
 
 /**
  * @class Values
@@ -13,6 +14,15 @@ class Values extends Backbone.Collection<Value> {
      */
     get model():{new(attributes:ValueAttributesInterface):Value} {
         return Value;
+    }
+
+    /**
+     * @returns {Cell[]}
+     */
+    getCells():Cell[] {
+        return this.map((value:Value) => {
+            return value.cell;
+        });
     }
 
     /**

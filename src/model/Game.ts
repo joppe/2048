@@ -46,13 +46,30 @@ class Game extends Backbone.Model {
     }
 
     /**
+     * @returns {number}
+     */
+    get animationCount():number {
+        return this.get('animationCount');
+    }
+
+    /**
+     * @param {number} count
+     */
+    set animationCount(count:number) {
+        this.set('animationCount', count);
+
+        this.cycle();
+    }
+
+    /**
      * @returns {object}
      */
     defaults():Backbone.ObjectHash {
         return {
             score: 0,
             size: 4,
-            vals: new Values()
+            vals: new Values(),
+            finished: false
         };
     }
 
@@ -90,6 +107,60 @@ class Game extends Backbone.Model {
 
             this.vals.add(new Value(valueAttributes));
         });
+
+        return this;
+    }
+
+    /**
+     * @returns {Game}
+     */
+    decrementAnimationCount():Game {
+        if (this.animationCount <= 0) {
+            throw new Error(`Cannot decrement animationCount, count is ${this.animationCount}`);
+        }
+
+        this.animationCount -= 1;
+
+        return this;
+    }
+
+    /**
+     * @param {object} [direction]
+     * @returns {Game}
+     */
+    cycle(direction?:DirectionInterface):Game {
+        // guard: don't do anything when the game is animating
+        if (this.animationCount > 0) {
+            return;
+        }
+
+        if (undefined !== direction) {
+            this.move(direction);
+        } else {
+            this.appear();
+        }
+
+        return this;
+    }
+
+    /**
+     * @returns {Game}
+     */
+    appear():Game {
+        /**
+         * get random empty cell
+         * create new value
+         */
+        let randomCell = this.grid.getRandomCell(this.vals.getCells());
+
+        if (undefined === randomCell) {
+            this.set('finished', true);
+            return;
+        }
+
+        this.vals.add(new Value({
+            cell: randomCell
+        }));
 
         return this;
     }
@@ -153,9 +224,8 @@ class Game extends Backbone.Model {
             }
         }
 
-        this.set('updateCount', updateCount, {
-            trigger: true
-        });
+        this.animationCount = updateCount;
+        this.trigger('animate:start');
 
         return this;
     }

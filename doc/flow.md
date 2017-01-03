@@ -74,13 +74,13 @@ Cycle
 
 Move
 
-- check can move, if false stop
+- check if can move, if false stop
 - move
     - set animationCount
     - trigger animation
 
-Listen:animationFinished
-
-- decrement animationCount
+Value
+- animate
+    - when finished decrement animationCount of game
 
 
