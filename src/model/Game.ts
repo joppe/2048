@@ -7,8 +7,8 @@ import {ValueAttributesInterface} from './ValueAttributesInterface';
 import {Value} from './Value';
 import {DirectionInterface} from './DirectionInterface';
 import {CellIndexInterface} from './CellIndexInterface';
-import {CellIndexIterator} from '../iterator/CellIndexIterator';
-import {ValueIterator} from '../iterator/ValueIterator';
+import {CellIndexIterator} from './../iterator/CellIndexIterator';
+import {ValueIterator} from './../iterator/ValueIterator';
 import {Cell} from './Cell';
 
 /**
