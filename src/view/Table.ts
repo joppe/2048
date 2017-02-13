@@ -1,5 +1,6 @@
 import * as _ from 'underscore';
 import * as Backbone from 'backbone';
+import * as jQuery from 'jquery';
 import {Game} from '../model/Game';
 import {Grid} from '../model/Grid';
 import {Cell} from '../model/Cell';

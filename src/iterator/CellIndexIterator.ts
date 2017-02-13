@@ -1,5 +1,6 @@
 import {RangeIterator} from './RangeIterator';
 import {CellIndexInterface} from '../model/CellIndexInterface';
+
 /**
  * @class CellIndexIterator
  */
@@ -50,7 +51,11 @@ class CellIndexIterator implements Iterable<CellIndexInterface> {
      */
     public next():IteratorResult<CellIndexInterface> {
         let outer:IteratorResult<number> = this._outerIterator.current(),
-            inner:IteratorResult<number> = this._innerIterator.next();
+            inner:IteratorResult<number> = this._innerIterator.next(),
+            value:CellIndexInterface = {
+                row: 0,
+                column: 0
+            };
 
         // If the inner is done, go to the next outer
         if (true === inner.done) {
@@ -59,16 +64,16 @@ class CellIndexIterator implements Iterable<CellIndexInterface> {
             inner = this._innerIterator.next();
         }
 
+        value[this._outerProperty] = outer.value;
+        value[this._innerProperty] = inner.value;
+
         if (true === outer.done) {
             return <IteratorResult<CellIndexInterface>>{
                 done: true
             };
         } else {
             return <IteratorResult<CellIndexInterface>>{
-                value: {
-                    [this._outerProperty]: outer.value,
-                    [this._innerProperty]: inner.value
-                } as CellIndexInterface,
+                value,
                 done: false
             };
         }
