@@ -48,14 +48,12 @@ class Values extends Backbone.Collection<Value> {
                 increment > 0 ? size : index[axis],
                 increment
             ),
-            newIndex = {
-                ['row' === axis ? 'column' : 'row']: index['row' === axis ? 'column' : 'row']
-            };
+            newIndex:CellIndexInterface = {...index};
 
         for (let i in range) {
             let value:Value;
 
-            newIndex[axis] = i;
+            newIndex[axis] = Number(i);
 
             value = this.getByCellIndex(newIndex as CellIndexInterface);
 

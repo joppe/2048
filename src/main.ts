@@ -1,4 +1,4 @@
-import jQuery from 'jquery';
+import * as jQuery from 'jquery';
 import {Game} from './model/Game';
 import {App} from './view/App';
 

@@ -1,4 +1,5 @@
-import Backbone from 'backbone';
+import * as _ from 'underscore';
+import * as Backbone from 'backbone';
 import {Game} from '../model/Game';
 import {Grid} from '../model/Grid';
 import {Cell} from '../model/Cell';

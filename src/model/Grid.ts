@@ -1,5 +1,5 @@
-import _ from 'underscore';
-import Backbone from 'backbone';
+import * as _ from 'underscore';
+import * as Backbone from 'backbone';
 import {Cells} from '../collection/Cells';
 import {Cell} from './Cell';
 import {CellIndexInterface} from './CellIndexInterface';

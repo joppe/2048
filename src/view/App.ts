@@ -1,5 +1,5 @@
-import jQuery from 'jquery';
-import Backbone from 'backbone';
+import * as jQuery from 'jquery';
+import * as Backbone from 'backbone';
 import {Game} from './../model/Game';
 import {Table} from './Table';
 import {Value} from './../model/Value';
@@ -59,13 +59,11 @@ class App extends Backbone.View<Game> {
      * @returns {App}
      */
     start(values?:ValueLiteralInterface[]):App {
-        let keyboard:Keyboard;
-
         this.table.storeElementPositions();
 
         this.model.addValues(values);
 
-        keyboard = new Keyboard({
+        new Keyboard({
             model: this.model,
             el: jQuery('body')
         });

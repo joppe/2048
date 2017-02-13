@@ -1,4 +1,4 @@
-import Backbone from 'backbone';
+import * as Backbone from 'backbone';
 import {CellLiteralInterface} from './CellLiteralInterface';
 import {PositionInterface} from './PositionInterface';
 

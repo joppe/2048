@@ -5,5 +5,3 @@ css/
 js/
 !js/.gitkeep
 node_modules/
-typings/
-vendor/

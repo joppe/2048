@@ -1,13 +1,14 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "system",
+        "module": "commonjs",
         "removeComments": true,
         "sourceMap": true,
-        "outDir": "js"
+        "target": "es6"
     },
-    "files": [
-        "typings/index",
-        "src/main"
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules"
     ]
 }

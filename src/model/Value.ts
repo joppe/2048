@@ -1,4 +1,4 @@
-import Backbone from 'backbone';
+import * as Backbone from 'backbone';
 import {Cell} from './Cell';
 import {ValueAttributesInterface} from './ValueAttributesInterface';
 
