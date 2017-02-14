@@ -1,10 +1,10 @@
-const webpack = require('webpack'); //to access built-in plugins
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 
 const config = {
     entry: {
         main: './src/main.ts',
+
         style: './sass/screen.js'
     },
 
@@ -19,11 +19,20 @@ const config = {
     },
 
     module: {
-        loaders: [ // loaders will work with webpack 1 or 2; but will be renamed "rules" in future
-            // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
+        rules: [
+            {
+                test: /\.ts$/,
+                enforce: 'pre',
+                loader: 'tslint-loader',
+                options: {
+                    configFile: './node_modules/tslint-rules/tslint.json',
+
+                    tsConfigFile: './tsconfig.json'
+                }
+            },
+
             {
                 test: /\.tsx?$/,
-                exclude: '/js/style.js',
                 loader: 'ts-loader'
             },
 
