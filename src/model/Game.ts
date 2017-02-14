@@ -1,15 +1,18 @@
 import * as Backbone from 'backbone';
-import {Grid} from './Grid';
+
 import {Values} from './../collection/Values';
-import {GameAttributesInterface} from './GameAttributesInterface';
-import {ValueLiteralInterface} from './ValueLiteralInterface';
-import {ValueAttributesInterface} from './ValueAttributesInterface';
-import {Value} from './Value';
-import {DirectionInterface} from './DirectionInterface';
-import {CellIndexInterface} from './CellIndexInterface';
+
 import {CellIndexIterator} from './../iterator/CellIndexIterator';
 import {ValueIterator} from './../iterator/ValueIterator';
+
 import {Cell} from './Cell';
+import {CellIndexInterface} from './CellIndexInterface';
+import {DirectionInterface} from './DirectionInterface';
+import {GameAttributesInterface} from './GameAttributesInterface';
+import {Grid} from './Grid';
+import {Value} from './Value';
+import {ValueAttributesInterface} from './ValueAttributesInterface';
+import {ValueLiteralInterface} from './ValueLiteralInterface';
 
 /**
  * @class Game
@@ -17,6 +20,17 @@ import {Cell} from './Cell';
  * Use "vals" instead of "values", "values" is taken by Backbone.Model
  */
 class Game extends Backbone.Model {
+    /**
+     * @param {object} [attributes]
+     */
+    constructor(attributes?:GameAttributesInterface) {
+        super(attributes);
+
+        this.set('grid', new Grid({
+            size: this.size
+        }));
+    }
+
     /**
      * @returns {number}
      */
@@ -66,22 +80,11 @@ class Game extends Backbone.Model {
      */
     defaults():Backbone.ObjectHash {
         return {
+            finished: false,
             score: 0,
             size: 4,
-            vals: new Values(),
-            finished: false
+            vals: new Values()
         };
-    }
-
-    /**
-     * @param {object} [attributes]
-     */
-    constructor(attributes?:GameAttributesInterface) {
-        super(attributes);
-
-        this.set('grid', new Grid({
-            size: this.size
-        }));
     }
 
     /**
@@ -90,8 +93,8 @@ class Game extends Backbone.Model {
      */
     addValues(values:ValueLiteralInterface[]):Game {
         values.forEach((valueLiteral:ValueLiteralInterface) => {
-            let cell = this.grid.getCell(valueLiteral.index),
-                valueAttributes:ValueAttributesInterface;
+            const cell:Cell = this.grid.getCell(valueLiteral.index);
+            let valueAttributes:ValueAttributesInterface;
 
             if (undefined === cell) {
                 throw new Error(`Invalid cell index row: ${valueLiteral.index.row} column: ${valueLiteral.index.column}`);
@@ -151,7 +154,7 @@ class Game extends Backbone.Model {
          * get random empty cell
          * create new value
          */
-        let randomCell = this.grid.getRandomCell(this.vals.getCells());
+        const randomCell:Cell = this.grid.getRandomCell(this.vals.getCells());
 
         if (undefined === randomCell) {
             this.set('finished', true);
@@ -180,22 +183,22 @@ class Game extends Backbone.Model {
      * @returns {Game}
      */
     move(direction:DirectionInterface):Game {
-        let isVerticalMovement:boolean = (0 !== direction.top),
-            isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top),
-            groupBy:string = isVerticalMovement ? 'column' : 'row',
-            increment:number = isIncrementalMovement ? 1 : -1,
-            start:number = isIncrementalMovement ? 0 : this.size - 1,
-            values:ValueIterator = new ValueIterator(this.vals, groupBy, !isIncrementalMovement),
-            mergeCandidate:Value,
-            updateCount:number = 0;
+        const isVerticalMovement:boolean = (0 !== direction.top);
+        const isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top);
+        const groupBy:string = isVerticalMovement ? 'column' : 'row';
+        const increment:number = isIncrementalMovement ? 1 : -1;
+        const start:number = isIncrementalMovement ? 0 : this.size - 1;
+        const values:ValueIterator = new ValueIterator(this.vals, groupBy, !isIncrementalMovement);
+        let mergeCandidate:Value;
+        let updateCount:number = 0;
 
-        for (let value of values) {
+        for (const value of values) {
             let cell:Cell;
 
             if (undefined === mergeCandidate || mergeCandidate.cell.get(groupBy) !== value.cell.get(groupBy)) {
                 cell = this.grid.getCell({
-                    row: isVerticalMovement ? start : value.cell.row,
-                    column: isVerticalMovement ? value.cell.column : start
+                    column: isVerticalMovement ? value.cell.column : start,
+                    row: isVerticalMovement ? start : value.cell.row
                 } as CellIndexInterface);
                 window.console.log(`new axis: ${value}`);
 
@@ -208,8 +211,8 @@ class Game extends Backbone.Model {
                 window.console.log(`merge: ${value}`);
             } else {
                 cell = this.grid.getCell({
-                    row: isVerticalMovement ? mergeCandidate.cell.row + increment : mergeCandidate.cell.row,
-                    column: isVerticalMovement ? mergeCandidate.cell.column : mergeCandidate.cell.column + increment
+                    column: isVerticalMovement ? mergeCandidate.cell.column : mergeCandidate.cell.column + increment,
+                    row: isVerticalMovement ? mergeCandidate.cell.row + increment : mergeCandidate.cell.row
                 } as CellIndexInterface);
 
                 mergeCandidate = value;
@@ -234,14 +237,14 @@ class Game extends Backbone.Model {
      * @returns {boolean}
      */
     canMove():boolean {
-        let isVerticalMovement:boolean = true,
-            isIncrementalMovement:boolean = true,
-            cellIndexes:CellIndexIterator = new CellIndexIterator(this.size, isVerticalMovement, isIncrementalMovement);
+        const isVerticalMovement:boolean = true;
+        const isIncrementalMovement:boolean = true;
+        const cellIndexes:CellIndexIterator = new CellIndexIterator(this.size, isVerticalMovement, isIncrementalMovement);
 
-        for (let cellIndex of cellIndexes) {
-            let value:Value = this.vals.getByCellIndex(cellIndex),
-                right:Value,
-                bottom:Value;
+        for (const cellIndex of cellIndexes) {
+            const value:Value = this.vals.getByCellIndex(cellIndex);
+            let right:Value;
+            let bottom:Value;
 
             if (undefined === value) {
                 return true;

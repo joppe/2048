@@ -1,11 +1,13 @@
-import * as jQuery from 'jquery';
 import * as Backbone from 'backbone';
+import * as jQuery from 'jquery';
+
 import {Game} from './../model/Game';
-import {Table} from './Table';
 import {Value} from './../model/Value';
+import {ValueLiteralInterface} from './../model/ValueLiteralInterface';
+
 import {Container} from './Container';
-import {ValueLiteralInterface} from '../model/ValueLiteralInterface';
 import {Keyboard} from './Keyboard';
+import {Table} from './Table';
 
 /**
  * @class App
@@ -47,7 +49,7 @@ class App extends Backbone.View<Game> {
      * @param {Value} value
      */
     addValue(value:Value):void {
-        let container:Container = new Container({
+        const container:Container = new Container({
             model: value
         });
 
@@ -59,14 +61,13 @@ class App extends Backbone.View<Game> {
      * @returns {App}
      */
     start(values?:ValueLiteralInterface[]):App {
-        this.table.storeElementPositions();
-
-        this.model.addValues(values);
-
-        new Keyboard({
-            model: this.model,
-            el: jQuery('body')
+        const keyboard:Keyboard = new Keyboard({
+            el: jQuery('body'),
+            model: this.model
         });
+
+        this.table.storeElementPositions();
+        this.model.addValues(values);
 
         return this;
     }

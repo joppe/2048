@@ -27,7 +27,7 @@ typescript-watch:
 
 lint:
 	@echo "Lint typescript"
-	@cd $(PWD) && node ./node_modules/tslint/bin/tslint --config tslint.json --project ./tsconfig.json
+	@cd $(PWD) && node ./node_modules/tslint/bin/tslint --config ./node_modules/tslint-rules/tslint.json --project ./tsconfig.json
 
 setup: npm sass typescript
 	@echo "Setup done"

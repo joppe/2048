@@ -1,12 +1,14 @@
 import * as jQuery from 'jquery';
+
 import {Game} from './model/Game';
+
 import {App} from './view/App';
 
 jQuery(($:JQueryStatic) => {
-    let game = new Game({
+    const game:Game = new Game({
             size: 4
-        }),
-        app = new App({
+        });
+    const app:App = new App({
             model: game
         });
 
@@ -132,15 +134,15 @@ jQuery(($:JQueryStatic) => {
     app.start([
         {
             index: {
-                row: 0,
-                column: 0
+                column: 0,
+                row: 0
             },
             value: 2
         },
         {
             index: {
-                row: 1,
-                column: 0
+                column: 0,
+                row: 1
             },
             value: 2
         }

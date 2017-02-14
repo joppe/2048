@@ -45,7 +45,7 @@ class RangeIterator implements Iterable<number> {
      * @returns {IteratorResult}
      */
     public next():IteratorResult<number> {
-        let result:IteratorResult<number> = this.current();
+        const result:IteratorResult<number> = this.current();
 
         if (true === result.done) {
             this._pointer = 0;
@@ -60,34 +60,22 @@ class RangeIterator implements Iterable<number> {
      * @returns {IteratorResult}
      */
     public current():IteratorResult<number> {
-        let value:number = this._min + (this._step * this._pointer);
+        const value:number = this._min + (this._step * this._pointer);
 
         if (
             (this._max > this._min && value <= this._max) ||
             (this._min > this._max && value >= this._max)
         ) {
-            return <IteratorResult<number>>{
+            return {
                 done: false,
                 value
-            };
+            } as IteratorResult<number>;
         } else {
-            return <IteratorResult<number>>{
+            return {
                 done: true
-            };
+            } as IteratorResult<number>;
         }
     }
-
-    /**
-     * @returns {IteratorResult}
-     *
-    public return():IteratorResult<number> {
-        this._pointer = 0;
-
-        return {
-            done: true
-        };
-    }
-    /**/
 
     /**
      * @returns {Range}

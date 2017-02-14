@@ -1,9 +1,9 @@
 import * as Backbone from 'backbone';
-import {Value} from './../model/Value';
-import {ValueAttributesInterface} from './../model/ValueAttributesInterface';
-import {CellIndexInterface} from './../model/CellIndexInterface';
 import {RangeIterator} from './../iterator/RangeIterator';
 import {Cell} from './../model/Cell';
+import {CellIndexInterface} from './../model/CellIndexInterface';
+import {Value} from './../model/Value';
+import {ValueAttributesInterface} from './../model/ValueAttributesInterface';
 
 /**
  * @class Values
@@ -42,15 +42,15 @@ class Values extends Backbone.Collection<Value> {
      * @param {number} size
      * @returns {Value}
      */
-    findNextOnAxis(index:CellIndexInterface, axis:string, increment:number, size:number) {
-        let range:RangeIterator = new RangeIterator(
+    findNextOnAxis(index:CellIndexInterface, axis:string, increment:number, size:number):Value {
+        const range:RangeIterator = new RangeIterator(
                 increment > 0 ? index[axis] : size,
                 increment > 0 ? size : index[axis],
                 increment
-            ),
-            newIndex:CellIndexInterface = {...index};
+            );
+        const newIndex:CellIndexInterface = {...index};
 
-        for (let i in range) {
+        for (const i of range) {
             let value:Value;
 
             newIndex[axis] = Number(i);

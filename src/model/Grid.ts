@@ -1,5 +1,5 @@
-import * as _ from 'underscore';
 import * as Backbone from 'backbone';
+import * as _ from 'underscore';
 import {Cells} from '../collection/Cells';
 import {Cell} from './Cell';
 import {CellIndexInterface} from './CellIndexInterface';
@@ -9,6 +9,22 @@ import {GridLiteralInterface} from './GridLiteralInterface';
  * @class Grid
  */
 class Grid extends Backbone.Model {
+    /**
+     * Initialize the grid by creating the necessary cells.
+     */
+    constructor(attributes:GridLiteralInterface) {
+        super(attributes);
+
+        _.each(_.range(this.size), (row:number) => {
+            _.each(_.range(this.size), (column:number) => {
+                this.cells.add(new Cell({
+                    row,
+                    column
+                }));
+            });
+        });
+    }
+
     /**
      * @returns {number}
      */
@@ -33,29 +49,13 @@ class Grid extends Backbone.Model {
     }
 
     /**
-     * Initialize the grid by creating the necessary cells.
-     */
-    constructor(attributes:GridLiteralInterface) {
-        super(attributes);
-
-        _.each(_.range(this.size), (row:number) => {
-            _.each(_.range(this.size), (column:number) => {
-                this.cells.add(new Cell({
-                    row,
-                    column
-                }));
-            });
-        });
-    }
-
-    /**
      * @param {object} index
      * @returns {Cell}
      */
     getCell(index:CellIndexInterface):Cell {
         return this.cells.findWhere({
-            row: index.row,
-            column: index.column
+            column: index.column,
+            row: index.row
         });
     }
 
@@ -64,7 +64,7 @@ class Grid extends Backbone.Model {
      * @returns {Cell}
      */
     getRandomCell(exclude?:Cell[]):Cell {
-        let cells:Cell[] = this.getCells(exclude);
+        const cells:Cell[] = this.getCells(exclude);
 
         if (0 === cells.length) {
             throw new Error('There are no cells available');

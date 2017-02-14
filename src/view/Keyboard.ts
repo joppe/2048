@@ -1,12 +1,13 @@
 import * as Backbone from 'backbone';
-import {Game} from './../model/Game';
-import {DirectionInterface} from './../model/DirectionInterface';
 
-const KEY_RIGHT:number = 39,
-    KEY_TOP:number = 38,
-    KEY_LEFT:number = 37,
-    KEY_BOTTOM:number = 40,
-    KEYS:number[] = [KEY_RIGHT, KEY_LEFT, KEY_BOTTOM, KEY_TOP];
+import {DirectionInterface} from './../model/DirectionInterface';
+import {Game} from './../model/Game';
+
+const KEY_RIGHT:number = 39;
+const KEY_TOP:number = 38;
+const KEY_LEFT:number = 37;
+const KEY_BOTTOM:number = 40;
+const KEYS:number[] = [KEY_RIGHT, KEY_LEFT, KEY_BOTTOM, KEY_TOP];
 
 /**
  * @class Keyboard
@@ -17,7 +18,7 @@ class Keyboard extends Backbone.View<Game> {
      */
     events():Backbone.EventsHash {
         return {
-            'keyup': 'handleKeyPress'
+            keyup: 'handleKeyPress'
         };
     }
 
@@ -27,8 +28,8 @@ class Keyboard extends Backbone.View<Game> {
      * @param {JQueryKeyEventObject} event
      */
     handleKeyPress(event:JQueryKeyEventObject):void {
-        let pressedKey = event.which,
-            direction:DirectionInterface = {
+        const pressedKey:number = event.which;
+        const direction:DirectionInterface = {
                 left: 0,
                 top: 0
             };

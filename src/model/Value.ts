@@ -2,9 +2,9 @@ import * as Backbone from 'backbone';
 import {Cell} from './Cell';
 import {ValueAttributesInterface} from './ValueAttributesInterface';
 
-const INITIAL_VALUE_DEVIATION:number = 0.8,
-    MAX_INITIAL_VALUE:number = 4,
-    MIN_INITIAL_VALUE:number = 2;
+const INITIAL_VALUE_DEVIATION:number = 0.8;
+const MAX_INITIAL_VALUE:number = 4;
+const MIN_INITIAL_VALUE:number = 2;
 
 /**
  * @class Value
@@ -52,20 +52,20 @@ class Value extends Backbone.Model {
     }
 
     /**
-     * @param {Value} value
-     * @returns {boolean}
-     */
-    isMergeable(value:Value):boolean {
-        return undefined !== value && value.value === this.value;
-    }
-
-    /**
      * Create a random value.
      *
      * @returns {number}
      */
     static generateValue():number {
         return Math.random() > INITIAL_VALUE_DEVIATION ? MAX_INITIAL_VALUE : MIN_INITIAL_VALUE;
+    }
+
+    /**
+     * @param {Value} value
+     * @returns {boolean}
+     */
+    isMergeable(value:Value):boolean {
+        return undefined !== value && value.value === this.value;
     }
 }
 

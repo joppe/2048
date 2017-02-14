@@ -1,4 +1,5 @@
 import * as Backbone from 'backbone';
+
 import {Cell} from '../model/Cell';
 
 /**

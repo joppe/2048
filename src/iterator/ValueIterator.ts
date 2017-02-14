@@ -1,5 +1,6 @@
-import {Value} from './../model/Value';
 import {Values} from './../collection/Values';
+
+import {Value} from './../model/Value';
 
 /**
  * @class ValueIterator
@@ -26,11 +27,11 @@ class ValueIterator implements Iterable<Value> {
      * @param {boolean} reverse
      */
     constructor(values:Values, groupBy:string, reverse:boolean) {
-        let orderProperty:string = groupBy === 'row' ? 'column' : 'row',
-            cache:{[id:string]:Value[]} = {};
+        const orderProperty:string = groupBy === 'row' ? 'column' : 'row';
+        const cache:{[id:string]:Value[]} = {};
 
         values.each((value:Value) => {
-            let index:string = String(value.cell.get(groupBy));
+            const index:string = String(value.cell.get(groupBy));
 
             if (undefined === cache[index]) {
                 cache[index] = [] as Value[];
@@ -39,7 +40,7 @@ class ValueIterator implements Iterable<Value> {
             cache[index].push(value);
         });
 
-        for (let index of Object.keys(cache)) {
+        for (const index of Object.keys(cache)) {
             this._grid.push(cache[index].sort((a:Value, b:Value) => {
                 if (reverse) {
                     return b.cell.get(orderProperty) - a.cell.get(orderProperty);
@@ -54,7 +55,7 @@ class ValueIterator implements Iterable<Value> {
      * @returns {IteratorResult}
      */
     public next():IteratorResult<Value> {
-        let result:IteratorResult<Value> = this.current();
+        const result:IteratorResult<Value> = this.current();
 
         if (true === result.done) {
             // Auto rewind
@@ -78,14 +79,14 @@ class ValueIterator implements Iterable<Value> {
             this._grid.length > this._outer &&
             this._grid[this._outer].length > this._inner
         ) {
-            return <IteratorResult<Value>>{
+            return {
                 done: false,
                 value: this._grid[this._outer][this._inner]
-            };
+            } as IteratorResult<Value>;
         } else {
-            return <IteratorResult<Value>>{
+            return {
                 done: true
-            };
+            } as IteratorResult<Value>;
         }
     }
 

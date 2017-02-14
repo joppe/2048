@@ -1,9 +1,11 @@
-import * as _ from 'underscore';
 import * as Backbone from 'backbone';
 import * as jQuery from 'jquery';
+import * as _ from 'underscore';
+
+import {Cell} from '../model/Cell';
 import {Game} from '../model/Game';
 import {Grid} from '../model/Grid';
-import {Cell} from '../model/Cell';
+
 import {TableCell} from './TableCell';
 
 /**
@@ -33,18 +35,18 @@ class Table extends Backbone.View<Game> {
      * @returns {Table}
      */
     render():Table {
-        let grid:Grid = this.model.grid,
-            size:number = this.model.size;
+        const grid:Grid = this.model.grid;
+        const size:number = this.model.size;
 
         _.each(_.range(0, size), (row:number) => {
-            let $tr:JQuery = jQuery('<tr />');
+            const $tr:JQuery = jQuery('<tr />');
 
             _.each(_.range(0, size), (column:number) => {
-                let cell:Cell = grid.getCell({
+                const cell:Cell = grid.getCell({
                         row,
                         column
-                    }),
-                    td:TableCell = new TableCell({
+                    });
+                const td:TableCell = new TableCell({
                         model: cell
                     });
 
