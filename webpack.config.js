@@ -5,6 +5,8 @@ const config = {
     entry: {
         main: './src/main.ts',
 
+        demo: './src/demo.ts',
+
         style: './sass/screen.js'
     },
 
