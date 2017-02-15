@@ -7,7 +7,7 @@ const config = {
 
         demo: './src/demo.ts',
 
-        style: './sass/screen.js'
+        style: './sass/screen.jscss'
     },
 
     output: {
@@ -34,6 +34,12 @@ const config = {
             },
 
             {
+                test: /\.js$/,
+                use: ['source-map-loader'],
+                enforce: 'pre'
+            },
+
+            {
                 test: /\.tsx?$/,
                 loader: 'ts-loader'
             },
@@ -44,6 +50,8 @@ const config = {
             }
         ]
     },
+
+    devtool: 'source-map',
 
     plugins: [
         new ExtractTextPlugin({
