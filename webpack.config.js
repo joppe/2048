@@ -3,15 +3,15 @@ const path = require('path');
 
 const config = {
     entry: {
-        main: './src/main.ts',
+        'js/main': './src/main.ts',
 
-        demo: './src/demo.ts',
+        'css/main': './sass/main.jscss',
 
-        style: './sass/screen.jscss'
+        'demo/js/main': './demo/src/main.ts'
     },
 
     output: {
-        filename: 'js/[name].js',
+        filename: '[name].js',
         path: path.resolve(__dirname)
     },
 
@@ -55,7 +55,7 @@ const config = {
 
     plugins: [
         new ExtractTextPlugin({
-            filename: 'css/[name].css',
+            filename: '[name].css',
             allChunks: true
         })
     ]
