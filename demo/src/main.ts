@@ -146,21 +146,26 @@ const destroy:HandlerInterface = ($value:JQuery):Promise<void> => {
 
 /**
  * @param {JQuery} $value
- * @param {string} speed
+ * @param {number} speed
  * @param {PositionPropertyInterface} position
  */
-const move:Function = ($value:JQuery, speed:string, position:PositionPropertyInterface):Promise<void> => {
+const move:Function = ($value:JQuery, speed:number, position:PositionPropertyInterface):Promise<void> => {
     return new Promise<void>((resolve:Function):void => {
-        const helper:string = 'a-move';
-
-        prefixedEventListener($value, 'transitionend', ():void => {
-            $value.removeClass(`${helper}  ${speed}`);
-
+        if (0 === speed) {
             resolve();
-        });
+        } else {
+            const speedClass:string = `t-speed--${speed}`;
+            const helperClass:string = 'a-move';
 
-        $value.addClass(`${helper}  ${speed}`);
-        $value.css(position);
+            prefixedEventListener($value, 'transitionend', ():void => {
+                $value.removeClass(`${helperClass}  ${speedClass}`);
+
+                resolve();
+            });
+
+            $value.addClass(`${helperClass}  ${speedClass}`);
+            $value.css(position);
+        }
     });
 };
 
@@ -170,9 +175,8 @@ const move:Function = ($value:JQuery, speed:string, position:PositionPropertyInt
  */
 const moveTop:HandlerInterface = ($value:JQuery):Promise<void> => {
     const $target:JQuery = topLeftElement();
-    const speed:string = `t-speed--${animationSpeed(true, $value, $target)}`;
 
-    return move($value, speed, {
+    return move($value, animationSpeed(true, $value, $target), {
         top: topLeft().top
     });
 };
@@ -183,9 +187,8 @@ const moveTop:HandlerInterface = ($value:JQuery):Promise<void> => {
  */
 const moveRight:HandlerInterface = ($value:JQuery):Promise<void> => {
     const $target:JQuery = bottomRightElement();
-    const speed:string = `t-speed--${animationSpeed(false, $value, $target)}`;
 
-    return move($value, speed, {
+    return move($value, animationSpeed(false, $value, $target), {
         left: bottomRight().left
     });
 };
@@ -196,9 +199,8 @@ const moveRight:HandlerInterface = ($value:JQuery):Promise<void> => {
  */
 const moveBottom:HandlerInterface = ($value:JQuery):Promise<void> => {
     const $target:JQuery = bottomRightElement();
-    const speed:string = `t-speed--${animationSpeed(true, $value, $target)}`;
 
-    return move($value, speed, {
+    return move($value, animationSpeed(true, $value, $target), {
         top: bottomRight().top
     });
 };
@@ -209,9 +211,8 @@ const moveBottom:HandlerInterface = ($value:JQuery):Promise<void> => {
  */
 const moveLeft:HandlerInterface = ($value:JQuery):Promise<void> => {
     const $target:JQuery = topLeftElement();
-    const speed:string = `t-speed--${animationSpeed(false, $value, $target)}`;
 
-    return move($value, speed, {
+    return move($value, animationSpeed(false, $value, $target), {
         left: topLeft().left
     });
 };
