@@ -1,5 +1,4 @@
 import * as Backbone from 'backbone';
-
 import {Value} from '../model/Value';
 
 /**
