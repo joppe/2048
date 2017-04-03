@@ -1,5 +1,4 @@
 import * as Backbone from 'backbone';
-
 import {DirectionInterface} from './../model/DirectionInterface';
 import {Game} from './../model/Game';
 
@@ -12,7 +11,7 @@ const KEYS:number[] = [KEY_RIGHT, KEY_LEFT, KEY_BOTTOM, KEY_TOP];
 /**
  * @class Keyboard
  */
-class Keyboard extends Backbone.View<Game> {
+export class Keyboard extends Backbone.View<Game> {
     /**
      * @returns {object}
      */
@@ -30,9 +29,9 @@ class Keyboard extends Backbone.View<Game> {
     handleKeyPress(event:JQueryKeyEventObject):void {
         const pressedKey:number = event.which;
         const direction:DirectionInterface = {
-                left: 0,
-                top: 0
-            };
+            left: 0,
+            top: 0
+        };
 
         if (KEYS.indexOf(pressedKey) !== -1) {
             switch (pressedKey) {
@@ -54,5 +53,3 @@ class Keyboard extends Backbone.View<Game> {
         }
     }
 }
-
-export {Keyboard};

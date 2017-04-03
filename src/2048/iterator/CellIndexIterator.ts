@@ -4,7 +4,7 @@ import {RangeIterator} from './RangeIterator';
 /**
  * @class CellIndexIterator
  */
-class CellIndexIterator implements Iterable<CellIndexInterface> {
+export class CellIndexIterator implements Iterable<CellIndexInterface> {
     /**
      * @type {RangeIterator}
      */
@@ -86,5 +86,3 @@ class CellIndexIterator implements Iterable<CellIndexInterface> {
         return this;
     }
 }
-
-export {CellIndexIterator};

@@ -1,7 +1,7 @@
 /**
  * @interface CellIndexInterface
  */
-interface CellIndexInterface {
+export interface CellIndexInterface {
     /**
      * The row index
      *
@@ -16,5 +16,3 @@ interface CellIndexInterface {
      */
     column:number;
 }
-
-export {CellIndexInterface};

@@ -1,21 +1,32 @@
 import * as jQuery from 'jquery';
-
-import {Game} from './model/Game';
-
-import {App} from './view/App';
+import {init as initGame} from './2048/2048';
 
 jQuery(($:JQueryStatic) => {
-    const game:Game = new Game({
-            size: 4
-        });
-    const app:App = new App({
-            model: game
-        });
+    const $container:JQuery = $('.js-app');
 
-    $('.js-app').append(app.render().el);
+    if (0 === $container.length) {
+        throw new Error('Cannot find container to create game.');
+    }
+
+    initGame($container, 4, [
+        {
+            index: {
+                column: 0,
+                row: 0
+            },
+            value: 2
+        },
+        {
+            index: {
+                column: 0,
+                row: 1
+            },
+            value: 2
+        }
+    ]);
 
     /*/
-    app.start([
+    initGame($container, 4, [
         {
             index: {
                 row: 0,
@@ -130,23 +141,4 @@ jQuery(($:JQueryStatic) => {
         }
     ]);
     /**/
-
-    app.start([
-        {
-            index: {
-                column: 0,
-                row: 0
-            },
-            value: 2
-        },
-        {
-            index: {
-                column: 0,
-                row: 1
-            },
-            value: 2
-        }
-    ]);
-
-    window['game'] = game;
 });

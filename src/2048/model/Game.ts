@@ -1,10 +1,7 @@
 import * as Backbone from 'backbone';
-
 import {Values} from './../collection/Values';
-
 import {CellIndexIterator} from './../iterator/CellIndexIterator';
 import {ValueIterator} from './../iterator/ValueIterator';
-
 import {Cell} from './Cell';
 import {CellIndexInterface} from './CellIndexInterface';
 import {DirectionInterface} from './DirectionInterface';
@@ -29,6 +26,20 @@ class Game extends Backbone.Model {
         this.set('grid', new Grid({
             size: this.size
         }));
+    }
+
+    /**
+     * @returns {boolean}
+     */
+    get locked():boolean {
+        return true === this.get('locked');
+    }
+
+    /**
+     * @param {boolean} locked
+     */
+    set locked(locked:boolean) {
+        this.set('locked', locked);
     }
 
     /**
@@ -80,6 +91,7 @@ class Game extends Backbone.Model {
      */
     defaults():Backbone.ObjectHash {
         return {
+            locked: false,
             finished: false,
             score: 0,
             size: 4,
@@ -88,7 +100,7 @@ class Game extends Backbone.Model {
     }
 
     /**
-     * @param {object[]} values
+     * @param {ValueLiteralInterface[]} values
      * @returns {Game}
      */
     addValues(values:ValueLiteralInterface[]):Game {
@@ -128,7 +140,7 @@ class Game extends Backbone.Model {
     }
 
     /**
-     * @param {object} [direction]
+     * @param {DirectionInterface} [direction]
      * @returns {Game}
      */
     cycle(direction?:DirectionInterface):Game {
@@ -179,7 +191,7 @@ class Game extends Backbone.Model {
      * Horizontal movement
      * First loop over row index, then over column index
      *
-     * @param {object} direction
+     * @param {DirectionInterface} direction
      * @returns {Game}
      */
     move(direction:DirectionInterface):Game {

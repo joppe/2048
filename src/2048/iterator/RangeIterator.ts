@@ -1,7 +1,7 @@
 /**
  * @class RangeIterator
  */
-class RangeIterator implements Iterable<number> {
+export class RangeIterator implements Iterable<number> {
     /**
      * @type {number}
      */
@@ -84,5 +84,3 @@ class RangeIterator implements Iterable<number> {
         return this;
     }
 }
-
-export {RangeIterator};

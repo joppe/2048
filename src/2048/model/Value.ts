@@ -9,7 +9,7 @@ const MIN_INITIAL_VALUE:number = 2;
 /**
  * @class Value
  */
-class Value extends Backbone.Model {
+export class Value extends Backbone.Model {
     /**
      * @returns {number}
      */
@@ -41,7 +41,7 @@ class Value extends Backbone.Model {
     /**
      * Set the attribute "value" randomly.
      *
-     * @param {object} attributes
+     * @param {ValueAttributesInterface} attributes
      */
     constructor(attributes:ValueAttributesInterface) {
         super(attributes);
@@ -68,5 +68,3 @@ class Value extends Backbone.Model {
         return undefined !== value && value.value === this.value;
     }
 }
-
-export {Value};

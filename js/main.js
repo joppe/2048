@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 20);
+/******/ 	return __webpack_require__(__webpack_require__.s = 21);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1992,7 +1992,7 @@
   return Backbone;
 });
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
 /* 1 */
@@ -13777,7 +13777,84 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
 
 /***/ }),
-/* 3 */
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+const jQuery = __webpack_require__(1);
+const _2048_1 = __webpack_require__(26);
+jQuery(($) => {
+    const $container = $('.js-app');
+    if (0 === $container.length) {
+        throw new Error('Cannot find container to create game.');
+    }
+    _2048_1.init($container, 4, [
+        {
+            index: {
+                column: 0,
+                row: 0
+            },
+            value: 2
+        },
+        {
+            index: {
+                column: 0,
+                row: 1
+            },
+            value: 2
+        }
+    ]);
+});
+
+
+/***/ }),
+/* 22 */,
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13826,7 +13903,7 @@ exports.RangeIterator = RangeIterator;
 
 
 /***/ }),
-/* 4 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13850,7 +13927,7 @@ exports.Cell = Cell;
 
 
 /***/ }),
-/* 5 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13889,24 +13966,227 @@ exports.Value = Value;
 
 
 /***/ }),
-/* 6 */,
-/* 7 */
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+const Game_1 = __webpack_require__(31);
+const App_1 = __webpack_require__(33);
+exports.init = ($container, size, values) => {
+    const game = new Game_1.Game({
+        size
+    });
+    const app = new App_1.App({
+        model: game
+    });
+    $container.append(app.render().el);
+    app.start(values);
+    window['game'] = game;
+};
+
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 const Backbone = __webpack_require__(0);
-const Values_1 = __webpack_require__(11);
-const CellIndexIterator_1 = __webpack_require__(12);
-const ValueIterator_1 = __webpack_require__(13);
-const Grid_1 = __webpack_require__(14);
-const Value_1 = __webpack_require__(5);
+const Cell_1 = __webpack_require__(24);
+class Cells extends Backbone.Collection {
+    get model() {
+        return Cell_1.Cell;
+    }
+}
+exports.Cells = Cells;
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+const Backbone = __webpack_require__(0);
+const RangeIterator_1 = __webpack_require__(23);
+const Value_1 = __webpack_require__(25);
+class Values extends Backbone.Collection {
+    get model() {
+        return Value_1.Value;
+    }
+    getCells() {
+        return this.map((value) => {
+            return value.cell;
+        });
+    }
+    getByCellIndex(index) {
+        return this.find((value) => {
+            return value.cell.column === index.column && value.cell.row === index.row;
+        });
+    }
+    findNextOnAxis(index, axis, increment, size) {
+        const range = new RangeIterator_1.RangeIterator(increment > 0 ? index[axis] : size, increment > 0 ? size : index[axis], increment);
+        const newIndex = __assign({}, index);
+        for (const i of range) {
+            let value;
+            newIndex[axis] = Number(i);
+            value = this.getByCellIndex(newIndex);
+            if (undefined !== value) {
+                return value;
+            }
+        }
+    }
+}
+exports.Values = Values;
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+const RangeIterator_1 = __webpack_require__(23);
+class CellIndexIterator {
+    constructor(size, isVerticalMovement, isIncrementalMovement) {
+        this._outerProperty = isVerticalMovement ? 'column' : 'row';
+        this._outerIterator = new RangeIterator_1.RangeIterator(0, size - 1, 1);
+        this._innerProperty = isVerticalMovement ? 'row' : 'column';
+        this._innerIterator = new RangeIterator_1.RangeIterator(isIncrementalMovement ? 0 : size - 1, isIncrementalMovement ? size - 1 : 0, isIncrementalMovement ? 1 : -1);
+    }
+    next() {
+        let outer = this._outerIterator.current();
+        let inner = this._innerIterator.next();
+        const value = {
+            column: 0,
+            row: 0
+        };
+        if (true === inner.done) {
+            this._outerIterator.next();
+            outer = this._outerIterator.current();
+            inner = this._innerIterator.next();
+        }
+        value[this._outerProperty] = outer.value;
+        value[this._innerProperty] = inner.value;
+        if (true === outer.done) {
+            return {
+                done: true
+            };
+        }
+        else {
+            return {
+                value,
+                done: false
+            };
+        }
+    }
+    [Symbol.iterator]() {
+        return this;
+    }
+}
+exports.CellIndexIterator = CellIndexIterator;
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+class ValueIterator {
+    constructor(values, groupBy, reverse) {
+        this._grid = [];
+        this._inner = 0;
+        this._outer = 0;
+        const orderProperty = groupBy === 'row' ? 'column' : 'row';
+        const cache = {};
+        values.each((value) => {
+            const index = String(value.cell.get(groupBy));
+            if (undefined === cache[index]) {
+                cache[index] = [];
+            }
+            cache[index].push(value);
+        });
+        for (const index of Object.keys(cache)) {
+            this._grid.push(cache[index].sort((a, b) => {
+                if (reverse) {
+                    return b.cell.get(orderProperty) - a.cell.get(orderProperty);
+                }
+                else {
+                    return a.cell.get(orderProperty) - b.cell.get(orderProperty);
+                }
+            }));
+        }
+    }
+    next() {
+        const result = this.current();
+        if (true === result.done) {
+            this._outer = 0;
+            this._inner = 0;
+        }
+        else if (this._grid[this._outer].length > this._inner + 1) {
+            this._inner += 1;
+        }
+        else {
+            this._outer += 1;
+            this._inner = 0;
+        }
+        return result;
+    }
+    current() {
+        if (this._grid.length > this._outer &&
+            this._grid[this._outer].length > this._inner) {
+            return {
+                done: false,
+                value: this._grid[this._outer][this._inner]
+            };
+        }
+        else {
+            return {
+                done: true
+            };
+        }
+    }
+    [Symbol.iterator]() {
+        return this;
+    }
+}
+exports.ValueIterator = ValueIterator;
+
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+const Backbone = __webpack_require__(0);
+const Values_1 = __webpack_require__(28);
+const CellIndexIterator_1 = __webpack_require__(29);
+const ValueIterator_1 = __webpack_require__(30);
+const Grid_1 = __webpack_require__(32);
+const Value_1 = __webpack_require__(25);
 class Game extends Backbone.Model {
     constructor(attributes) {
         super(attributes);
         this.set('grid', new Grid_1.Grid({
             size: this.size
         }));
+    }
+    get locked() {
+        return true === this.get('locked');
+    }
+    set locked(locked) {
+        this.set('locked', locked);
     }
     get score() {
         return this.get('score');
@@ -13929,6 +14209,7 @@ class Game extends Backbone.Model {
     }
     defaults() {
         return {
+            locked: false,
             finished: false,
             score: 0,
             size: 4,
@@ -14060,263 +14341,15 @@ exports.Game = Game;
 
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-const Backbone = __webpack_require__(0);
-const jQuery = __webpack_require__(1);
-const Container_1 = __webpack_require__(15);
-const Keyboard_1 = __webpack_require__(16);
-const Table_1 = __webpack_require__(17);
-class App extends Backbone.View {
-    get className() {
-        return 'c-game';
-    }
-    initialize() {
-        this.listenTo(this.model.vals, 'add', this.addValue.bind(this));
-    }
-    render() {
-        this.table = new Table_1.Table({
-            model: this.model
-        });
-        this.$el.append(this.table.render().el);
-        return this;
-    }
-    addValue(value) {
-        const container = new Container_1.Container({
-            model: value
-        });
-        this.$el.append(container.render().el);
-    }
-    start(values) {
-        const keyboard = new Keyboard_1.Keyboard({
-            el: jQuery('body'),
-            model: this.model
-        });
-        this.table.storeElementPositions();
-        this.model.addValues(values);
-        return this;
-    }
-}
-exports.App = App;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-const Backbone = __webpack_require__(0);
-const Cell_1 = __webpack_require__(4);
-class Cells extends Backbone.Collection {
-    get model() {
-        return Cell_1.Cell;
-    }
-}
-exports.Cells = Cells;
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-const Backbone = __webpack_require__(0);
-const RangeIterator_1 = __webpack_require__(3);
-const Value_1 = __webpack_require__(5);
-class Values extends Backbone.Collection {
-    get model() {
-        return Value_1.Value;
-    }
-    getCells() {
-        return this.map((value) => {
-            return value.cell;
-        });
-    }
-    getByCellIndex(index) {
-        return this.find((value) => {
-            return value.cell.column === index.column && value.cell.row === index.row;
-        });
-    }
-    findNextOnAxis(index, axis, increment, size) {
-        const range = new RangeIterator_1.RangeIterator(increment > 0 ? index[axis] : size, increment > 0 ? size : index[axis], increment);
-        const newIndex = __assign({}, index);
-        for (const i of range) {
-            let value;
-            newIndex[axis] = Number(i);
-            value = this.getByCellIndex(newIndex);
-            if (undefined !== value) {
-                return value;
-            }
-        }
-    }
-}
-exports.Values = Values;
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-const RangeIterator_1 = __webpack_require__(3);
-class CellIndexIterator {
-    constructor(size, isVerticalMovement, isIncrementalMovement) {
-        this._outerProperty = isVerticalMovement ? 'column' : 'row';
-        this._outerIterator = new RangeIterator_1.RangeIterator(0, size - 1, 1);
-        this._innerProperty = isVerticalMovement ? 'row' : 'column';
-        this._innerIterator = new RangeIterator_1.RangeIterator(isIncrementalMovement ? 0 : size - 1, isIncrementalMovement ? size - 1 : 0, isIncrementalMovement ? 1 : -1);
-    }
-    next() {
-        let outer = this._outerIterator.current();
-        let inner = this._innerIterator.next();
-        const value = {
-            column: 0,
-            row: 0
-        };
-        if (true === inner.done) {
-            this._outerIterator.next();
-            outer = this._outerIterator.current();
-            inner = this._innerIterator.next();
-        }
-        value[this._outerProperty] = outer.value;
-        value[this._innerProperty] = inner.value;
-        if (true === outer.done) {
-            return {
-                done: true
-            };
-        }
-        else {
-            return {
-                value,
-                done: false
-            };
-        }
-    }
-    [Symbol.iterator]() {
-        return this;
-    }
-}
-exports.CellIndexIterator = CellIndexIterator;
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-class ValueIterator {
-    constructor(values, groupBy, reverse) {
-        this._grid = [];
-        this._inner = 0;
-        this._outer = 0;
-        const orderProperty = groupBy === 'row' ? 'column' : 'row';
-        const cache = {};
-        values.each((value) => {
-            const index = String(value.cell.get(groupBy));
-            if (undefined === cache[index]) {
-                cache[index] = [];
-            }
-            cache[index].push(value);
-        });
-        for (const index of Object.keys(cache)) {
-            this._grid.push(cache[index].sort((a, b) => {
-                if (reverse) {
-                    return b.cell.get(orderProperty) - a.cell.get(orderProperty);
-                }
-                else {
-                    return a.cell.get(orderProperty) - b.cell.get(orderProperty);
-                }
-            }));
-        }
-    }
-    next() {
-        const result = this.current();
-        if (true === result.done) {
-            this._outer = 0;
-            this._inner = 0;
-        }
-        else if (this._grid[this._outer].length > this._inner + 1) {
-            this._inner += 1;
-        }
-        else {
-            this._outer += 1;
-            this._inner = 0;
-        }
-        return result;
-    }
-    current() {
-        if (this._grid.length > this._outer &&
-            this._grid[this._outer].length > this._inner) {
-            return {
-                done: false,
-                value: this._grid[this._outer][this._inner]
-            };
-        }
-        else {
-            return {
-                done: true
-            };
-        }
-    }
-    [Symbol.iterator]() {
-        return this;
-    }
-}
-exports.ValueIterator = ValueIterator;
-
-
-/***/ }),
-/* 14 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 const Backbone = __webpack_require__(0);
 const _ = __webpack_require__(2);
-const Cells_1 = __webpack_require__(10);
-const Cell_1 = __webpack_require__(4);
+const Cells_1 = __webpack_require__(27);
+const Cell_1 = __webpack_require__(24);
 class Grid extends Backbone.Model {
     constructor(attributes) {
         super(attributes);
@@ -14367,30 +14400,99 @@ exports.Grid = Grid;
 
 
 /***/ }),
-/* 15 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 const Backbone = __webpack_require__(0);
+const jQuery = __webpack_require__(1);
+const Container_1 = __webpack_require__(34);
+const Keyboard_1 = __webpack_require__(35);
+const Table_1 = __webpack_require__(36);
+class App extends Backbone.View {
+    get className() {
+        return 'c-game';
+    }
+    initialize() {
+        this.listenTo(this.model.vals, 'add', this.addValue.bind(this));
+    }
+    render() {
+        this.table = new Table_1.Table({
+            model: this.model
+        });
+        this.$el.append(this.table.render().el);
+        return this;
+    }
+    addValue(value) {
+        const container = new Container_1.Container({
+            game: this.model,
+            model: value
+        });
+        this.$el.append(container.render().el);
+        window.console.log('on addvalue');
+        window.console.log(this.model);
+    }
+    start(values = []) {
+        const keyboard = new Keyboard_1.Keyboard({
+            el: jQuery('body'),
+            model: this.model
+        });
+        this.table.storeElementPositions();
+        window.console.log('LOCK');
+        this.model.addValues(values);
+        window.console.log('UNLOCK');
+        return this;
+    }
+}
+exports.App = App;
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+const Backbone = __webpack_require__(0);
+const prefixedEventListener_1 = __webpack_require__(38);
 class Container extends Backbone.View {
     get className() {
         return 'c-value';
     }
+    constructor(options) {
+        super(options);
+        this._game = options.game;
+    }
     render() {
         this.update();
+        window.console.log('Container', this.model);
+        this.appear();
         return this;
     }
     update() {
         this.$el.text(this.model.value);
         this.$el.css(this.model.cell.position);
     }
+    appear() {
+        const speed = 'a-speed--1';
+        const css = 'appear';
+        prefixedEventListener_1.prefixedEventListener(this.$el, 'animationend', () => {
+            this.$el.addClass('ready');
+            this.$el.removeClass(`${css}  ${speed}`);
+        }, true);
+        this.$el.addClass(`${css}  ${speed}`);
+    }
+    move() {
+    }
+    merge() {
+    }
 }
 exports.Container = Container;
 
 
 /***/ }),
-/* 16 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14436,7 +14538,7 @@ exports.Keyboard = Keyboard;
 
 
 /***/ }),
-/* 17 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14444,7 +14546,7 @@ exports.Keyboard = Keyboard;
 const Backbone = __webpack_require__(0);
 const jQuery = __webpack_require__(1);
 const _ = __webpack_require__(2);
-const TableCell_1 = __webpack_require__(18);
+const TableCell_1 = __webpack_require__(37);
 class Table extends Backbone.View {
     constructor() {
         super(...arguments);
@@ -14486,7 +14588,7 @@ exports.Table = Table;
 
 
 /***/ }),
-/* 18 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14509,41 +14611,18 @@ exports.TableCell = TableCell;
 
 
 /***/ }),
-/* 19 */,
-/* 20 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const jQuery = __webpack_require__(1);
-const Game_1 = __webpack_require__(7);
-const App_1 = __webpack_require__(8);
-jQuery(($) => {
-    const game = new Game_1.Game({
-        size: 4
+const prefixes = ['webkit', 'moz', 'MS', 'o', ''];
+exports.prefixedEventListener = ($el, eventName, handler, once = false) => {
+    const postfix = eventName.toLowerCase();
+    prefixes.forEach((prefix) => {
+        $el.on(`${prefix}${postfix}`, handler);
     });
-    const app = new App_1.App({
-        model: game
-    });
-    $('.js-app').append(app.render().el);
-    app.start([
-        {
-            index: {
-                column: 0,
-                row: 0
-            },
-            value: 2
-        },
-        {
-            index: {
-                column: 0,
-                row: 1
-            },
-            value: 2
-        }
-    ]);
-    window['game'] = game;
-});
+};
 
 
 /***/ })

@@ -5,7 +5,7 @@ import {PositionInterface} from './PositionInterface';
 /**
  * @class Cell
  */
-class Cell extends Backbone.Model {
+export class Cell extends Backbone.Model {
     /**
      * @returns {number}
      */
@@ -21,18 +21,16 @@ class Cell extends Backbone.Model {
     }
 
     /**
-     * @returns {{left:number, top:number}}
+     * @returns {PositionInterface}
      */
     get position():PositionInterface {
         return this.get('position');
     }
 
     /**
-     * @param {object} attributes
+     * @param {CellLiteralInterface} attributes
      */
     constructor(attributes:CellLiteralInterface) {
         super(attributes);
     }
 }
-
-export {Cell};

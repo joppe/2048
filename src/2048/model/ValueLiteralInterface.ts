@@ -3,7 +3,7 @@ import {CellIndexInterface} from './CellIndexInterface';
 /**
  * @interface ValueLiteralInterface
  */
-interface ValueLiteralInterface {
+export interface ValueLiteralInterface {
     /**
      * @type {object}
      */
@@ -14,5 +14,3 @@ interface ValueLiteralInterface {
      */
     value?:number;
 }
-
-export {ValueLiteralInterface};

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -10296,13 +10296,13 @@ return jQuery;
 
 /***/ }),
 
-/***/ 19:
+/***/ 20:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 const jQuery = __webpack_require__(1);
-const prefixedEventListener_1 = __webpack_require__(22);
+const prefixedEventListener_1 = __webpack_require__(38);
 const topLeftElement = () => {
     return jQuery('.js-position__top-left');
 };
@@ -10363,40 +10363,42 @@ const destroy = ($value) => {
 };
 const move = ($value, speed, position) => {
     return new Promise((resolve) => {
-        const helper = 'a-move';
-        prefixedEventListener_1.prefixedEventListener($value, 'transitionend', () => {
-            $value.removeClass(`${helper}  ${speed}`);
+        if (0 === speed) {
             resolve();
-        });
-        $value.addClass(`${helper}  ${speed}`);
-        $value.css(position);
+        }
+        else {
+            const speedClass = `t-speed--${speed}`;
+            const helperClass = 'a-move';
+            prefixedEventListener_1.prefixedEventListener($value, 'transitionend', () => {
+                $value.removeClass(`${helperClass}  ${speedClass}`);
+                resolve();
+            });
+            $value.addClass(`${helperClass}  ${speedClass}`);
+            $value.css(position);
+        }
     });
 };
 const moveTop = ($value) => {
     const $target = topLeftElement();
-    const speed = `t-speed--${animationSpeed(true, $value, $target)}`;
-    return move($value, speed, {
+    return move($value, animationSpeed(true, $value, $target), {
         top: topLeft().top
     });
 };
 const moveRight = ($value) => {
     const $target = bottomRightElement();
-    const speed = `t-speed--${animationSpeed(false, $value, $target)}`;
-    return move($value, speed, {
+    return move($value, animationSpeed(false, $value, $target), {
         left: bottomRight().left
     });
 };
 const moveBottom = ($value) => {
     const $target = bottomRightElement();
-    const speed = `t-speed--${animationSpeed(true, $value, $target)}`;
-    return move($value, speed, {
+    return move($value, animationSpeed(true, $value, $target), {
         top: bottomRight().top
     });
 };
 const moveLeft = ($value) => {
     const $target = topLeftElement();
-    const speed = `t-speed--${animationSpeed(false, $value, $target)}`;
-    return move($value, speed, {
+    return move($value, animationSpeed(false, $value, $target), {
         left: topLeft().left
     });
 };
@@ -10438,13 +10440,13 @@ jQuery(($) => {
 
 /***/ }),
 
-/***/ 22:
+/***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 const prefixes = ['webkit', 'moz', 'MS', 'o', ''];
-exports.prefixedEventListener = ($el, eventName, handler) => {
+exports.prefixedEventListener = ($el, eventName, handler, once = false) => {
     const postfix = eventName.toLowerCase();
     prefixes.forEach((prefix) => {
         $el.on(`${prefix}${postfix}`, handler);

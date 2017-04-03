@@ -3,9 +3,9 @@ import {RangeIterator} from './RangeIterator';
 /**
  * @class AxisIterator
  */
-class AxisIterator extends RangeIterator {
+export class AxisIterator extends RangeIterator {
     /**
-     * @type {String}
+     * @type {string}
      */
     private _axis:string;
 
@@ -27,5 +27,3 @@ class AxisIterator extends RangeIterator {
         this._axis = axis;
     }
 }
-
-export {AxisIterator};

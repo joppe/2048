@@ -1,17 +1,15 @@
 import * as Backbone from 'backbone';
 import * as jQuery from 'jquery';
 import * as _ from 'underscore';
-
-import {Cell} from '../model/Cell';
-import {Game} from '../model/Game';
-import {Grid} from '../model/Grid';
-
+import {Cell} from './../model/Cell';
+import {Game} from './../model/Game';
+import {Grid} from './../model/Grid';
 import {TableCell} from './TableCell';
 
 /**
  * @class Table
  */
-class Table extends Backbone.View<Game> {
+export class Table extends Backbone.View<Game> {
     /**
      * @returns {string}
      */
@@ -70,5 +68,3 @@ class Table extends Backbone.View<Game> {
         });
     }
 }
-
-export {Table};

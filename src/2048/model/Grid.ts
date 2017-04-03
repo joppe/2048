@@ -8,7 +8,7 @@ import {GridLiteralInterface} from './GridLiteralInterface';
 /**
  * @class Grid
  */
-class Grid extends Backbone.Model {
+export class Grid extends Backbone.Model {
     /**
      * Initialize the grid by creating the necessary cells.
      */
@@ -94,5 +94,3 @@ class Grid extends Backbone.Model {
         );
     }
 }
-
-export {Grid};

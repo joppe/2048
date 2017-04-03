@@ -8,7 +8,7 @@ import {ValueAttributesInterface} from './../model/ValueAttributesInterface';
 /**
  * @class Values
  */
-class Values extends Backbone.Collection<Value> {
+export class Values extends Backbone.Collection<Value> {
     /**
      * @type {Value}
      */
@@ -26,7 +26,7 @@ class Values extends Backbone.Collection<Value> {
     }
 
     /**
-     * @param {object} index
+     * @param {CellIndexInterface} index
      * @returns {Value}
      */
     getByCellIndex(index:CellIndexInterface):Value {
@@ -36,7 +36,7 @@ class Values extends Backbone.Collection<Value> {
     }
 
     /**
-     * @param {object} index
+     * @param {CellIndexInterface} index
      * @param {string} axis
      * @param {number} increment
      * @param {number} size
@@ -63,5 +63,3 @@ class Values extends Backbone.Collection<Value> {
         }
     }
 }
-
-export {Values};

@@ -5,7 +5,7 @@ import {CellLiteralInterface} from './../model/CellLiteralInterface';
 /**
  * @class Cells
  */
-class Cells extends Backbone.Collection<Cell> {
+export class Cells extends Backbone.Collection<Cell> {
     /**
      * @type {Cell}
      */
@@ -13,5 +13,3 @@ class Cells extends Backbone.Collection<Cell> {
         return Cell;
     }
 }
-
-export {Cells};

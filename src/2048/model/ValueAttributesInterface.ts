@@ -3,7 +3,7 @@ import {Cell} from './Cell';
 /**
  * @interface ValueAttributesInterface
  */
-interface ValueAttributesInterface {
+export interface ValueAttributesInterface {
     /**
      * @type {Cell}
      */
@@ -14,5 +14,3 @@ interface ValueAttributesInterface {
      */
     value?:number;
 }
-
-export {ValueAttributesInterface};

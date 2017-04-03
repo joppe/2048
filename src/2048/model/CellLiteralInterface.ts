@@ -1,7 +1,7 @@
 /**
  * @interface CellLiteralInterface
  */
-interface CellLiteralInterface {
+export interface CellLiteralInterface {
     /**
      * @type {number}
      */
@@ -12,5 +12,3 @@ interface CellLiteralInterface {
      */
     column:number;
 }
-
-export {CellLiteralInterface};

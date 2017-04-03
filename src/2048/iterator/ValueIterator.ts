@@ -1,11 +1,10 @@
 import {Values} from './../collection/Values';
-
 import {Value} from './../model/Value';
 
 /**
  * @class ValueIterator
  */
-class ValueIterator implements Iterable<Value> {
+export class ValueIterator implements Iterable<Value> {
     /**
      * @type {object}
      */
@@ -97,5 +96,3 @@ class ValueIterator implements Iterable<Value> {
         return this;
     }
 }
-
-export {ValueIterator};

@@ -1,11 +1,10 @@
 import * as Backbone from 'backbone';
-
-import {Cell} from '../model/Cell';
+import {Cell} from './../model/Cell';
 
 /**
  * @class TableCell
  */
-class TableCell extends Backbone.View<Cell> {
+export class TableCell extends Backbone.View<Cell> {
     /**
      * @returns {string}
      */
@@ -29,5 +28,3 @@ class TableCell extends Backbone.View<Cell> {
         });
     }
 }
-
-export {TableCell};

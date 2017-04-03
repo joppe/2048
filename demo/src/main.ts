@@ -1,5 +1,5 @@
 import * as jQuery from 'jquery';
-import {prefixedEventListener} from './../../src/event/prefixedEventListener';
+import {prefixedEventListener} from './../../src/2048/event/prefixedEventListener';
 
 /**
  * @interface HandlerInterface
