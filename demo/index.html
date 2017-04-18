@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>2048</title>
+
+        <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="../css/main.css" media="screen">
+
+        <script type="text/javascript" src="js/main.js"></script>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>2048</h1>
+            <div class="js-app">
+                <a href="javascript:void(null);" class="js-control__appear">Appear</a>
+                <a href="javascript:void(null);" class="js-control__destroy">Destroy</a>
+                <a href="javascript:void(null);" class="js-control__left">Left</a>
+                <a href="javascript:void(null);" class="js-control__right">Right</a>
+                <a href="javascript:void(null);" class="js-control__top">Top</a>
+                <a href="javascript:void(null);" class="js-control__bottom">Bottom</a>
+                <div class="c-game">
+                    <table class="c-grid">
+                        <tr>
+                            <td class="c-grid__cell  js-position__top-left"></td>
+                            <td class="c-grid__cell"></td>
+                            <td class="c-grid__cell"></td>
+                            <td class="c-grid__cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="c-grid__cell"></td>
+                            <td class="c-grid__cell"></td>
+                            <td class="c-grid__cell"></td>
+                            <td class="c-grid__cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="c-grid__cell"></td>
+                            <td class="c-grid__cell"></td>
+                            <td class="c-grid__cell"></td>
+                            <td class="c-grid__cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="c-grid__cell"></td>
+                            <td class="c-grid__cell"></td>
+                            <td class="c-grid__cell"></td>
+                            <td class="c-grid__cell  js-position__bottom-right"></td>
+                        </tr>
+                    </table>
+                    <div class="c-value  js-value">2</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

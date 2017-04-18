@@ -1,9 +1,0 @@
-{
-    "compilerOptions": {
-        "target": "es6",
-        "module": "system",
-        "removeComments": true,
-        "sourceMap": true,
-        "outDir": "../js"
-    }
-}

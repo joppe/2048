@@ -2,15 +2,17 @@
 @import './../variables/dimensions';
 
 .c-value {
-    transition: all 0.3s ease-out;
+    animation-fill-mode: both;
+
     position: absolute;
     z-index: 10;
-    display: table-cell;
     width: $size;
     height: $size;
     overflow: hidden;
     background: $white;
-    border: $border / 2 solid $light-gray;
+    background-clip: padding-box;
+    border: $border / 2 solid $transparent;
+    opacity: 0;
     text-align: center;
     font: {
         size: 30px;
@@ -18,14 +20,16 @@
     }
     line-height: $size;
     color: $black;
-    transform-origin: center center;
-    transform: scale(0);
 
-    &.is-ready {
-        transform: scale(1);
+    &.ready {
+        opacity: 1;
     }
 
-    &.dissolve {
-        z-index: 5;
+    &.appear {
+        animation-name: bounce;
+    }
+
+    &.destroy {
+        animation-name: fadeOut;
     }
 }
