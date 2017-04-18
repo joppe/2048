@@ -49,7 +49,7 @@ export class Keyboard extends Backbone.View<Game> {
                     break;
             }
 
-            this.model.cycle(direction);
+            this.model.move = direction;
         }
     }
 }

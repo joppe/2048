@@ -71,19 +71,22 @@ class Game extends Backbone.Model {
     }
 
     /**
-     * @returns {number}
+     * @returns {DirectionInterface}
      */
-    get animationCount():number {
-        return this.get('animationCount');
+    get move():DirectionInterface {
+        return this.get('move');
     }
 
     /**
-     * @param {number} count
+     * Silently set the move direction and then trigger a change.
+     *
+     * @param {DirectionInterface} direction
      */
-    set animationCount(count:number) {
-        this.set('animationCount', count);
-
-        this.cycle();
+    set move(direction:DirectionInterface) {
+        this.set('move', direction, {
+            silent: true
+        });
+        this.trigger('change:move');
     }
 
     /**
@@ -91,7 +94,6 @@ class Game extends Backbone.Model {
      */
     defaults():Backbone.ObjectHash {
         return {
-            locked: false,
             finished: false,
             score: 0,
             size: 4,
@@ -104,6 +106,8 @@ class Game extends Backbone.Model {
      * @returns {Game}
      */
     addValues(values:ValueLiteralInterface[]):Game {
+        this.locked = true;
+
         values.forEach((valueLiteral:ValueLiteralInterface) => {
             const cell:Cell = this.grid.getCell(valueLiteral.index);
             let valueAttributes:ValueAttributesInterface;
@@ -123,59 +127,7 @@ class Game extends Backbone.Model {
             this.vals.add(new Value(valueAttributes));
         });
 
-        return this;
-    }
-
-    /**
-     * @returns {Game}
-     */
-    decrementAnimationCount():Game {
-        if (this.animationCount <= 0) {
-            throw new Error(`Cannot decrement animationCount, count is ${this.animationCount}`);
-        }
-
-        this.animationCount -= 1;
-
-        return this;
-    }
-
-    /**
-     * @param {DirectionInterface} [direction]
-     * @returns {Game}
-     */
-    cycle(direction?:DirectionInterface):Game {
-        // guard: don't do anything when the game is animating
-        if (this.animationCount > 0) {
-            return;
-        }
-
-        if (undefined !== direction) {
-            this.move(direction);
-        } else {
-            this.appear();
-        }
-
-        return this;
-    }
-
-    /**
-     * @returns {Game}
-     */
-    appear():Game {
-        /**
-         * get random empty cell
-         * create new value
-         */
-        const randomCell:Cell = this.grid.getRandomCell(this.vals.getCells());
-
-        if (undefined === randomCell) {
-            this.set('finished', true);
-            return;
-        }
-
-        this.vals.add(new Value({
-            cell: randomCell
-        }));
+        this.locked = false;
 
         return this;
     }
@@ -194,33 +146,45 @@ class Game extends Backbone.Model {
      * @param {DirectionInterface} direction
      * @returns {Game}
      */
-    move(direction:DirectionInterface):Game {
+    moveValues(direction:DirectionInterface):Game {
         const isVerticalMovement:boolean = (0 !== direction.top);
         const isIncrementalMovement:boolean = (1 === direction.left || 1 === direction.top);
+
+        // If there is a vertical movement, a value can only move within the column it is in, therefore all values are
+        // grouped by column. The groupBy is used as an outer loop, loop over the columns and in the loop loop over the
+        // rows.
         const groupBy:string = isVerticalMovement ? 'column' : 'row';
         const increment:number = isIncrementalMovement ? 1 : -1;
+
+        // This is the first index in the inner loop.
         const start:number = isIncrementalMovement ? 0 : this.size - 1;
         const values:ValueIterator = new ValueIterator(this.vals, groupBy, !isIncrementalMovement);
-        let mergeCandidate:Value;
-        let updateCount:number = 0;
 
+        // The merge candidate is a value where the value that is to be moved could be merged with if the contained
+        // values are equal (and other dependencies are met).
+        let mergeCandidate:Value;
+
+        this.locked = true;
+
+        // Loop over all available values that participate in the game
         for (const value of values) {
+            // This is the cell the value can move to.
             let cell:Cell;
 
+            // If there is no mergeCandidate or the mergeCandidate is in a different group
             if (undefined === mergeCandidate || mergeCandidate.cell.get(groupBy) !== value.cell.get(groupBy)) {
                 cell = this.grid.getCell({
                     column: isVerticalMovement ? value.cell.column : start,
                     row: isVerticalMovement ? start : value.cell.row
                 } as CellIndexInterface);
-                window.console.log(`new axis: ${value}`);
 
                 mergeCandidate = value;
+
+                // window.console.log(`new axis: ${value}`);
             } else if (mergeCandidate.isMergeable(value)) {
                 mergeCandidate.merge = value;
 
-                updateCount += 1;
-
-                window.console.log(`merge: ${value}`);
+                // window.console.log(`merge: ${value}`);
             } else {
                 cell = this.grid.getCell({
                     column: isVerticalMovement ? mergeCandidate.cell.column : mergeCandidate.cell.column + increment,
@@ -229,18 +193,15 @@ class Game extends Backbone.Model {
 
                 mergeCandidate = value;
 
-                window.console.log(`next: ${value}`);
+                // window.console.log(`next: ${value}`);
             }
 
             if (undefined !== cell && value.cell !== cell) {
-                value.cell = cell;
-
-                updateCount += 1;
+                value.move = cell;
             }
         }
 
-        this.animationCount = updateCount;
-        this.trigger('animate:start');
+        this.locked = false;
 
         return this;
     }
@@ -286,6 +247,15 @@ class Game extends Backbone.Model {
         }
 
         return false;
+    }
+
+    /**
+     * @returns {boolean}
+     */
+    isAnimating():boolean {
+        return undefined !== this.vals.findWhere({
+            animating: true
+        });
     }
 }
 

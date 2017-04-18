@@ -11,10 +11,52 @@ const MIN_INITIAL_VALUE:number = 2;
  */
 export class Value extends Backbone.Model {
     /**
+     * @returns {boolean}
+     */
+    get animating():boolean {
+        return true === this.get('animating');
+    }
+
+    /**
+     * @param {boolean} animating
+     */
+    set animating(animating:boolean) {
+        this.set('animating', animating);
+    }
+
+    /**
+     * @returns {Cell|undefined}
+     */
+    get move():Cell|undefined {
+        return this.get('move');
+    }
+
+    /**
+     * @param {Cell} cell
+     */
+    set move(cell:Cell) {
+        this.set('move', cell);
+    }
+
+    /**
      * @returns {number}
      */
     get value():number {
         return this.get('value');
+    }
+
+    /**
+     * @returns {boolean}
+     */
+    get initialized():boolean {
+        return true === this.get('initialized');
+    }
+
+    /**
+     * @param {boolean} initialized
+     */
+    set initialized(initialized:boolean) {
+        this.set('initialized', initialized);
     }
 
     /**
@@ -25,17 +67,24 @@ export class Value extends Backbone.Model {
     }
 
     /**
-     * @param {Value} value
-     */
-    set merge(value:Value) {
-        this.set('merge', value);
-    }
-
-    /**
      * @param {Cell} cell
      */
     set cell(cell:Cell) {
         this.set('cell', cell);
+    }
+
+    /**
+     * @returns {Value|undefined}
+     */
+    get merge():Value|undefined {
+        return this.get('merge');
+    }
+
+    /**
+     * @param {Value} value
+     */
+    set merge(value:Value) {
+        this.set('merge', value);
     }
 
     /**

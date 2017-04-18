@@ -19,9 +19,9 @@ export interface InitInterface {
  *
  * @param {JQuery} $container
  * @param {number} size
- * @param {ValueLiteralInterface[]} values
+ * @param {ValueLiteralInterface[]} [values=[]]
  */
-export const init:InitInterface = ($container:JQuery, size:number, values:ValueLiteralInterface[]):void => {
+export const init:InitInterface = ($container:JQuery, size:number, values:ValueLiteralInterface[] = []):void => {
     const game:Game = new Game({
         size
     });

@@ -28,6 +28,23 @@ export class App extends Backbone.View<Game> {
      */
     initialize():void {
         this.listenTo(this.model.vals, 'add', this.addValue.bind(this));
+        this.listenTo(this.model, 'change:move', this.handleMove.bind(this));
+    }
+
+    /**
+     * Try to move the values.
+     */
+    handleMove():void {
+        if (this.model.locked) {
+            return;
+        }
+
+        if (this.model.isAnimating()) {
+            return;
+        }
+
+        this.model.moveValues(this.model.move);
+        window.console.log('move', this.model.move);
     }
 
     /**
@@ -53,10 +70,6 @@ export class App extends Backbone.View<Game> {
         });
 
         this.$el.append(container.render().el);
-
-        // trigger the appear animation, if the model is not locked
-        window.console.log('on addvalue');
-        window.console.log(this.model);
     }
 
     /**
@@ -71,11 +84,7 @@ export class App extends Backbone.View<Game> {
 
         this.table.storeElementPositions();
 
-        // lock the game
-        window.console.log('LOCK');
         this.model.addValues(values);
-        window.console.log('UNLOCK');
-        // trigger the appear animation
 
         return this;
     }

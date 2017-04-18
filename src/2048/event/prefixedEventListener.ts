@@ -32,8 +32,9 @@ interface PrefixedEventListenerInterface {
  */
 export const prefixedEventListener:PrefixedEventListenerInterface = ($el:JQuery, eventName:string, handler:EventHandlerInterface, once:boolean = false):void => {
     const postfix:string = eventName.toLowerCase();
+    const method:string = once ? 'one' : 'on';
 
     prefixes.forEach((prefix:string):void => {
-        $el.on(`${prefix}${postfix}`, handler);
+        $el[method](`${prefix}${postfix}`, handler);
     });
 };

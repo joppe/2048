@@ -4,9 +4,9 @@ import {Game} from './../model/Game';
 import {Value} from './../model/Value';
 
 /**
- * @interface ContainerOptionsInterace
+ * @interface ContainerOptionsInterface
  */
-interface ContainerOptionsInterace extends Backbone.ViewOptions<Value> {
+interface ContainerOptionsInterface extends Backbone.ViewOptions<Value> {
     game:Game;
 }
 
@@ -28,12 +28,31 @@ export class Container extends Backbone.View<Value> {
     }
 
     /**
-     * @param {ContainerOptionsInterace} options
+     * @param {ContainerOptionsInterface} options
      */
-    constructor(options:ContainerOptionsInterace) {
+    constructor(options:ContainerOptionsInterface) {
         super(options);
 
         this._game = options.game;
+        this.listenTo(this._game, 'change:locked', this.handleLock.bind(this));
+    }
+
+    /**
+     * Start animating when the game is not locked.
+     */
+    handleLock():void {
+        if (this._game.locked) {
+            return;
+        }
+
+        if (false === this.model.initialized) {
+            this.model.initialized = true;
+            this.appear();
+        } else if (undefined !== this.model.move) {
+            this.move();
+        } else if (undefined !== this.model.merge) {
+            this.merge();
+        }
     }
 
     /**
@@ -41,14 +60,12 @@ export class Container extends Backbone.View<Value> {
      */
     render():Container {
         this.update();
-        window.console.log('Container', this.model);
-        this.appear();
 
         return this;
     }
 
     /**
-     * Update the text and position
+     * Update the text and position.
      */
     update():void {
         this.$el.text(this.model.value);
@@ -56,27 +73,31 @@ export class Container extends Backbone.View<Value> {
     }
 
     /**
-     * Show the appear animation
+     * Show the appear animation.
      */
     appear():void {
         const speed:string = 'a-speed--1';
         const css:string = 'appear';
 
+        this.model.animating = true;
+
         prefixedEventListener(this.$el, 'animationend', ():void => {
             this.$el.addClass('ready');
             this.$el.removeClass(`${css}  ${speed}`);
 
-            // resolve();
+            this.model.animating = false;
         }, true);
 
         this.$el.addClass(`${css}  ${speed}`);
     }
 
     move():void {
-        // move animation
+        this.model.animating = true;
+        window.console.log('move');
     }
 
     merge():void {
-        // merge animation
+        this.model.animating = true;
+        window.console.log('merge');
     }
 }
