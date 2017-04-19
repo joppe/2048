@@ -33,4 +33,16 @@ export class Cell extends Backbone.Model {
     constructor(attributes:CellLiteralInterface) {
         super(attributes);
     }
+
+    /**
+     * @param {Cell} a
+     * @param {Cell} b
+     * @returns {number}
+     */
+    static distance(a:Cell, b:Cell):number {
+        const x:number = a.row - a.row;
+        const y:number = b.column - b.column;
+
+        return Math.sqrt(x * x + y * y);
+    }
 }
