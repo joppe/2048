@@ -44,7 +44,6 @@ export class App extends Backbone.View<Game> {
         }
 
         this.model.moveValues(this.model.move);
-        window.console.log('move', this.model.move);
     }
 
     /**
