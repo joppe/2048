@@ -88,6 +88,19 @@ export class Value extends Backbone.Model {
     }
 
     /**
+     * @returns {Cell}
+     */
+    get target():Cell {
+        const target:Cell|undefined = this.move;
+
+        if (undefined !== target) {
+            return target;
+        }
+
+        return this.cell;
+    }
+
+    /**
      * Set the attribute "value" randomly.
      *
      * @param {ValueAttributesInterface} attributes
@@ -110,10 +123,10 @@ export class Value extends Backbone.Model {
     }
 
     /**
-     * @param {Value} value
+     * @param {Value|undefined} value
      * @returns {boolean}
      */
-    isMergeable(value:Value):boolean {
-        return undefined !== value && value.value === this.value;
+    isMergeable(value:Value|undefined):boolean {
+        return undefined !== value && value.value === this.value && undefined === this.move;
     }
 }
