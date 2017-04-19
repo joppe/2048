@@ -184,7 +184,7 @@ class Game extends Backbone.Model {
 
                 // window.console.log(`new axis: ${value}`, cell);
             } else if (mergeCandidate.isMergeable(value)) {
-                mergeCandidate.merge = value;
+                value.merge = mergeCandidate;
 
                 // window.console.log(`merge: ${value}`);
             } else {

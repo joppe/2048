@@ -7,6 +7,9 @@ const MAX_INITIAL_VALUE:number = 4;
 const MIN_INITIAL_VALUE:number = 2;
 
 /**
+ * TODO: change move to moveTo, create a getter/setter hasMoved
+ * TODO: change merge to mergeWith, create a getter/setter isMerged
+ *
  * @class Value
  */
 export class Value extends Backbone.Model {
@@ -88,6 +91,8 @@ export class Value extends Backbone.Model {
     }
 
     /**
+     * The target is the cell that belongs to the value after it is done animating.
+     *
      * @returns {Cell}
      */
     get target():Cell {
@@ -127,6 +132,14 @@ export class Value extends Backbone.Model {
      * @returns {boolean}
      */
     isMergeable(value:Value|undefined):boolean {
-        return undefined !== value && value.value === this.value && undefined === this.move;
+        // TODO: if the value is already merged then it can not merge again
+        return undefined !== value && value.value === this.value;
+    }
+
+    /**
+     * Double the value.
+     */
+    double():void {
+        this.set('value', this.value * 2);
     }
 }

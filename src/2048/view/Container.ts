@@ -2,6 +2,7 @@ import * as Backbone from 'backbone';
 import {prefixedEventListener} from './../event/prefixedEventListener';
 import {Cell} from './../model/Cell';
 import {Game} from './../model/Game';
+import {PositionInterface} from './../model/PositionInterface';
 import {Value} from './../model/Value';
 
 /**
@@ -36,6 +37,7 @@ export class Container extends Backbone.View<Value> {
 
         this._game = options.game;
         this.listenTo(this._game, 'change:locked', this.handleLock.bind(this));
+        this.listenTo(this.model, 'change:value', this.updateValue.bind(this));
     }
 
     /**
@@ -69,8 +71,16 @@ export class Container extends Backbone.View<Value> {
      * Update the text and position.
      */
     update():void {
-        this.$el.text(this.model.value);
         this.$el.css(this.model.cell.position);
+
+        this.updateValue();
+    }
+
+    /**
+     * Update the text.
+     */
+    updateValue():void {
+        this.$el.text(this.model.value);
     }
 
     /**
@@ -114,8 +124,30 @@ export class Container extends Backbone.View<Value> {
         this.$el.css(this.model.move.position);
     }
 
+    /**
+     * Merge the value with an other value.
+     * 1. Move the container to the (target) position of the cell of the merge value.
+     * 2. Update (double) the value
+     * 3. Update (double) the merge value
+     * 4. Disappear the container.
+     */
     merge():void {
+        const distance:number = Cell.distance(this.model.cell, this.model.merge.target);
+        const speedClass:string = `t-speed--${distance}`;
+        const animationClass:string = 'a-move';
+
         this.model.animating = true;
-        window.console.log('merge');
+
+        prefixedEventListener(this.$el, 'transitionend', ():void => {
+            this.$el.removeClass(`${animationClass}  ${speedClass}`);
+
+            this.model.double();
+            this.model.merge.double();
+
+            // destroy
+        }, true);
+
+        this.$el.addClass(`${animationClass}  ${speedClass}  u-z--above`);
+        this.$el.css(this.model.merge.target.position);
     }
 }

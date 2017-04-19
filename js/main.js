@@ -13968,7 +13968,10 @@ class Value extends Backbone.Model {
         return Math.random() > INITIAL_VALUE_DEVIATION ? MAX_INITIAL_VALUE : MIN_INITIAL_VALUE;
     }
     isMergeable(value) {
-        return undefined !== value && value.value === this.value && undefined === this.move;
+        return undefined !== value && value.value === this.value;
+    }
+    double() {
+        this.set('value', this.value * 2);
     }
 }
 exports.Value = Value;
@@ -14291,7 +14294,7 @@ class Game extends Backbone.Model {
                 mergeCandidate = value;
             }
             else if (mergeCandidate.isMergeable(value)) {
-                mergeCandidate.merge = value;
+                value.merge = mergeCandidate;
             }
             else {
                 const target = mergeCandidate.target;
@@ -14483,6 +14486,7 @@ class Container extends Backbone.View {
         super(options);
         this._game = options.game;
         this.listenTo(this._game, 'change:locked', this.handleLock.bind(this));
+        this.listenTo(this.model, 'change:value', this.updateValue.bind(this));
     }
     handleLock() {
         if (this._game.locked) {
@@ -14504,8 +14508,11 @@ class Container extends Backbone.View {
         return this;
     }
     update() {
-        this.$el.text(this.model.value);
         this.$el.css(this.model.cell.position);
+        this.updateValue();
+    }
+    updateValue() {
+        this.$el.text(this.model.value);
     }
     appear() {
         const speedClass = 'a-speed--1';
@@ -14533,8 +14540,17 @@ class Container extends Backbone.View {
         this.$el.css(this.model.move.position);
     }
     merge() {
+        const distance = Cell_1.Cell.distance(this.model.cell, this.model.merge.target);
+        const speedClass = `t-speed--${distance}`;
+        const animationClass = 'a-move';
         this.model.animating = true;
-        window.console.log('merge');
+        prefixedEventListener_1.prefixedEventListener(this.$el, 'transitionend', () => {
+            this.$el.removeClass(`${animationClass}  ${speedClass}`);
+            this.model.double();
+            this.model.merge.double();
+        }, true);
+        this.$el.addClass(`${animationClass}  ${speedClass}  u-z--above`);
+        this.$el.css(this.model.merge.target.position);
     }
 }
 exports.Container = Container;
