@@ -32,9 +32,9 @@ export class Value extends Backbone.Model {
     }
 
     /**
-     * @param {Cell} cell
+     * @param {Cell|undefined} cell
      */
-    set move(cell:Cell) {
+    set move(cell:Cell|undefined) {
         this.set('move', cell);
     }
 
@@ -81,9 +81,9 @@ export class Value extends Backbone.Model {
     }
 
     /**
-     * @param {Value} value
+     * @param {Value|undefined} value
      */
-    set merge(value:Value) {
+    set merge(value:Value|undefined) {
         this.set('merge', value);
     }
 
