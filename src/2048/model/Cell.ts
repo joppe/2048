@@ -40,8 +40,8 @@ export class Cell extends Backbone.Model {
      * @returns {number}
      */
     static distance(a:Cell, b:Cell):number {
-        const x:number = a.row - a.row;
-        const y:number = b.column - b.column;
+        const x:number = a.row - b.row;
+        const y:number = a.column - b.column;
 
         return Math.sqrt(x * x + y * y);
     }
