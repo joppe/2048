@@ -171,6 +171,8 @@ class Game extends Backbone.Model {
             // This is the cell the value can move to.
             let cell:Cell;
 
+            // window.console.log(value);
+
             // If there is no mergeCandidate or the mergeCandidate is in a different group
             if (undefined === mergeCandidate || mergeCandidate.cell.get(groupBy) !== value.cell.get(groupBy)) {
                 cell = this.grid.getCell({
@@ -180,20 +182,31 @@ class Game extends Backbone.Model {
 
                 mergeCandidate = value;
 
-                // window.console.log(`new axis: ${value}`);
+                // window.console.log(`new axis: ${value}`, cell);
             } else if (mergeCandidate.isMergeable(value)) {
                 mergeCandidate.merge = value;
 
                 // window.console.log(`merge: ${value}`);
             } else {
+                const target:Cell = mergeCandidate.target;
+                /*/
+                window.console.log(`isVerticalMovement: ${isVerticalMovement}`);
+                window.console.log(`increment: ${increment}`);
+                window.console.log(`start: ${start}`);
+                window.console.log(`groupBy: ${groupBy}`);
+
+                window.console.log('mergeCandidate', mergeCandidate);
+                window.console.log('column', isVerticalMovement ? target.column : target.column + increment);
+                window.console.log('row', isVerticalMovement ? target.row + increment : target.row);
+                /**/
                 cell = this.grid.getCell({
-                    column: isVerticalMovement ? mergeCandidate.cell.column : mergeCandidate.cell.column + increment,
-                    row: isVerticalMovement ? mergeCandidate.cell.row + increment : mergeCandidate.cell.row
+                    column: isVerticalMovement ? target.column : target.column + increment,
+                    row: isVerticalMovement ? target.row + increment : target.row
                 } as CellIndexInterface);
 
                 mergeCandidate = value;
 
-                // window.console.log(`next: ${value}`);
+                // window.console.log(`next: ${value}`, cell);
             }
 
             if (undefined !== cell && value.cell !== cell) {
