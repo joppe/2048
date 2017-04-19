@@ -1,5 +1,6 @@
 import * as Backbone from 'backbone';
 import {prefixedEventListener} from './../event/prefixedEventListener';
+import {Cell} from './../model/Cell';
 import {Game} from './../model/Game';
 import {Value} from './../model/Value';
 
@@ -76,24 +77,41 @@ export class Container extends Backbone.View<Value> {
      * Show the appear animation.
      */
     appear():void {
-        const speed:string = 'a-speed--1';
-        const css:string = 'appear';
+        const speedClass:string = 'a-speed--1';
+        const animationClass:string = 'appear';
 
         this.model.animating = true;
 
         prefixedEventListener(this.$el, 'animationend', ():void => {
             this.$el.addClass('ready');
-            this.$el.removeClass(`${css}  ${speed}`);
+            this.$el.removeClass(`${animationClass}  ${speedClass}`);
 
             this.model.animating = false;
         }, true);
 
-        this.$el.addClass(`${css}  ${speed}`);
+        this.$el.addClass(`${animationClass}  ${speedClass}`);
     }
 
+    /**
+     * Move the container to the new cell.
+     */
     move():void {
+        const distance:number = Cell.distance(this.model.cell, this.model.move);
+        const speedClass:string = `t-speed--${distance}`;
+        const animationClass:string = 'a-move';
+
         this.model.animating = true;
-        window.console.log('move');
+
+        prefixedEventListener(this.$el, 'transitionend', ():void => {
+            this.$el.removeClass(`${animationClass}  ${speedClass}`);
+
+            this.model.cell = this.model.move;
+            this.model.move = undefined;
+            this.model.animating = false;
+        }, true);
+
+        this.$el.addClass(`${animationClass}  ${speedClass}`);
+        this.$el.css(this.model.move.position);
     }
 
     merge():void {
