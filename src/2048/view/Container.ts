@@ -9,7 +9,15 @@ import {Value} from './../model/Value';
  * @interface ContainerOptionsInterface
  */
 interface ContainerOptionsInterface extends Backbone.ViewOptions<Value> {
+    /**
+     * @type {Game}
+     */
     game:Game;
+
+    /**
+     * @type {Value}
+     */
+    model:Value;
 }
 
 /**
@@ -38,6 +46,7 @@ export class Container extends Backbone.View<Value> {
         this._game = options.game;
         this.listenTo(this._game, 'change:locked', this.handleLock.bind(this));
         this.listenTo(this.model, 'change:value', this.updateValue.bind(this));
+        this.listenTo(this.model, 'remove', this.remove.bind(this));
     }
 
     /**
@@ -49,7 +58,6 @@ export class Container extends Backbone.View<Value> {
         }
 
         if (false === this.model.initialized) {
-            this.model.initialized = true;
             this.appear();
         } else if (undefined !== this.model.move) {
             this.move();
@@ -91,6 +99,7 @@ export class Container extends Backbone.View<Value> {
         const animationClass:string = 'appear';
 
         this.model.animating = true;
+        this.model.initialized = true;
 
         prefixedEventListener(this.$el, 'animationend', ():void => {
             this.$el.addClass('ready');
@@ -118,6 +127,8 @@ export class Container extends Backbone.View<Value> {
             this.model.cell = this.model.move;
             this.model.move = undefined;
             this.model.animating = false;
+
+            this._game.tick();
         }, true);
 
         this.$el.addClass(`${animationClass}  ${speedClass}`);
@@ -144,7 +155,9 @@ export class Container extends Backbone.View<Value> {
             this.model.double();
             this.model.merge.double();
 
-            // destroy
+            this._game.addScore(this.model.value);
+            this._game.vals.remove(this.model);
+            this._game.tick();
         }, true);
 
         this.$el.addClass(`${animationClass}  ${speedClass}  u-z--above`);

@@ -5,6 +5,7 @@ import {Value} from './../model/Value';
 import {ValueLiteralInterface} from './../model/ValueLiteralInterface';
 import {Container} from './Container';
 import {Keyboard} from './Keyboard';
+import {Score} from './Score';
 import {Table} from './Table';
 
 /**
@@ -50,10 +51,15 @@ export class App extends Backbone.View<Game> {
      * @returns {App}
      */
     render():App {
+        const score:Score = new Score({
+            model: this.model
+        });
+
         this.table = new Table({
             model: this.model
         });
 
+        this.$el.append(score.render().el);
         this.$el.append(this.table.render().el);
 
         return this;
@@ -69,6 +75,8 @@ export class App extends Backbone.View<Game> {
         });
 
         this.$el.append(container.render().el);
+
+        container.appear();
     }
 
     /**

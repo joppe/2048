@@ -270,6 +270,30 @@ class Game extends Backbone.Model {
             animating: true
         });
     }
+
+    /**
+     * @param {number} value
+     */
+    addScore(value:number):void {
+        this.set('score', this.score + value);
+    }
+
+    /**
+     * Check if there is an animation going on or the game is locked.
+     * If not create new value
+     */
+    tick():void {
+        if (this.isAnimating()) {
+            return;
+        }
+
+        const cell:Cell = this.grid.getRandomCell(this.vals.getCells());
+        const value:Value = this.vals.add(new Value({
+            cell
+        }));
+
+        window.console.log('tick', cell.attributes, value.attributes);
+    }
 }
 
 export {Game};

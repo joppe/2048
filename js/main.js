@@ -14348,6 +14348,19 @@ class Game extends Backbone.Model {
             animating: true
         });
     }
+    addScore(value) {
+        this.set('score', this.score + value);
+    }
+    tick() {
+        if (this.isAnimating()) {
+            return;
+        }
+        const cell = this.grid.getRandomCell(this.vals.getCells());
+        const value = this.vals.add(new Value_1.Value({
+            cell
+        }));
+        window.console.log('tick', cell.attributes, value.attributes);
+    }
 }
 exports.Game = Game;
 
@@ -14423,6 +14436,7 @@ const Backbone = __webpack_require__(0);
 const jQuery = __webpack_require__(1);
 const Container_1 = __webpack_require__(18);
 const Keyboard_1 = __webpack_require__(19);
+const Score_1 = __webpack_require__(24);
 const Table_1 = __webpack_require__(20);
 class App extends Backbone.View {
     get className() {
@@ -14442,9 +14456,13 @@ class App extends Backbone.View {
         this.model.moveValues(this.model.move);
     }
     render() {
+        const score = new Score_1.Score({
+            model: this.model
+        });
         this.table = new Table_1.Table({
             model: this.model
         });
+        this.$el.append(score.render().el);
         this.$el.append(this.table.render().el);
         return this;
     }
@@ -14454,6 +14472,7 @@ class App extends Backbone.View {
             model: value
         });
         this.$el.append(container.render().el);
+        container.appear();
     }
     start(values = []) {
         const keyboard = new Keyboard_1.Keyboard({
@@ -14487,13 +14506,13 @@ class Container extends Backbone.View {
         this._game = options.game;
         this.listenTo(this._game, 'change:locked', this.handleLock.bind(this));
         this.listenTo(this.model, 'change:value', this.updateValue.bind(this));
+        this.listenTo(this.model, 'remove', this.remove.bind(this));
     }
     handleLock() {
         if (this._game.locked) {
             return;
         }
         if (false === this.model.initialized) {
-            this.model.initialized = true;
             this.appear();
         }
         else if (undefined !== this.model.move) {
@@ -14518,6 +14537,7 @@ class Container extends Backbone.View {
         const speedClass = 'a-speed--1';
         const animationClass = 'appear';
         this.model.animating = true;
+        this.model.initialized = true;
         prefixedEventListener_1.prefixedEventListener(this.$el, 'animationend', () => {
             this.$el.addClass('ready');
             this.$el.removeClass(`${animationClass}  ${speedClass}`);
@@ -14535,6 +14555,7 @@ class Container extends Backbone.View {
             this.model.cell = this.model.move;
             this.model.move = undefined;
             this.model.animating = false;
+            this._game.tick();
         }, true);
         this.$el.addClass(`${animationClass}  ${speedClass}`);
         this.$el.css(this.model.move.position);
@@ -14548,6 +14569,9 @@ class Container extends Backbone.View {
             this.$el.removeClass(`${animationClass}  ${speedClass}`);
             this.model.double();
             this.model.merge.double();
+            this._game.addScore(this.model.value);
+            this._game.vals.remove(this.model);
+            this._game.tick();
         }, true);
         this.$el.addClass(`${animationClass}  ${speedClass}  u-z--above`);
         this.$el.css(this.model.merge.target.position);
@@ -14709,6 +14733,34 @@ jQuery(($) => {
         }
     ]);
 });
+
+
+/***/ }),
+/* 23 */,
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const Backbone = __webpack_require__(0);
+class Score extends Backbone.View {
+    get className() {
+        return 'c-score';
+    }
+    constructor(options) {
+        super(options);
+        this.listenTo(this.model, 'change:score', this.update.bind(this));
+    }
+    render() {
+        this.update();
+        return this;
+    }
+    update() {
+        this.$el.text(this.model.score);
+    }
+}
+exports.Score = Score;
 
 
 /***/ })
