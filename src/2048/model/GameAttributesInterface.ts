@@ -8,4 +8,9 @@ export interface GameAttributesInterface {
      * @type {number}
      */
     size?:number;
+
+    /**
+     * @type {boolean}
+     */
+    debug:boolean;
 }

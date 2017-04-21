@@ -50,6 +50,15 @@ export class Container extends Backbone.View<Value> {
     }
 
     /**
+     * @returns {Backbone.EventsHash}
+     */
+    events():Backbone.EventsHash {
+        return {
+            click: 'handleClick'
+        };
+    }
+
+    /**
      * Start animating when the game is not locked.
      */
     handleLock():void {
@@ -64,6 +73,18 @@ export class Container extends Backbone.View<Value> {
         } else if (undefined !== this.model.merge) {
             this.merge();
         }
+    }
+
+    /**
+     * Show debug information.
+     */
+    handleClick():void {
+        if (false === this._game.debug) {
+            return;
+        }
+
+        window.console.log('value model', this.model.attributes);
+        window.console.log('game model', this._game.attributes);
     }
 
     /**
@@ -88,7 +109,11 @@ export class Container extends Backbone.View<Value> {
      * Update the text.
      */
     updateValue():void {
-        this.$el.text(this.model.value);
+        if (this._game.debug) {
+            this.$el.html(`${this.model.value}<sup style="font-weight: normal; font-size: 12px; padding-left: 10px;">${this.model.cid}</sup>`);
+        } else {
+            this.$el.text(this.model.value);
+        }
     }
 
     /**

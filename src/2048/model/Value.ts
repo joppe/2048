@@ -96,10 +96,12 @@ export class Value extends Backbone.Model {
      * @returns {Cell}
      */
     get target():Cell {
-        const target:Cell|undefined = this.move;
+        if (undefined !== this.merge) {
+            return this.merge.target;
+        }
 
-        if (undefined !== target) {
-            return target;
+        if (undefined !== this.move) {
+            return this.move;
         }
 
         return this.cell;
@@ -132,8 +134,7 @@ export class Value extends Backbone.Model {
      * @returns {boolean}
      */
     isMergeable(value:Value|undefined):boolean {
-        // TODO: if the value is already merged then it can not merge again
-        return undefined !== value && value.value === this.value;
+        return undefined !== value && value.value === this.value && undefined === this.merge;
     }
 
     /**

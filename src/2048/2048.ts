@@ -10,8 +10,9 @@ export interface InitInterface {
      * @param {JQuery} $container
      * @param {number} size
      * @param {ValueLiteralInterface[]} values
+     * @param {boolean} debug
      */
-    ($container:JQuery, size:number, values:ValueLiteralInterface[]):void;
+    ($container:JQuery, size:number, values:ValueLiteralInterface[], debug:boolean):void;
 }
 
 /**
@@ -20,10 +21,12 @@ export interface InitInterface {
  * @param {JQuery} $container
  * @param {number} size
  * @param {ValueLiteralInterface[]} [values=[]]
+ * @param {boolean} [debug=false]
  */
-export const init:InitInterface = ($container:JQuery, size:number, values:ValueLiteralInterface[] = []):void => {
+export const init:InitInterface = ($container:JQuery, size:number, values:ValueLiteralInterface[] = [], debug:false):void => {
     const game:Game = new Game({
-        size
+        size,
+        debug
     });
     const app:App = new App({
         model: game

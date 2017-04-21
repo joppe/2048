@@ -14,7 +14,7 @@ jQuery(($:JQueryStatic) => {
                 column: 0,
                 row: 0
             },
-            value: 2
+            value: 4
         },
         {
             index: {
@@ -22,8 +22,22 @@ jQuery(($:JQueryStatic) => {
                 row: 1
             },
             value: 2
+        },
+        {
+            index: {
+                column: 0,
+                row: 2
+            },
+            value: 2
+        },
+        {
+            index: {
+                column: 0,
+                row: 3
+            },
+            value: 4
         }
-    ]);
+    ], true);
 
     /*/
     initGame($container, 4, [

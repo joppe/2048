@@ -90,6 +90,13 @@ class Game extends Backbone.Model {
     }
 
     /**
+     * @returns {boolean}
+     */
+    get debug():boolean {
+        return true === this.get('debug');
+    }
+
+    /**
      * @returns {object}
      */
     defaults():Backbone.ObjectHash {
@@ -166,6 +173,14 @@ class Game extends Backbone.Model {
 
         this.locked = true;
 
+        if (this.debug) {
+            window.console.log('======================== moveValues');
+            window.console.log(`isVerticalMovement: ${isVerticalMovement}`);
+            window.console.log(`increment: ${increment}`);
+            window.console.log(`start: ${start}`);
+            window.console.log(`groupBy: ${groupBy}`);
+        }
+
         // Loop over all available values that participate in the game
         for (const value of values) {
             // This is the cell the value can move to.
@@ -182,23 +197,20 @@ class Game extends Backbone.Model {
 
                 mergeCandidate = value;
 
-                // window.console.log(`new axis: ${value}`, cell);
+                if (this.debug) {
+                    window.console.log('>> new axis');
+                }
             } else if (mergeCandidate.isMergeable(value)) {
                 value.merge = mergeCandidate;
 
-                // window.console.log(`merge: ${value}`);
+                mergeCandidate = value;
+
+                if (this.debug) {
+                    window.console.log('>> merge');
+                }
             } else {
                 const target:Cell = mergeCandidate.target;
-                /*/
-                window.console.log(`isVerticalMovement: ${isVerticalMovement}`);
-                window.console.log(`increment: ${increment}`);
-                window.console.log(`start: ${start}`);
-                window.console.log(`groupBy: ${groupBy}`);
 
-                window.console.log('mergeCandidate', mergeCandidate);
-                window.console.log('column', isVerticalMovement ? target.column : target.column + increment);
-                window.console.log('row', isVerticalMovement ? target.row + increment : target.row);
-                /**/
                 cell = this.grid.getCell({
                     column: isVerticalMovement ? target.column : target.column + increment,
                     row: isVerticalMovement ? target.row + increment : target.row
@@ -206,7 +218,9 @@ class Game extends Backbone.Model {
 
                 mergeCandidate = value;
 
-                // window.console.log(`next: ${value}`, cell);
+                if (this.debug) {
+                    window.console.log('>> next');
+                }
             }
 
             if (undefined !== cell && value.cell !== cell) {
@@ -291,8 +305,6 @@ class Game extends Backbone.Model {
         const value:Value = this.vals.add(new Value({
             cell
         }));
-
-        window.console.log('tick', cell.attributes, value.attributes);
     }
 }
 

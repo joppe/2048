@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 22);
+/******/ 	return __webpack_require__(__webpack_require__.s = 23);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -13952,9 +13952,11 @@ class Value extends Backbone.Model {
         this.set('merge', value);
     }
     get target() {
-        const target = this.move;
-        if (undefined !== target) {
-            return target;
+        if (undefined !== this.merge) {
+            return this.merge.target;
+        }
+        if (undefined !== this.move) {
+            return this.move;
         }
         return this.cell;
     }
@@ -13968,7 +13970,7 @@ class Value extends Backbone.Model {
         return Math.random() > INITIAL_VALUE_DEVIATION ? MAX_INITIAL_VALUE : MIN_INITIAL_VALUE;
     }
     isMergeable(value) {
-        return undefined !== value && value.value === this.value;
+        return undefined !== value && value.value === this.value && undefined === this.merge;
     }
     double() {
         this.set('value', this.value * 2);
@@ -13987,9 +13989,10 @@ exports.Value = Value;
 Object.defineProperty(exports, "__esModule", { value: true });
 const Game_1 = __webpack_require__(15);
 const App_1 = __webpack_require__(17);
-exports.init = ($container, size, values = []) => {
+exports.init = ($container, size, values = [], debug) => {
     const game = new Game_1.Game({
-        size
+        size,
+        debug
     });
     const app = new App_1.App({
         model: game
@@ -14248,6 +14251,9 @@ class Game extends Backbone.Model {
         });
         this.trigger('change:move');
     }
+    get debug() {
+        return true === this.get('debug');
+    }
     defaults() {
         return {
             finished: false,
@@ -14284,6 +14290,13 @@ class Game extends Backbone.Model {
         const values = new ValueIterator_1.ValueIterator(this.vals, groupBy, !isIncrementalMovement);
         let mergeCandidate;
         this.locked = true;
+        if (this.debug) {
+            window.console.log('======================== moveValues');
+            window.console.log(`isVerticalMovement: ${isVerticalMovement}`);
+            window.console.log(`increment: ${increment}`);
+            window.console.log(`start: ${start}`);
+            window.console.log(`groupBy: ${groupBy}`);
+        }
         for (const value of values) {
             let cell;
             if (undefined === mergeCandidate || mergeCandidate.cell.get(groupBy) !== value.cell.get(groupBy)) {
@@ -14292,9 +14305,16 @@ class Game extends Backbone.Model {
                     row: isVerticalMovement ? start : value.cell.row
                 });
                 mergeCandidate = value;
+                if (this.debug) {
+                    window.console.log('>> new axis');
+                }
             }
             else if (mergeCandidate.isMergeable(value)) {
                 value.merge = mergeCandidate;
+                mergeCandidate = value;
+                if (this.debug) {
+                    window.console.log('>> merge');
+                }
             }
             else {
                 const target = mergeCandidate.target;
@@ -14303,6 +14323,9 @@ class Game extends Backbone.Model {
                     row: isVerticalMovement ? target.row + increment : target.row
                 });
                 mergeCandidate = value;
+                if (this.debug) {
+                    window.console.log('>> next');
+                }
             }
             if (undefined !== cell && value.cell !== cell) {
                 value.move = cell;
@@ -14359,7 +14382,6 @@ class Game extends Backbone.Model {
         const value = this.vals.add(new Value_1.Value({
             cell
         }));
-        window.console.log('tick', cell.attributes, value.attributes);
     }
 }
 exports.Game = Game;
@@ -14436,8 +14458,8 @@ const Backbone = __webpack_require__(0);
 const jQuery = __webpack_require__(1);
 const Container_1 = __webpack_require__(18);
 const Keyboard_1 = __webpack_require__(19);
-const Score_1 = __webpack_require__(24);
-const Table_1 = __webpack_require__(20);
+const Score_1 = __webpack_require__(20);
+const Table_1 = __webpack_require__(21);
 class App extends Backbone.View {
     get className() {
         return 'c-game';
@@ -14508,6 +14530,11 @@ class Container extends Backbone.View {
         this.listenTo(this.model, 'change:value', this.updateValue.bind(this));
         this.listenTo(this.model, 'remove', this.remove.bind(this));
     }
+    events() {
+        return {
+            click: 'handleClick'
+        };
+    }
     handleLock() {
         if (this._game.locked) {
             return;
@@ -14522,6 +14549,13 @@ class Container extends Backbone.View {
             this.merge();
         }
     }
+    handleClick() {
+        if (false === this._game.debug) {
+            return;
+        }
+        window.console.log('value model', this.model.attributes);
+        window.console.log('game model', this._game.attributes);
+    }
     render() {
         this.update();
         return this;
@@ -14531,7 +14565,12 @@ class Container extends Backbone.View {
         this.updateValue();
     }
     updateValue() {
-        this.$el.text(this.model.value);
+        if (this._game.debug) {
+            this.$el.html(`${this.model.value}<sup style="font-weight: normal; font-size: 12px; padding-left: 10px;">${this.model.cid}</sup>`);
+        }
+        else {
+            this.$el.text(this.model.value);
+        }
     }
     appear() {
         const speedClass = 'a-speed--1';
@@ -14635,9 +14674,36 @@ exports.Keyboard = Keyboard;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const Backbone = __webpack_require__(0);
+class Score extends Backbone.View {
+    get className() {
+        return 'c-score';
+    }
+    constructor(options) {
+        super(options);
+        this.listenTo(this.model, 'change:score', this.update.bind(this));
+    }
+    render() {
+        this.update();
+        return this;
+    }
+    update() {
+        this.$el.text(this.model.score);
+    }
+}
+exports.Score = Score;
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const Backbone = __webpack_require__(0);
 const jQuery = __webpack_require__(1);
 const _ = __webpack_require__(3);
-const TableCell_1 = __webpack_require__(21);
+const TableCell_1 = __webpack_require__(22);
 class Table extends Backbone.View {
     constructor() {
         super(...arguments);
@@ -14679,7 +14745,7 @@ exports.Table = Table;
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14703,7 +14769,7 @@ exports.TableCell = TableCell;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14722,7 +14788,7 @@ jQuery(($) => {
                 column: 0,
                 row: 0
             },
-            value: 2
+            value: 4
         },
         {
             index: {
@@ -14730,37 +14796,23 @@ jQuery(($) => {
                 row: 1
             },
             value: 2
+        },
+        {
+            index: {
+                column: 0,
+                row: 2
+            },
+            value: 2
+        },
+        {
+            index: {
+                column: 0,
+                row: 3
+            },
+            value: 4
         }
-    ]);
+    ], true);
 });
-
-
-/***/ }),
-/* 23 */,
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const Backbone = __webpack_require__(0);
-class Score extends Backbone.View {
-    get className() {
-        return 'c-score';
-    }
-    constructor(options) {
-        super(options);
-        this.listenTo(this.model, 'change:score', this.update.bind(this));
-    }
-    render() {
-        this.update();
-        return this;
-    }
-    update() {
-        this.$el.text(this.model.score);
-    }
-}
-exports.Score = Score;
 
 
 /***/ })
