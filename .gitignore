@@ -1,4 +1,9 @@
 .idea/
+.vscode/*
+!.vscode/extensions.json
+
+*.log
+
+dist
 node_modules/
-css/*.js
-css/*.map
+

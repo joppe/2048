@@ -1,9 +1,0 @@
-- ~~make it possible to provide initial values when game is created.~~
-- ~~display a value~~
-- ~~get random cell, excluding given cells~~
-- ~~keyboard~~
-- ~~CellIndexIterator consist of RangeIterator~~
-- ~~can move~~
-- move
-- grid size validator
-- value validator

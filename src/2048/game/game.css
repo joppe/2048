@@ -1,0 +1,14 @@
+@import '../vars.css';
+
+.game {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.container {
+    position: relative;
+    display: inline-block;
+    border-radius: var(--border-size);
+    border: 2px solid var(--border-color);
+}
