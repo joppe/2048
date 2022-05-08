@@ -1,0 +1,121 @@
+@import '../vars.css';
+
+.tiles {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.tiles__tile {
+    position: absolute;
+    box-sizing: border-box;
+    width: var(--size);
+    height: var(--size);
+    transition: transform 100ms ease-in-out;
+    border: var(--border-size) solid transparent;
+    font-family: Arial, serif;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.tiles__tile__value {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.tiles__tile--2 .tiles__tile__value {
+    color: #776e65;
+    background-color: #eee4da;
+}
+
+.tiles__tile--4 .tiles__tile__value {
+    color: #776e65;
+    background-color: #eee4da;
+}
+
+.tiles__tile--8 .tiles__tile__value {
+    color: #f9f6f2;
+    background-color: #f3b27a;
+}
+
+.tiles__tile--16 .tiles__tile__value {
+    color: #f9f6f2;
+    background-color: #f69664;
+}
+
+.tiles__tile--32 .tiles__tile__value {
+    color: #f9f6f2;
+    background-color: #f77c5f;
+}
+
+.tiles__tile--64 .tiles__tile__value {
+    color: #f9f6f2;
+    background-color: #f75f3b;
+}
+
+.tiles__tile--128 .tiles__tile__value {
+    color: #f9f6f2;
+    background-color: #edd073;
+}
+
+.tiles__tile--256 .tiles__tile__value {
+    color: #f9f6f2;
+    background-color: #edcc62;
+}
+
+.tiles__tile--512 .tiles__tile__value {
+    color: #f9f6f2;
+    background-color: #edc950;
+}
+
+.tiles__tile--1024 .tiles__tile__value {
+    color: #f9f6f2;
+    background-color: #edc53f;
+}
+
+.tiles__tile--2048 .tiles__tile__value {
+    color: #f9f6f2;
+    background-color: #edc22e;
+}
+
+.tiles__tile--4096 .tiles__tile__value {
+    color: #f9f6f2;
+    background-color: #3c3a33;
+}
+
+.tiles__tile--new .tiles__tile__value {
+    animation: appear 200ms ease 100ms;
+    animation-fill-mode: backwards;
+}
+
+.tiles__tile--merged .tiles__tile__value {
+    z-index: 10;
+    animation: pop 200ms ease 100ms;
+    animation-fill-mode: backwards;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pop {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }

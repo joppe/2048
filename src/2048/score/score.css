@@ -1,0 +1,44 @@
+@import '../vars.css';
+
+.score {
+    position: relative;
+    display: inline-block;
+    margin-left: auto;
+    padding: 20px;
+    background-color: #bbada0;
+    border-radius: var(--border-size);
+    font-family: Arial, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.score::after {
+    content: 'score';
+    position: absolute;
+    left: 0;
+    bottom: 5px;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+.score__addition {
+    position: absolute;
+    z-index: 10;
+    animation: move-up 600ms ease-in;
+    animation-fill-mode: both;
+    color: rgba(119, 110, 101, 0.9);
+}
+
+@keyframes move-up {
+    0% {
+        top: 25px;
+        opacity: 1;
+    }
+    100% {
+        top: -50px;
+        opacity: 0;
+    }
+}

@@ -1,0 +1,17 @@
+@import '../vars.css';
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: var(--background-color);
+}
+
+.grid__cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    width: var(--size);
+    height: var(--size);
+    border: var(--border-size) solid var(--border-color);
+}

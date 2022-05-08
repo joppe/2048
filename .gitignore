@@ -1,3 +1,9 @@
 .idea/
+.vscode/*
+!.vscode/extensions.json
+
+*.log
+
+dist
 node_modules/
-public/js
+
